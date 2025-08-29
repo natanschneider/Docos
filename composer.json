@@ -1,11 +1,11 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/react-starter-kit",
+    "name": "natanschneider/docos",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "A documentation platform for applications and databases",
     "keywords": [
-        "laravel",
-        "framework"
+        "documentation",
+        "databases"
     ],
     "license": "MIT",
     "require": {
