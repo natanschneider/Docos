@@ -1,0 +1,11 @@
+parameters:
+    paths:
+        - app/
+        - routes/
+        - database/
+        - tests/
+
+    level: max
+
+    reportUnmatchedIgnoredErrors: true
+
