@@ -10,7 +10,7 @@
         "lint": "eslint . --fix",
         "types": "tsc --noEmit",
         "lint:fix": "prettier --write .",
-        "postinstall": "composer fix"
+        "postinstall": "composer lint"
     },
     "devDependencies": {
         "@eslint/js": "^9.19.0",
