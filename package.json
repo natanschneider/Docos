@@ -9,8 +9,7 @@
         "format:check": "prettier --check resources/",
         "lint": "eslint . --fix",
         "types": "tsc --noEmit",
-        "lint:fix": "prettier --write .",
-        "postinstall": "composer lint"
+        "lint:fix": "prettier --write ."
     },
     "devDependencies": {
         "@eslint/js": "^9.19.0",
