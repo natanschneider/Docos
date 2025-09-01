@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\TokenRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -49,5 +50,20 @@ final class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    /**
+     * Create a new personal access token for the user.
+     */
+    public function createToken(TokenRequest $request): array
+    {
+        $request->authenticate();
+        $request->user()->tokens()->delete();
+        $accessToken = $request->user()->createToken($request->token_name);
+
+        return [
+            'plainTextToken' => $accessToken->plainTextToken,
+            'name' => $request->user()->name,
+        ];
     }
 }
