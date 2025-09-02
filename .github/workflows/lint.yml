@@ -4,10 +4,12 @@ on:
   push:
     branches:
       - develop
+      - homolog
       - main
   pull_request:
     branches:
       - develop
+      - homolog
       - main
 
 permissions:
