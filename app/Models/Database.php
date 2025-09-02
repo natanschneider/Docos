@@ -6,7 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-final class databases extends Model
+final class Database extends Model
 {
     //
 }

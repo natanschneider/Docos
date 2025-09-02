@@ -6,8 +6,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-final class applications extends Model
+final class Company extends Model
 {
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'companies';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -15,6 +22,7 @@ final class applications extends Model
      */
     protected $fillable = [
         'name',
+        'description',
         'status',
     ];
 }

@@ -6,7 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-final class projects extends Model
+final class Application extends Model
 {
     /**
      * The attributes that are mass assignable.

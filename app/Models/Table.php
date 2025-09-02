@@ -6,7 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-final class columns extends Model
+final class Table extends Model
 {
     //
 }

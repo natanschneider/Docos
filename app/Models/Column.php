@@ -6,7 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-final class screens extends Model
+final class Column extends Model
 {
     //
 }
