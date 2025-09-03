@@ -15,10 +15,21 @@ class CompanyRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'name' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string', 'max:255'],
-            'status' => ['boolean'],
-        ];
+        return match ($this->method()) {
+            'POST' => [
+                'name' => ['required', 'string', 'max:255'],
+                'description' => ['required', 'string', 'max:255'],
+                'status' => ['boolean'],
+            ],
+            'GET' => [
+                'id' => ['string', 'exists:companies,id'],
+            ],
+            default => [
+                'id' => ['string', 'exists:companies,id'],
+                'name' => ['string', 'max:255'],
+                'description' => ['string', 'max:255'],
+                'status' => ['boolean'],
+            ],
+        };
     }
 }
