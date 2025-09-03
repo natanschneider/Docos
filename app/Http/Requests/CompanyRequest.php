@@ -30,6 +30,9 @@ class CompanyRequest extends FormRequest
                 'description' => ['string', 'max:255'],
                 'status' => ['boolean'],
             ],
+            'DELETE' => [
+                'id' => ['required', 'string', 'exists:companies,id'],
+            ],
             default => [
                 'id' => ['string', 'exists:companies,id'],
                 'name' => ['string', 'max:255'],
