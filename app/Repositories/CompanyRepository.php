@@ -34,7 +34,7 @@ final class CompanyRepository
     {
         $query = $request->user()->companies();
 
-        if( $request->has('id') ){
+        if ($request->has('id')) {
             $query->where('companies.id', $request->id);
         }
 
