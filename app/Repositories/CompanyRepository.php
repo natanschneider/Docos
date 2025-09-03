@@ -58,7 +58,9 @@ final class CompanyRepository
             $company->databases()->delete();
             $company->delete();
 
-            Company::where('id', $request->id)->exists() ? abort(500) : null;
+            if (Company::where('id', $request->id)->exists()) {
+                abort(500);
+            }
 
             return $company;
         });
