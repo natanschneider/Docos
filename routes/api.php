@@ -14,11 +14,10 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
 
-    Route::post('company', [CompanyController::class, 'store']);
-
-    Route::get('company', [CompanyController::class, 'get']);
-
-    Route::put('company', [CompanyController::class, 'update']);
-
-    Route::delete('company', [CompanyController::class, 'destroy']);
+    Route::controller(CompanyController::class)->group(function () {
+        Route::post('company', 'store');
+        Route::get('company', 'get');
+        Route::put('company', 'update');
+        Route::delete('company', 'destroy');
+    });
 });
