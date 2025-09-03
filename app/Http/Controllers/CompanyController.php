@@ -20,4 +20,11 @@ final class CompanyController extends Controller
     {
         return (new CompanyRepository())->get($request);
     }
+
+    public function update(CompanyRequest $request): Collection
+    {
+        (new CompanyRequest())->ensureCompanyBelongsToUser($request);
+
+        return (new CompanyRepository())->update($request);
+    }
 }
