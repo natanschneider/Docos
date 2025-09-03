@@ -34,4 +34,11 @@ final class CompanyRepository
     {
         return $request->user()->companies()->get();
     }
+
+    public function update(CompanyRequest $request): Collection
+    {
+        Company::where('id', $request->id)->update($request->all());
+
+        return Company::where('id', $request->id)->get();
+    }
 }
