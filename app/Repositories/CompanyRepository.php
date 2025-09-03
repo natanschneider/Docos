@@ -32,7 +32,13 @@ final class CompanyRepository
 
     public function get(CompanyRequest $request): Collection
     {
-        return $request->user()->companies()->get();
+        $query = $request->user()->companies();
+
+        if( $request->has('id') ){
+            $query->where('companies.id', $request->id);
+        }
+
+        return $query->get();
     }
 
     public function update(CompanyRequest $request): Collection
