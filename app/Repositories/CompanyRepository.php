@@ -7,6 +7,7 @@ namespace App\Repositories;
 use App\Http\Requests\CompanyRequest;
 use App\Models\Company;
 use App\Models\UserCompany;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 final class CompanyRepository
@@ -27,5 +28,10 @@ final class CompanyRepository
 
             return $company;
         });
+    }
+
+    public function get(CompanyRequest $request): Collection
+    {
+        return $request->user()->companies()->get();
     }
 }
