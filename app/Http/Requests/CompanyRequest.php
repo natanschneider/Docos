@@ -38,4 +38,11 @@ class CompanyRequest extends FormRequest
             ],
         };
     }
+
+    public function ensureCompanyBelongsToUser(self $request): void
+    {
+        if ($request->user()->companies()->where('companies.id', $request->id)->doesntExist()) {
+            abort(403);
+        }
+    }
 }
