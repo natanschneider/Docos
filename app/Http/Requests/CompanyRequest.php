@@ -24,6 +24,12 @@ class CompanyRequest extends FormRequest
             'GET' => [
                 'id' => ['string', 'exists:companies,id'],
             ],
+            'PUT' => [
+                'id' => ['required', 'string', 'exists:companies,id'],
+                'name' => ['string', 'max:255'],
+                'description' => ['string', 'max:255'],
+                'status' => ['boolean'],
+            ],
             default => [
                 'id' => ['string', 'exists:companies,id'],
                 'name' => ['string', 'max:255'],
