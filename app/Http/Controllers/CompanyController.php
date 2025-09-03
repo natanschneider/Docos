@@ -27,4 +27,12 @@ final class CompanyController extends Controller
 
         return (new CompanyRepository())->update($request);
     }
+
+    public function destroy(CompanyRequest $request): Company|Collection
+    {
+        (new CompanyRequest())->ensureCompanyBelongsToUser($request);
+        (new CompanyRequest())->ensureCompanyIsEmpty($request);
+
+        return (new CompanyRepository())->delete($request);
+    }
 }
