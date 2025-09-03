@@ -47,4 +47,20 @@ final class CompanyRepository
 
         return Company::where('id', $request->id)->get();
     }
+
+    public function delete(CompanyRequest $request): Company|Collection
+    {
+        return DB::transaction(function () use ($request) {
+            $company = Company::find($request->id);
+
+            $company->users()->detach();
+            $company->projects()->delete();
+            $company->databases()->delete();
+            $company->delete();
+
+            Company::where('id', $request->id)->exists() ? abort(500) : null;
+
+            return $company;
+        });
+    }
 }
