@@ -1,0 +1,44 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class ProjectRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(self $request): bool
+    {
+        if (isset($request->company_id) && $request->user()->companies()->where('companies.id', $request->company_id)->doesntExist()) {
+            abort(403, 'Company does not belong to user or does not exist');
+        }
+
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return match ($this->method()) {
+            'POST' => [
+                'name' => ['required', 'string', 'max:255'],
+                'company_id' => ['required', 'string', 'exists:companies,id'],
+            ],
+            default => [
+                'id' => ['string', 'exists:projects,id'],
+                'name' => ['string', 'max:255'],
+                'company_id' => ['string', 'exists:companies,id'],
+                'uuid' => ['uuid', 'exists:projects,uuid'],
+                'status' => ['boolean'],
+            ]
+        };
+    }
+}
