@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ProjectController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,5 +20,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('company', 'get');
         Route::put('company', 'update');
         Route::delete('company', 'destroy');
+    });
+
+    Route::controller(ProjectController::class)->group(function () {
+        Route::post('project', 'store');
     });
 });
