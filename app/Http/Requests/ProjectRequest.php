@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Models\Project;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProjectRequest extends FormRequest
@@ -49,5 +50,22 @@ class ProjectRequest extends FormRequest
                 'status' => ['boolean'],
             ]
         };
+    }
+
+    /**
+     * Determine if the id provided matches a company that belongs to the user
+     * If id and company_id provided, check if company belongs to given company
+     */
+    public function ensureProjectBelongsToUser(self $request): void
+    {
+        $project = Project::where('id', $request->id)->first();
+
+        if ( $request->has('company_id') && $request->company_id != $project->company_id ) {
+            abort(403, 'Project does not belong to provided company or does not exist');
+        }
+
+        if ($request->user()->companies()->where('companies.id', $project->company_id)->doesntExist()) {
+            abort(403, 'Project does not belong to user or does not exist');
+        }
     }
 }
