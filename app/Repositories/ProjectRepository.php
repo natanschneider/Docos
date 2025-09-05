@@ -14,7 +14,7 @@ final class ProjectRepository
     {
         return Project::create([
             'name' => $request->name,
-            'company_id' => $request->company_id
+            'company_id' => $request->company_id,
         ]);
     }
 
