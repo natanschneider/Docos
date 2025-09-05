@@ -42,6 +42,9 @@ class ProjectRequest extends FormRequest
                 'name' => ['string', 'max:255'],
                 'company_id' => ['string', 'exists:companies,id'],
             ],
+            'DELETE' => [
+                'id' => ['required', 'string', 'exists:projects,id'],
+            ],
             default => [
                 'id' => ['string', 'exists:projects,id'],
                 'name' => ['string', 'max:255'],
