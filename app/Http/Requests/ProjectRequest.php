@@ -12,9 +12,9 @@ class ProjectRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(self $request): bool
+    public function authorize(): bool
     {
-        if (isset($request->company_id) && $request->user()->companies()->where('companies.id', $request->company_id)->doesntExist()) {
+        if (isset($this->company_id) && $this->user()->companies()->where('companies.id', $this->company_id)->doesntExist()) {
             abort(403, 'Company does not belong to user or does not exist');
         }
 
