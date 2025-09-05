@@ -32,6 +32,15 @@ class ProjectRequest extends FormRequest
                 'name' => ['required', 'string', 'max:255'],
                 'company_id' => ['required', 'string', 'exists:companies,id'],
             ],
+            'GET' => [
+                'id' => ['required_if:company_id,null', 'string', 'exists:projects,id'],
+                'company_id' => ['required_if:id,null', 'string', 'exists:companies,id'],
+            ],
+            'PUT' => [
+                'id' => ['required', 'string', 'exists:projects,id'],
+                'name' => ['string', 'max:255'],
+                'company_id' => ['string', 'exists:companies,id'],
+            ],
             default => [
                 'id' => ['string', 'exists:projects,id'],
                 'name' => ['string', 'max:255'],
