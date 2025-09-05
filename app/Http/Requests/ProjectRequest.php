@@ -71,4 +71,15 @@ class ProjectRequest extends FormRequest
             abort(403, 'Project does not belong to user or does not exist');
         }
     }
+
+    public function ensureProjectIsEmpty(self $request): bool
+    {
+        $project = Project::where('id', $request->id)->first();
+
+        if ($project->applications()->exists()) {
+            abort(403, 'Project contains applications');
+        }
+
+        return true;
+    }
 }
