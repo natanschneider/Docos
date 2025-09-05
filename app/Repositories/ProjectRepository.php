@@ -7,6 +7,7 @@ namespace App\Repositories;
 use App\Http\Requests\ProjectRequest;
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Collection;
+use DB;
 
 final class ProjectRepository
 {
@@ -42,5 +43,21 @@ final class ProjectRepository
         Project::where('id', $request->id)->update($request->all());
 
         return Project::where('id', $request->id)->get();
+    }
+
+    public function destroy(ProjectRequest $request): Project|Collection
+    {
+        return DB::transaction(function () use ($request) {
+            $project = Project::find($request->id);
+
+            $project->applications()->delete();
+            $project->delete();
+
+            if (Project::where('id', $request->id)->exists()) {
+                abort(500);
+            }
+
+            return $project;
+        });
     }
 }
