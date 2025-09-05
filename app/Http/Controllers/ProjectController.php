@@ -12,8 +12,6 @@ class ProjectController extends Controller
 {
     public function store(ProjectRequest $request): Project
     {
-        (new ProjectRequest())->authorize($request);
-
         return (new ProjectRepository())->create($request);
     }
 }
