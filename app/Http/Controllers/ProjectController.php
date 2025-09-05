@@ -31,4 +31,13 @@ class ProjectController extends Controller
 
         return (new ProjectRepository())->update($request);
     }
+
+    public function destroy(ProjectRequest $request): Project|Collection
+    {
+        $formRequest = new ProjectRequest();
+        $formRequest->ensureProjectBelongsToUser($request);
+        $formRequest->ensureProjectIsEmpty($request);
+
+        return (new ProjectRepository())->destroy($request);
+    }
 }
