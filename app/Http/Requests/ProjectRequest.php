@@ -60,7 +60,7 @@ class ProjectRequest extends FormRequest
     {
         $project = Project::where('id', $request->id)->first();
 
-        if ($request->has('company_id') && $request->company_id !== $project->company_id) {
+        if ($request->has('company_id') && $request->company_id !== (string) $project->company_id) {
             abort(403, 'Project does not belong to provided company or does not exist');
         }
 
