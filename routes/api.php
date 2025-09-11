@@ -44,4 +44,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('screen', 'update');
         Route::delete('screen', 'destroy');
     });
+
+    Route::controller(EndpointController::class)->group(function () {
+        Route::post('endpoint', 'store');
+        Route::get('endpoint', 'get');
+    });
 });
