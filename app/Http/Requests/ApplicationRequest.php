@@ -42,6 +42,9 @@ class ApplicationRequest extends FormRequest
                 'name' => ['string', 'max:255'],
                 'project_id' => ['string', 'exists:projects,id'],
             ],
+            'DELETE' => [
+                'id' => ['required', 'string', 'exists:applications,id'],
+            ],
             'DEFAULT' => [
                 'id' => ['string', 'exists:applications,id'],
                 'name' => ['string', 'max:255'],
