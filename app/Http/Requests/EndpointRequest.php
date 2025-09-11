@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests;
 
 use App\Models\Application;
+use App\Models\Endpoint;
 use Illuminate\Foundation\Http\FormRequest;
 
 class EndpointRequest extends FormRequest
@@ -50,5 +51,17 @@ class EndpointRequest extends FormRequest
                 'status' => ['boolean'],
             ]
         };
+    }
+
+    /**
+     * Determine if the endpoint id provided matches to a company that belongs to the user
+     */
+    public function ensureEndpointBelongsToUser(self $request): void
+    {
+        $company = Endpoint::find($request->id)->application->project->company;
+
+        if ($request->user()->companies()->where('companies.id', $company->id)->doesntExist()) {
+            abort(403, 'Endpoint does not belong to user or does not exist');
+        }
     }
 }
