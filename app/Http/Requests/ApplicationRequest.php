@@ -31,6 +31,10 @@ class ApplicationRequest extends FormRequest
                 'name' => ['required', 'string', 'max:255'],
                 'project_id' => ['required', 'string', 'exists:projects,id'],
             ],
+            'GET' => [
+                'id' => ['required_if:project_id,null', 'string', 'exists:applications,id'],
+                'project_id' => ['required_if:id,null', 'string', 'exists:projects,id'],
+            ],
             'DEFAULT' => [
                 'id' => ['string', 'exists:applications,id'],
                 'name' => ['string', 'max:255'],
