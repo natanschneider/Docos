@@ -48,5 +48,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(EndpointController::class)->group(function () {
         Route::post('endpoint', 'store');
         Route::get('endpoint', 'get');
+        Route::put('endpoint', 'update');
     });
 });
