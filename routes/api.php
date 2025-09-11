@@ -32,5 +32,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::controller(ApplicationController::class)->group(function () {
         Route::post('application', 'store');
+        Route::get('application', 'get');
     });
 });
