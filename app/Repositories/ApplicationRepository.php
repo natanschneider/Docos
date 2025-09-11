@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Http\Requests\ApplicationRequest;
 use App\Models\Application;
+use App\Models\Project;
 use Illuminate\Database\Eloquent\Collection;
 
 final class ApplicationRepository
@@ -31,5 +32,20 @@ final class ApplicationRepository
         }
 
         return $query->get();
+    }
+
+    public function update(ApplicationRequest $request): Collection
+    {
+        if ($request->has('project_id')) {
+            $project = Project::where('id', $request->project_id)->first();
+
+            if ($request->user()->companies()->where('companies.id', $project->company_id)->doesntExist()) {
+                abort(403, 'Project does not belong to user or does not exist');
+            }
+        }
+
+        Application::where('id', $request->id)->update($request->all());
+
+        return Application::where('id', $request->id)->get();
     }
 }
