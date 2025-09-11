@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Http\Requests\EndpointRequest;
+use App\Models\Application;
 use App\Models\Endpoint;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -28,5 +29,20 @@ final class EndpointRepository
         }
 
         return $query->get();
+    }
+
+    public function update(EndpointRequest $request): Collection
+    {
+        if ($request->has('application_id')) {
+            $company = Application::where('id', $request->application_id)->project->company;
+
+            if ($request->user()->companies()->where('companies.id', $company->id)->doesntExist()) {
+                abort(403, 'Application does not belong to user or does not exist');
+            }
+        }
+
+        Endpoint::where('id', $request->id)->update($request->all());
+
+        return Endpoint::where('id', $request->id)->get();
     }
 }
