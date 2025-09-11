@@ -24,4 +24,11 @@ class ApplicationController extends Controller
 
         return (new ApplicationRepository())->get($request);
     }
+
+    public function update(ApplicationRequest $request): Collection
+    {
+        (new ApplicationRequest())->ensureApplicationBelongsToUser($request);
+
+        return (new ApplicationRepository())->update($request);
+    }
 }
