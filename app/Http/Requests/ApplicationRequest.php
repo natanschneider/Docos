@@ -14,8 +14,12 @@ class ApplicationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if (isset($this->project_id) && $this->user()->companies()->where('projects.id', $this->project_id)->doesntExist()) {
-            abort(403, 'Project does not belong to user or does not exist');
+        if ($this->has('project_id')) {
+            $project = Project::find($this->project_id);
+
+            if ($this->user()->companies()->where('companies.id', $project->company()->first()->id)->doesntExist()) {
+                abort(403, 'Project does not belong to user or does not exist');
+            }
         }
 
         return true;
