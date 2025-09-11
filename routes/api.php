@@ -50,5 +50,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('endpoint', 'store');
         Route::get('endpoint', 'get');
         Route::put('endpoint', 'update');
+        Route::delete('endpoint', 'destroy');
     });
 });
