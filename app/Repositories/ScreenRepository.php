@@ -45,4 +45,13 @@ final class ScreenRepository
 
         return Screen::where('id', $request->id)->get();
     }
+
+    public function destroy(ScreenRequest $request): Screen|Collection
+    {
+        $screen = Screen::find($request->id);
+
+        $screen->delete();
+
+        return $screen;
+    }
 }
