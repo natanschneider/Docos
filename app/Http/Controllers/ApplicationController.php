@@ -31,4 +31,13 @@ class ApplicationController extends Controller
 
         return (new ApplicationRepository())->update($request);
     }
+
+    public function destroy(ApplicationRequest $request): Application|Collection
+    {
+        $formRequest = new ApplicationRequest();
+        $formRequest->ensureApplicationBelongsToUser($request);
+        $formRequest->ensureApplicationIsEmpty($request);
+
+        return (new ApplicationRepository())->destroy($request);
+    }
 }
