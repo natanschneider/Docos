@@ -34,5 +34,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('application', 'store');
         Route::get('application', 'get');
         Route::put('application', 'update');
+        Route::delete('application', 'destroy');
     });
 });
