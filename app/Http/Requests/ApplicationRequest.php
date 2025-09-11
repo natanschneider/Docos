@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 namespace App\Http\Requests;
+
+use App\Models\Application;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ApplicationRequest extends FormRequest
@@ -43,5 +45,17 @@ class ApplicationRequest extends FormRequest
                 'status' => ['boolean'],
             ],
         };
+    }
+
+    /**
+     * Determine if the application id provided matches to a company that belongs to the user
+     */
+    public function ensureApplicationBelongsToUser(self $request): void
+    {
+        $application = Application::where('id', $request->id)->first();
+
+        if ($request->user()->companies()->where('projects.id', $application->project_id)->doesntExist()) {
+            abort(403, 'Application does not belong to user or does not exist');
+        }
     }
 }
