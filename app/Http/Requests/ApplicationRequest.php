@@ -66,4 +66,18 @@ class ApplicationRequest extends FormRequest
             abort(403, 'Application does not belong to user or does not exist');
         }
     }
+
+    /**
+     * Determine if the application id provided is empty
+     */
+    public function ensureApplicationIsEmpty(self $request): bool
+    {
+        $application = Application::where('id', $request->id)->first();
+
+        if ($application->endpoints()->exists() || $application->screens()->exists()) {
+            abort(400, 'Application is not empty');
+        }
+
+        return true;
+    }
 }
