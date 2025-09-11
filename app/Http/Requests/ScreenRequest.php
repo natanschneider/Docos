@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Models\Application;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ScreenRequest extends FormRequest
@@ -13,6 +14,14 @@ class ScreenRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        if ($this->has('application_id')) {
+            $application = Application::find($this->application_id)->project;
+
+            if ($this->user()->companies()->where('companies.id', $application->company_id)->doesntExist()) {
+                abort(403, 'Application does not belong to user or does not exist');
+            }
+        }
+
         return true;
     }
 
