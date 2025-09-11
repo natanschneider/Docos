@@ -5,9 +5,9 @@ declare(strict_types=1);
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\EndpointController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ScreenController;
-use App\Http\Controllers\EndpointController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
