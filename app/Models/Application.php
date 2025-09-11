@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 final class Application extends Model
 {
@@ -34,5 +35,13 @@ final class Application extends Model
     public function endpoints(): HasMany
     {
         return $this->hasMany(Endpoint::class);
+    }
+
+    /**
+     * Get the application's screens
+     */
+    public function screens(): HasMany
+    {
+        return $this->hasMany(Screen::class);
     }
 }
