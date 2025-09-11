@@ -17,6 +17,7 @@ final class Application extends Model
     protected $fillable = [
         'name',
         'status',
+        'project_id',
     ];
 
     /**
