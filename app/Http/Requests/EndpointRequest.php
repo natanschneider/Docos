@@ -47,6 +47,9 @@ class EndpointRequest extends FormRequest
                 'name' => ['string', 'max:255'],
                 'application_id' => ['string', 'exists:applications,id'],
             ],
+            'DELETE' => [
+                'id' => ['required', 'string', 'exists:endpoints,id'],
+            ],
             'DEFAULT' => [
                 'id' => ['string', 'exists:endpoints,id'],
                 'name' => ['string', 'max:255'],
