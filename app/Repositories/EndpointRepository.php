@@ -45,4 +45,13 @@ final class EndpointRepository
 
         return Endpoint::where('id', $request->id)->get();
     }
+
+    public function destroy(EndpointRequest $request): Endpoint|Collection
+    {
+        $endpoint = Endpoint::find($request->id);
+
+        $endpoint->delete();
+
+        return $endpoint;
+    }
 }
