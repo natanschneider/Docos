@@ -24,4 +24,11 @@ class EndpointController extends Controller
 
         return (new EndpointRepository())->get($request);
     }
+
+    public function update(EndpointRequest $request): Collection
+    {
+        (new EndpointRequest())->ensureEndpointBelongsToUser($request);
+
+        return (new EndpointRepository())->update($request);
+    }
 }
