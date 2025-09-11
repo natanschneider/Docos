@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests;
 
 use App\Models\Application;
+use App\Models\Screen;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ScreenRequest extends FormRequest
@@ -55,5 +56,17 @@ class ScreenRequest extends FormRequest
                 'status' => ['boolean'],
             ]
         };
+    }
+
+    /**
+     * Determine if the screen id provided matches to a company that belongs to the user
+     */
+    public function ensureScreenBelongsToUser(self $request): void
+    {
+        $company = Screen::find($request->id)->application->project->company;
+
+        if ($request->user()->companies()->where('companies.id', $company->id)->doesntExist()) {
+            abort(403, 'Screen does not belong to user or does not exist');
+        }
     }
 }
