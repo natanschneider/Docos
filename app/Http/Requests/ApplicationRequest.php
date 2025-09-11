@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Models\Project;
 use App\Models\Application;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -64,9 +65,9 @@ class ApplicationRequest extends FormRequest
      */
     public function ensureApplicationBelongsToUser(self $request): void
     {
-        $application = Application::where('id', $request->id)->first();
+        $project = Application::find($request->id)->project;
 
-        if ($request->user()->companies()->where('projects.id', $application->project_id)->doesntExist()) {
+        if ($request->user()->companies()->where('companies.id', $project->company_id)->doesntExist()) {
             abort(403, 'Application does not belong to user or does not exist');
         }
     }
