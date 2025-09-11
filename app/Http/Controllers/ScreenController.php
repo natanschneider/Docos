@@ -24,4 +24,11 @@ class ScreenController extends Controller
 
         return (new ScreenRepository())->get($request);
     }
+
+    public function update(ScreenRequest $request): Collection
+    {
+        (new ScreenRequest())->ensureScreenBelongsToUser($request);
+
+        return (new ScreenRepository())->update($request);
+    }
 }
