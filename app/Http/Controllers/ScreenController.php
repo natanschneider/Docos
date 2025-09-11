@@ -31,4 +31,11 @@ class ScreenController extends Controller
 
         return (new ScreenRepository())->update($request);
     }
+
+    public function destroy(ScreenRequest $request): Screen|Collection
+    {
+        (new ScreenRequest())->ensureScreenBelongsToUser($request);
+
+        return (new ScreenRepository())->destroy($request);
+    }
 }
