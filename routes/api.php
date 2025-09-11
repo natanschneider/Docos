@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProjectController;
@@ -27,5 +28,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('project', 'get');
         Route::put('project', 'update');
         Route::delete('project', 'destroy');
+    });
+
+    Route::controller(ApplicationController::class)->group(function () {
+        Route::post('application', 'store');
     });
 });
