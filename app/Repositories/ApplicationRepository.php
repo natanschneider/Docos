@@ -8,6 +8,7 @@ use App\Http\Requests\ApplicationRequest;
 use App\Models\Application;
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 final class ApplicationRepository
 {
@@ -47,5 +48,22 @@ final class ApplicationRepository
         Application::where('id', $request->id)->update($request->all());
 
         return Application::where('id', $request->id)->get();
+    }
+
+    public function destroy(ApplicationRequest $request): Application|Collection
+    {
+        return DB::transaction(function () use ($request) {
+            $application = Application::find($request->id);
+
+            $application->endpoints()->delete();
+            $application->screens()->delete();
+            $application->delete();
+
+            if (Application::where('id', $request->id)->exists()) {
+                abort(500);
+            }
+
+            return $application;
+        });
     }
 }
