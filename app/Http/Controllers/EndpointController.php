@@ -31,4 +31,11 @@ class EndpointController extends Controller
 
         return (new EndpointRepository())->update($request);
     }
+
+    public function destroy(EndpointRequest $request): Endpoint|Collection
+    {
+        (new EndpointRequest())->ensureEndpointBelongsToUser($request);
+
+        return (new EndpointRepository())->destroy($request);
+    }
 }
