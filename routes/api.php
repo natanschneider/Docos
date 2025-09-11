@@ -41,5 +41,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(ScreenController::class)->group(function () {
         Route::post('screen', 'store');
         Route::get('screen', 'get');
+        Route::put('screen', 'update');
     });
 });
