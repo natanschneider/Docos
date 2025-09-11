@@ -47,6 +47,9 @@ class ScreenRequest extends FormRequest
                 'name' => ['string', 'max:255'],
                 'application_id' => ['string', 'exists:applications,id'],
             ],
+            'DELETE' => [
+                'id' => ['required', 'string', 'exists:screens,id'],
+            ],
             'DEFAULT' => [
                 'id' => ['string', 'exists:screens,id'],
                 'name' => ['string', 'max:255'],
