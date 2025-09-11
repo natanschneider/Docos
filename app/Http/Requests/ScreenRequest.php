@@ -41,6 +41,11 @@ class ScreenRequest extends FormRequest
                 'id' => ['required_if:application_id,null', 'string', 'exists:screens,id'],
                 'application_id' => ['required_if:id,null', 'string', 'exists:applications,id'],
             ],
+            'PUT' => [
+                'id' => ['required', 'string', 'exists:screens,id'],
+                'name' => ['string', 'max:255'],
+                'application_id' => ['string', 'exists:applications,id'],
+            ],
             'DEFAULT' => [
                 'id' => ['string', 'exists:screens,id'],
                 'name' => ['string', 'max:255'],
