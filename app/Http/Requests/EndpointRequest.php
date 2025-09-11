@@ -42,6 +42,11 @@ class EndpointRequest extends FormRequest
                 'id' => ['required_if:application_id,null', 'string', 'exists:endpoints,id'],
                 'application_id' => ['required_if:id,null', 'string', 'exists:applications,id'],
             ],
+            'PUT' => [
+                'id' => ['required', 'string', 'exists:endpoints,id'],
+                'name' => ['string', 'max:255'],
+                'application_id' => ['string', 'exists:applications,id'],
+            ],
             'DEFAULT' => [
                 'id' => ['string', 'exists:endpoints,id'],
                 'name' => ['string', 'max:255'],
