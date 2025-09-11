@@ -12,6 +12,10 @@ class ApplicationRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        if (isset($this->project_id) && $this->user()->companies()->where('projects.id', $this->project_id)->doesntExist()) {
+            abort(403, 'Project does not belong to user or does not exist');
+        }
+
         return true;
     }
 
