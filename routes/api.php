@@ -6,6 +6,7 @@ use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ScreenController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -35,5 +36,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('application', 'get');
         Route::put('application', 'update');
         Route::delete('application', 'destroy');
+    });
+
+    Route::controller(ScreenController::class)->group(function () {
+        Route::post('screen', 'store');
     });
 });
