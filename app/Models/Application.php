@@ -27,4 +27,12 @@ final class Application extends Model
     {
         return $this->belongsTo(Project::class);
     }
+
+    /**
+     * Get the application's endpoints
+     */
+    public function endpoints(): HasMany
+    {
+        return $this->hasMany(Endpoint::class);
+    }
 }
