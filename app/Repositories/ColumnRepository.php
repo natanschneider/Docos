@@ -45,4 +45,13 @@ final class ColumnRepository
 
         return Column::where('id', $request->id)->get();
     }
+
+    public function destroy(ColumnRequest $request): Column|Collection
+    {
+        $column = Column::find($request->id);
+
+        $column->delete();
+
+        return $column;
+    }
 }
