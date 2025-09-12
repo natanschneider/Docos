@@ -56,5 +56,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::controller(DatabaseController::class)->group(function () {
         Route::post('database', 'store');
+        Route::get('database', 'get');
     });
 });
