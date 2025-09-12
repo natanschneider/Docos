@@ -6,7 +6,7 @@ namespace App\Repositories;
 
 use App\Http\Requests\CompanyRequest;
 use App\Models\Company;
-use App\Models\UserCompany;
+use App\Models\Pivot\UserCompany;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
