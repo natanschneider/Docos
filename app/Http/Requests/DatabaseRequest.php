@@ -74,4 +74,18 @@ class DatabaseRequest extends FormRequest
             abort(403, 'Database does not belong to user or does not exist');
         }
     }
+
+    /**
+     * Determine if the database provided is empty
+     */
+    public function ensureDatabaseIsEmpty(self $request): bool
+    {
+        $database = Database::where('id', $request->id)->first();
+
+        if ($database->columns()->exists()) {
+            abort(403, 'Database contains columns');
+        }
+
+        return true;
+    }
 }
