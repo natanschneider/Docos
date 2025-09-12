@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Pivot;
 
 use App\Models\Column;
@@ -28,7 +30,7 @@ class Index extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'column_id'
+        'column_id',
     ];
 
     /**

@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Models\Screen;
-use App\Models\Endpoint;
-use App\Models\Pivot\Index;
-use App\Models\Descriptions\Type;
 use App\Models\Descriptions\Constraint;
+use App\Models\Descriptions\Type;
+use App\Models\Pivot\Index;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -80,6 +78,6 @@ final class Column extends Model
      */
     public function relatedColumns(): BelongsToMany
     {
-        return $this->belongsToMany(Column::class, 'relationships', 'primary_key_id', 'foreing_key_id');
+        return $this->belongsToMany(self::class, 'relationships', 'primary_key_id', 'foreing_key_id');
     }
 }

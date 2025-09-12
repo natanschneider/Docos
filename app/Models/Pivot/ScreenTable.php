@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Pivot;
 
-use App\Models\Table;
 use App\Models\Screen;
+use App\Models\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -35,7 +37,7 @@ class ScreenTable extends Model
 
     /**
      * Get the related table's
-    */
+     */
     public function table(): BelongsTo
     {
         return $this->belongsTo(Table::class);
@@ -43,7 +45,7 @@ class ScreenTable extends Model
 
     /**
      * Get the related screen's
-    */
+     */
     public function screen(): BelongsTo
     {
         return $this->belongsTo(Screen::class);
