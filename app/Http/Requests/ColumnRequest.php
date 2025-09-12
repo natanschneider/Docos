@@ -13,7 +13,15 @@ class ColumnRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        if ($this->has('table_id')) {
+            $database = Table::find($this->table_id)->database;
+
+            if ($this->user()->companies()->where('companies.id', $database->company_id)->doesntExist()) {
+                abort(403, 'Table does not belong to user or does not exist');
+            }
+        }
+
+        return true;
     }
 
     /**
