@@ -24,4 +24,11 @@ class DatabaseController extends Controller
 
         return (new DatabaseRepository())->get($request);
     }
+
+    public function update(DatabaseRequest $request): Collection
+    {
+        (new DatabaseRequest())->ensureDatabaseBelongsToUser($request);
+
+        return (new DatabaseRepository())->update($request);
+    }
 }
