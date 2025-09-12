@@ -20,11 +20,20 @@ final class Database extends Model
         'engine_id',
         'status',
     ];
+
     /**
      * Get the database's company.
      */
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
+    }
+
+    /**
+     * Get the database's tables.
+     */
+    public function tables(): HasMany
+    {
+        return $this->hasMany(Table::class);
     }
 }

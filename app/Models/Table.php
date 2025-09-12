@@ -18,4 +18,12 @@ final class Table extends Model
         'doc_file',
         'database_id',
     ];
+
+    /**
+     * Get the database for the table.
+     */
+    public function database(): HasMany
+    {
+        return $this->hasMany(Database::class);
+    }
 }
