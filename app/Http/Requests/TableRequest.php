@@ -74,4 +74,18 @@ class TableRequest extends FormRequest
             abort(403, 'Table does not belong to user or does not exist');
         }
     }
+
+    /**
+     * Determine if the table id provided is empty
+     */
+    public function ensureTableIsEmpty(self $request): bool
+    {
+        $table = Table::where('id', $request->id)->first();
+
+        if ($table->columns()->exists()) {
+            abort(400, 'Table is not empty');
+        }
+
+        return true;
+    }
 }
