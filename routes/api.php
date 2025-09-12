@@ -72,5 +72,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::controller(ColumnController::class)->group(function () {
         Route::post('column', 'store');
+        Route::get('column', 'get');
     });
 });
