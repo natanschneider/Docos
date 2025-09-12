@@ -10,6 +10,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 final class Database extends Model
 {
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'name',
+        'company_id',
+        'engine_id',
+        'status',
+    ];
+    /**
      * Get the database's company.
      */
     public function company(): BelongsTo
