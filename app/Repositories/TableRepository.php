@@ -7,6 +7,7 @@ namespace App\Repositories;
 use App\Http\Requests\TableRequest;
 use App\Models\Database;
 use App\Models\Table;
+use DB;
 use Illuminate\Database\Eloquent\Collection;
 
 final class TableRepository
@@ -44,5 +45,21 @@ final class TableRepository
         Table::where('id', $request->id)->update($request->all());
 
         return Table::where('id', $request->id)->first();
+    }
+
+    public function destroy(TableRequest $request): Table|Collection
+    {
+        return DB::transaction(function () use ($request) {
+            $table = Table::find($request->id);
+
+            $table->columns()->delete();
+            $table->delete();
+
+            if (Table::where('id', $request->id)->exists()) {
+                abort(500);
+            }
+
+            return $table;
+        });
     }
 }
