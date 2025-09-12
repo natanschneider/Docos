@@ -37,6 +37,7 @@ class ApplicationRequest extends FormRequest
             'POST' => [
                 'name' => ['required', 'string', 'max:255'],
                 'project_id' => ['required', 'string', 'exists:projects,id'],
+                'databases' => ['array', 'exists:databases,id'],
             ],
             'GET' => [
                 'id' => ['required_if:project_id,null', 'string', 'exists:applications,id'],
@@ -54,6 +55,7 @@ class ApplicationRequest extends FormRequest
                 'id' => ['string', 'exists:applications,id'],
                 'name' => ['string', 'max:255'],
                 'project_id' => ['string', 'exists:projects,id'],
+                'databases' => ['array', 'exists:databases,id'],
                 'uuid' => ['uuid', 'exists:applications,uuid'],
                 'status' => ['boolean'],
             ],
