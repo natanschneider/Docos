@@ -66,5 +66,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('table', 'store');
         Route::get('table', 'get');
         Route::put('table', 'update');
+        Route::delete('table', 'destroy');
     });
 });
