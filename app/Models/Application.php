@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Database;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 final class Application extends Model
@@ -43,5 +45,13 @@ final class Application extends Model
     public function screens(): HasMany
     {
         return $this->hasMany(Screen::class);
+    }
+
+    /**
+     * Get the application's databases
+     */
+    public function databases(): BelongsToMany
+    {
+        return $this->belongsToMany(Database::class, 'application_databases');
     }
 }
