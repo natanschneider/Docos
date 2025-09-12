@@ -7,6 +7,7 @@ namespace App\Repositories;
 use App\Http\Requests\DatabaseRequest;
 use App\Models\Database;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 final class DatabaseRepository
 {
@@ -39,5 +40,21 @@ final class DatabaseRepository
         Database::where('id', $request->id)->update($request->all());
 
         return Database::where('id', $request->id)->get();
+    }
+
+    public function destroy(DatabaseRequest $request): Database|Collection
+    {
+        return DB::transaction(function () use ($request) {
+            $database = Database::find($request->id);
+
+            $database->columns()->delete();
+            $database->delete();
+
+            if (Database::where('id', $request->id)->exists()) {
+                abort(500);
+            }
+
+            return $database;
+        });
     }
 }
