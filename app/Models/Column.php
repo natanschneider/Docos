@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Models\Screen;
 use App\Models\Endpoint;
+use App\Models\Pivot\Index;
 use App\Models\Descriptions\Type;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -55,6 +56,14 @@ final class Column extends Model
     public function screens(): BelongsToMany
     {
         return $this->belongsToMany(Screen::class, 'screen_columns');
+    }
+
+    /**
+     * Get the column's indexes.
+     */
+    public function indexes(): BelongsToMany
+    {
+        return $this->belongsToMany(Index::class, 'indexes');
     }
 
     /**
