@@ -8,5 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 
 final class Table extends Model
 {
-    //
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'doc_file',
+        'database_id',
+    ];
 }
