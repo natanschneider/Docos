@@ -74,5 +74,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('column', 'store');
         Route::get('column', 'get');
         Route::put('column', 'update');
+        Route::delete('column', 'destroy');
     });
 });
