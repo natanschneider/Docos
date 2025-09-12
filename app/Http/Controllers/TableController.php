@@ -31,4 +31,12 @@ class TableController extends Controller
 
         return (new TableRepository())->update($request);
     }
+
+    public function destroy(TableRequest $request): Table|Collection
+    {
+        (new TableRequest())->ensureTableBelongsToUser($request);
+        (new TableRequest())->ensureTableIsEmpty($request);
+
+        return (new TableRepository())->destroy($request);
+    }
 }
