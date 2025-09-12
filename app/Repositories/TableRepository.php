@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Http\Requests\TableRequest;
+use App\Models\Database;
 use App\Models\Table;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -28,5 +29,20 @@ final class TableRepository
         }
 
         return $query->get();
+    }
+
+    public function update(TableRequest $request)
+    {
+        if ($request->has('database_id')) {
+            $database = Database::where('id', $request->database_id)->first();
+
+            if ($request->user()->companies()->where('companies.id', $database->company_id)->doesntExist()) {
+                abort(403, 'Database does not belong to user or does not exist');
+            }
+        }
+
+        Table::where('id', $request->id)->update($request->all());
+
+        return Table::where('id', $request->id)->first();
     }
 }
