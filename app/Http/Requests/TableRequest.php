@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Models\Database;
 use Illuminate\Foundation\Http\FormRequest;
 
 class TableRequest extends FormRequest
@@ -13,7 +14,15 @@ class TableRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        if ($this->has('database_id')) {
+            $database = Database::find($this->database_id);
+
+            if ($this->user()->companies()->where('companies.id', $database->company_id)->doesntExist()) {
+                abort(403, 'Database does not belong to user or does not exist');
+            }
+        }
+
+        return true;
     }
 
     /**
