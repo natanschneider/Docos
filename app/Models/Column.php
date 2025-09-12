@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Models\Screen;
+use App\Models\Endpoint;
 use App\Models\Descriptions\Type;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -38,6 +39,14 @@ final class Column extends Model
     public function type(): BelongsTo
     {
         return $this->belongsTo(Type::class);
+    }
+
+    /**
+     * Get the column's endpoints.
+     */
+    public function endpoints(): BelongsToMany
+    {
+        return $this->belongsToMany(Endpoint::class, 'endpoint_columns');
     }
 
     /**
