@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Screen;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 final class Table extends Model
 {
@@ -35,5 +36,13 @@ final class Table extends Model
     public function columns(): HasMany
     {
         return $this->hasMany(Column::class);
+    }
+
+    /**
+     * Get the screens for the table.
+     */
+    public function screens(): BelongsToMany
+    {
+        return $this->belongsToMany(Screen::class, 'screen_tables');
     }
 }
