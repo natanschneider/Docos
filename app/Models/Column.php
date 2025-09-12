@@ -56,4 +56,12 @@ final class Column extends Model
     {
         return $this->belongsToMany(Screen::class, 'screen_columns');
     }
+
+    /**
+     * Get the column's related columns.
+     */
+    public function relatedColumns(): BelongsToMany
+    {
+        return $this->belongsToMany(Column::class, 'relationships', 'primary_key_id', 'foreing_key_id');
+    }
 }
