@@ -65,5 +65,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(TableController::class)->group(function () {
         Route::post('table', 'store');
         Route::get('table', 'get');
+        Route::put('table', 'update');
     });
 });
