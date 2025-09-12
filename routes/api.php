@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\DatabaseController;
 use App\Http\Controllers\EndpointController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ScreenController;
@@ -51,5 +52,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('endpoint', 'get');
         Route::put('endpoint', 'update');
         Route::delete('endpoint', 'destroy');
+    });
+
+    Route::controller(DatabaseController::class)->group(function () {
+        Route::post('database', 'store');
     });
 });
