@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\ColumnController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DatabaseController;
 use App\Http\Controllers\EndpointController;
@@ -67,5 +68,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('table', 'get');
         Route::put('table', 'update');
         Route::delete('table', 'destroy');
+    });
+
+    Route::controller(ColumnController::class)->group(function () {
+        Route::post('column', 'store');
     });
 });
