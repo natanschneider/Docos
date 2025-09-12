@@ -31,4 +31,13 @@ class DatabaseController extends Controller
 
         return (new DatabaseRepository())->update($request);
     }
+
+    public function destroy(DatabaseRequest $request): Database|Collection
+    {
+        $formRequest = new DatabaseRequest();
+        $formRequest->ensureDatabaseBelongsToUser($request);
+        $formRequest->ensureDatabaseIsEmpty($request);
+
+        return (new DatabaseRepository())->destroy($request);
+    }
 }
