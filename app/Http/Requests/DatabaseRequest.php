@@ -13,6 +13,10 @@ class DatabaseRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        if (isset($this->company_id) && $this->user()->companies()->where('companies.id', $this->company_id)->doesntExist()) {
+            abort(403, 'Company does not belong to user or does not exist');
+        }
+
         return true;
     }
 
