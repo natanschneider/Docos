@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Descriptions\Engine;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -36,5 +37,13 @@ final class Database extends Model
     public function tables(): HasMany
     {
         return $this->hasMany(Table::class);
+    }
+
+    /**
+     * Get the database's engine.
+     */
+    public function engine(): BelongsTo
+    {
+        return $this->belongsTo(Engine::class);
     }
 }
