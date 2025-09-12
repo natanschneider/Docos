@@ -51,6 +51,9 @@ class ColumnRequest extends FormRequest
                 'table_id' => ['string', 'exists:tables,id'],
                 'type_id' => ['string', 'exists:types,id'],
             ],
+            'DELETE' => [
+                'id' => ['required', 'string', 'exists:columns,id'],
+            ],
             'DEFAULT' => [
                 'id' => ['string', 'exists:columns,id'],
                 'name' => ['string', 'max:255'],
