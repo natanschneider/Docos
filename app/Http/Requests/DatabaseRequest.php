@@ -44,6 +44,9 @@ class DatabaseRequest extends FormRequest
                 'company_id' => ['string', 'exists:companies,id'],
                 'engine_id' => ['string', 'exists:engines,id'],
             ],
+            'DELETE' => [
+                'id' => ['required', 'string', 'exists:databases,id'],
+            ],
             default => [
                 'id' => ['string', 'exists:databases,id'],
                 'name' => ['string', 'max:255'],
