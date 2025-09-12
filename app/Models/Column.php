@@ -8,6 +8,7 @@ use App\Models\Screen;
 use App\Models\Endpoint;
 use App\Models\Pivot\Index;
 use App\Models\Descriptions\Type;
+use App\Models\Descriptions\Constraint;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -40,6 +41,14 @@ final class Column extends Model
     public function type(): BelongsTo
     {
         return $this->belongsTo(Type::class);
+    }
+
+    /**
+     * Get the column's constraints.
+     */
+    public function constraints(): BelongsToMany
+    {
+        return $this->belongsToMany(Constraint::class, 'column_constraints');
     }
 
     /**
