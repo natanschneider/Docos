@@ -1,0 +1,37 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class DatabaseRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return match ($this->method()) {
+            default => [
+                'id' => ['string', 'exists:databases,id'],
+                'name' => ['string', 'max:255'],
+                'company_id' => ['string', 'exists:companies,id'],
+                'engine_id' => ['string', 'exists:engines,id'],
+                'uuid' => ['uuid', 'exists:databases,uuid'],
+                'status' => ['boolean'],
+            ]
+        };
+    }
+}
