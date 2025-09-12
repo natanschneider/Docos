@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Models\Column;
+use App\Models\Table;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ColumnRequest extends FormRequest
@@ -59,5 +61,17 @@ class ColumnRequest extends FormRequest
                 'status' => ['boolean'],
             ]
         };
+    }
+
+    /**
+     * Determine if the column id provided matches to a company that belongs to the user
+     */
+    public function unsureColumnBelongsToUser(self $request): void
+    {
+        $company = Column::find($request->id)->table->database->company;
+
+        if ($request->user()->companies()->where('companies.id', $company->id)->doesntExist()) {
+            abort(403, 'Column does not belong to user or does not exist');
+        }
     }
 }
