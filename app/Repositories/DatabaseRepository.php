@@ -29,4 +29,15 @@ final class DatabaseRepository
 
         return $query->get();
     }
+
+    public function update(DatabaseRequest $request): Collection
+    {
+        if ($request->has('company_id') && $request->user()->companies()->where('companies.id', $request->company_id)->doesntExist()) {
+            abort(403, 'Provided company does not belong to user');
+        }
+
+        Database::where('id', $request->id)->update($request->all());
+
+        return Database::where('id', $request->id)->get();
+    }
 }
