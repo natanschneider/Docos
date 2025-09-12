@@ -24,6 +24,11 @@ class DatabaseRequest extends FormRequest
     public function rules(): array
     {
         return match ($this->method()) {
+            'POST' => [
+                'name' => ['required', 'string', 'max:255'],
+                'company_id' => ['required', 'string', 'exists:companies,id'],
+                'engine_id' => ['required', 'string', 'exists:engines,id'],
+            ],
             default => [
                 'id' => ['string', 'exists:databases,id'],
                 'name' => ['string', 'max:255'],
