@@ -12,12 +12,20 @@ use Illuminate\Support\Facades\DB;
 
 final class ApplicationRepository
 {
-    public function create(ApplicationRequest $request): Application
+    public function create(ApplicationRequest $request): Collection
     {
-        return Application::create([
-            'name' => $request->name,
-            'project_id' => $request->project_id,
-        ]);
+        return DB::transaction(function () use ($request) {
+            $application = Application::create([
+                'name' => $request->name,
+                'project_id' => $request->project_id,
+            ]);
+
+            if ($request->has('databases')) {
+                $application->databases()->attach($request->databases);
+            }
+
+            return $application->with('databases')->get();
+        });
     }
 
     public function get(ApplicationRequest $request): Collection
