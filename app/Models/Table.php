@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 final class Table extends Model
@@ -23,9 +24,9 @@ final class Table extends Model
     /**
      * Get the database for the table.
      */
-    public function database(): HasMany
+    public function database(): BelongsTo
     {
-        return $this->hasMany(Database::class);
+        return $this->belongsTo(Database::class);
     }
 
     /**
