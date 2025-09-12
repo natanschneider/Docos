@@ -49,6 +49,9 @@ class TableRequest extends FormRequest
                 'doc_file' => ['string', 'max:500'],
                 'database_id' => ['string', 'exists:databases,id'],
             ],
+            'DELETE' => [
+                'id' => ['required', 'string', 'exists:tables,id'],
+            ],
             'DEFAULT' => [
                 'id' => ['string', 'exists:tables,id'],
                 'name' => ['string', 'max:255'],
