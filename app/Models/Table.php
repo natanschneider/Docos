@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 final class Table extends Model
 {
@@ -25,5 +26,13 @@ final class Table extends Model
     public function database(): HasMany
     {
         return $this->hasMany(Database::class);
+    }
+
+    /**
+     * Get the columns for the table.
+     */
+    public function columns(): HasMany
+    {
+        return $this->hasMany(Column::class);
     }
 }
