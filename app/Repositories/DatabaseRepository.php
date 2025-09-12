@@ -47,7 +47,7 @@ final class DatabaseRepository
         return DB::transaction(function () use ($request) {
             $database = Database::find($request->id);
 
-            $database->columns()->delete();
+            $database->tables()->delete();
             $database->delete();
 
             if (Database::where('id', $request->id)->exists()) {

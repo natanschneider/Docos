@@ -82,8 +82,8 @@ class DatabaseRequest extends FormRequest
     {
         $database = Database::where('id', $request->id)->first();
 
-        if ($database->columns()->exists()) {
-            abort(403, 'Database contains columns');
+        if ($database->tables()->exists()) {
+            abort(403, 'Database contains tables');
         }
 
         return true;
