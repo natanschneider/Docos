@@ -33,6 +33,10 @@ class DatabaseRequest extends FormRequest
                 'company_id' => ['required', 'string', 'exists:companies,id'],
                 'engine_id' => ['required', 'string', 'exists:engines,id'],
             ],
+            'GET' => [
+                'id' => ['required_if:company_id,null', 'string', 'exists:databases,id'],
+                'company_id' => ['required_if:id,null', 'string', 'exists:companies,id'],
+            ],
             default => [
                 'id' => ['string', 'exists:databases,id'],
                 'name' => ['string', 'max:255'],
