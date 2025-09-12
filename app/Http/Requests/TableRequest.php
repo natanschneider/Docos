@@ -29,6 +29,10 @@ class TableRequest extends FormRequest
                 'doc_file' => ['string', 'max:500'],
                 'database_id' => ['required', 'string', 'exists:databases,id'],
             ],
+            'GET' => [
+                'id' => ['required_if:database_id,null', 'string', 'exists:tables,id'],
+                'database_id' => ['required_if:id,null', 'string', 'exists:databases,id'],
+            ],
             'DEFAULT' => [
                 'id' => ['string', 'exists:tables,id'],
                 'name' => ['string', 'max:255'],
