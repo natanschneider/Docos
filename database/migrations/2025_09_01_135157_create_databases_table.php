@@ -31,6 +31,15 @@ return new class extends Migration
             $table->foreign('company_id')->references('id')->on('companies');
             $table->foreign('engine_id')->references('id')->on('engines');
         });
+
+        Schema::create('application_databases', function (Blueprint $table): void {
+            $table->id();
+            $table->unsignedBigInteger('application_id');
+            $table->unsignedBigInteger('database_id');
+
+            $table->foreign('application_id')->references('id')->on('applications');
+            $table->foreign('database_id')->references('id')->on('databases');
+        });
     }
 
     /**
@@ -40,5 +49,6 @@ return new class extends Migration
     {
         Schema::dropIfExists('engines');
         Schema::dropIfExists('databases');
+        Schema::dropIfExists('application_databases');
     }
 };
