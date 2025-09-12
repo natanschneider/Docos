@@ -40,7 +40,7 @@ final class ApplicationRepository
             $query->where('project_id', $request->project_id);
         }
 
-        return $query->get();
+        return $query->with('databases')->get();
     }
 
     public function update(ApplicationRequest $request): Collection
