@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Models\Database;
 use Illuminate\Foundation\Http\FormRequest;
 
 class DatabaseRequest extends FormRequest
@@ -46,5 +47,22 @@ class DatabaseRequest extends FormRequest
                 'status' => ['boolean'],
             ]
         };
+    }
+
+    /**
+     * Determine if the id provided matches a company that belongs to the user
+     * If id and company_id provided, check if database belongs to given company
+     */
+    public function ensureDatabaseBelongsToUser(self $request): void
+    {
+        $database = Database::where('id', $request->id)->first();
+
+        if ($request->has('company_id') && $request->company_id !== (string) $database->company_id) {
+            abort(403, 'Database does not belong to provided company or does not exist');
+        }
+
+        if ($request->user()->companies()->where('companies.id', $database->company_id)->doesntExist()) {
+            abort(403, 'Database does not belong to user or does not exist');
+        }
     }
 }
