@@ -24,4 +24,11 @@ class TableController extends Controller
 
         return (new TableRepository())->get($request);
     }
+
+    public function update(TableRequest $request): Table
+    {
+        (new TableRequest())->ensureTableBelongsToUser($request);
+
+        return (new TableRepository())->update($request);
+    }
 }
