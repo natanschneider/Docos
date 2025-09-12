@@ -31,4 +31,11 @@ class ColumnController extends Controller
 
         return (new ColumnRepository())->update($request);
     }
+
+    public function destroy(ColumnRequest $request): Column|Collection
+    {
+        (new ColumnRequest())->unsureColumnBelongsToUser($request);
+
+        return (new ColumnRepository())->destroy($request);
+    }
 }
