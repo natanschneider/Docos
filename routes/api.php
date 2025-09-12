@@ -9,6 +9,7 @@ use App\Http\Controllers\DatabaseController;
 use App\Http\Controllers\EndpointController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ScreenController;
+use App\Http\Controllers\TableController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -59,5 +60,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('database', 'get');
         Route::put('database', 'update');
         Route::delete('database', 'destroy');
+    });
+
+    Route::controller(TableController::class)->group(function () {
+        Route::post('table', 'store');
     });
 });
