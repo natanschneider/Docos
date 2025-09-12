@@ -65,6 +65,7 @@ final class ApplicationRepository
 
             $application->endpoints()->delete();
             $application->screens()->delete();
+            $application->databases()->detach();
             $application->delete();
 
             if (Application::where('id', $request->id)->exists()) {
