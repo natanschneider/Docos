@@ -42,6 +42,13 @@ class ColumnRequest extends FormRequest
                 'id' => ['required_if:table_id,null', 'string', 'exists:columns,id'],
                 'table_id' => ['required_if:id,null', 'string', 'exists:tables,id'],
             ],
+            'PUT' => [
+                'id' => ['required', 'string', 'exists:columns,id'],
+                'name' => ['string', 'max:255'],
+                'doc_file' => ['string', 'max:500'],
+                'table_id' => ['string', 'exists:tables,id'],
+                'type_id' => ['string', 'exists:types,id'],
+            ],
             'DEFAULT' => [
                 'id' => ['string', 'exists:columns,id'],
                 'name' => ['string', 'max:255'],
