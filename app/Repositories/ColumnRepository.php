@@ -44,7 +44,7 @@ final class ColumnRepository
             $query->where('table_id', $request->table_id);
         }
 
-        return $query->get();
+        return $query->with('index')->get();
     }
 
     public function update(ColumnRequest $request): Collection
