@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class ApplicationController extends Controller
 {
-    public function store(ApplicationRequest $request): Collection
+    public function store(ApplicationRequest $request): Application
     {
         return (new ApplicationRepository())->create($request);
     }
@@ -25,7 +25,7 @@ class ApplicationController extends Controller
         return (new ApplicationRepository())->get($request);
     }
 
-    public function update(ApplicationRequest $request): Collection
+    public function update(ApplicationRequest $request): Application
     {
         (new ApplicationRequest())->ensureApplicationBelongsToUser($request);
 
