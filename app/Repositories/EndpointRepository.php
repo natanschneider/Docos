@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\DB;
 
 final class EndpointRepository
 {
-    public function create(EndpointRequest $request): Collection
+    public function create(EndpointRequest $request): Endpoint
     {
-        return DB::transaction(function () use ($request): Collection {
+        return DB::transaction(function () use ($request): Endpoint {
             $endpoint = Endpoint::create($request->only([
                 'name',
                 'application_id',
@@ -24,7 +24,7 @@ final class EndpointRepository
                 $endpoint->columns()->attach($request->columns);
             }
 
-            return $endpoint->with('columns')->get();
+            return $endpoint->load('columns');
         });
     }
 
@@ -43,7 +43,7 @@ final class EndpointRepository
         return $query->with('columns')->get();
     }
 
-    public function update(EndpointRequest $request): Collection
+    public function update(EndpointRequest $request): Endpoint
     {
         if ($request->has('application_id')) {
             $company = Application::findOrFail($request->application_id)->project->company;
@@ -53,7 +53,7 @@ final class EndpointRepository
             }
         }
 
-        DB::transaction(function () use ($request): void {
+        return DB::transaction(function () use ($request): Endpoint {
             $endpoint = Endpoint::findOrFail($request->id);
 
             $endpoint->update($request->only([
@@ -68,12 +68,12 @@ final class EndpointRepository
             if ($request->has('detach_columns')) {
                 $endpoint->columns()->detach($request->detach_columns);
             }
-        });
 
-        return Endpoint::findOrFail($request->id)->with('columns')->get();
+            return $endpoint->load('columns');
+        });
     }
 
-    public function destroy(EndpointRequest $request): Collection
+    public function destroy(EndpointRequest $request): Endpoint
     {
         return DB::transaction(function () use ($request) {
             $endpoint = Endpoint::findOrFail($request->id);
@@ -81,7 +81,7 @@ final class EndpointRepository
             $endpoint->delete();
             $endpoint->columns()->detach();
 
-            return $endpoint->with('columns')->get();
+            return $endpoint->load('columns');
         });
     }
 }
