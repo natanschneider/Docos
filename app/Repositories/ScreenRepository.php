@@ -8,6 +8,7 @@ use App\Http\Requests\ScreenRequest;
 use App\Models\Application;
 use App\Models\Screen;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 final class ScreenRepository
 {
@@ -72,12 +73,15 @@ final class ScreenRepository
         return Screen::findOrFail($request->id)->with('columns')->get();
     }
 
-    public function destroy(ScreenRequest $request): Screen|Collection
+    public function destroy(ScreenRequest $request): Collection
     {
-        $screen = Screen::find($request->id);
+        return DB::transaction(function () use ($request) {
+            $screen = Screen::find($request->id);
 
-        $screen->delete();
+            $screen->delete();
+            $screen->columns()->detach();
 
-        return $screen;
+            return $screen->with('columns')->get();
+        });
     }
 }
