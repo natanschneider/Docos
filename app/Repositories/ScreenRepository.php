@@ -11,9 +11,20 @@ use Illuminate\Database\Eloquent\Collection;
 
 final class ScreenRepository
 {
-    public function create(ScreenRequest $request): Screen
+    public function create(ScreenRequest $request): Collection
     {
-        return Screen::create($request->all());
+        return DB::transaction(function () use ($request): Collection {
+            $screen = Screen::create($request->only([
+                'name',
+                'application_id',
+            ]));
+
+            if ($request->has('columns')) {
+                $screen->columns()->attach($request->columns);
+            }
+
+            return $screen->with('columns')->get();
+        });
     }
 
     public function get(ScreenRequest $request): Collection
