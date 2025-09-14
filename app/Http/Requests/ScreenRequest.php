@@ -77,4 +77,14 @@ class ScreenRequest extends FormRequest
             abort(403, 'Screen does not belong to user or does not exist');
         }
     }
+
+    /**
+     * Determine if the screen is empty
+     */
+    public function ensureSreenIsEmpty(self $request): void
+    {
+        if (Screen::findOrFail($request->id)->columns()->exists()) {
+            abort(400, 'Screen is not empty');
+        }
+    }
 }
