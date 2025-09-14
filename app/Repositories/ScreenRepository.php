@@ -45,16 +45,31 @@ final class ScreenRepository
     public function update(ScreenRequest $request): Collection
     {
         if ($request->has('application_id')) {
-            $company = Application::where('id', $request->application_id)->project->company;
+            $company = Application::findOrFail($request->application_id)->project->company;
 
             if ($request->user()->companies()->where('companies.id', $company->id)->doesntExist()) {
                 abort(403, 'Application does not belong to user or does not exist');
             }
         }
 
-        Screen::where('id', $request->id)->update($request->all());
+        DB::transaction(function () use ($request): void {
+            $screen = Screen::findOrFail($request->id);
 
-        return Screen::where('id', $request->id)->get();
+            $screen->update($request->only([
+                'name',
+                'application_id',
+            ]));
+
+            if ($request->has('columns')) {
+                $screen->columns()->syncWithoutDetaching($request->columns);
+            }
+
+            if ($request->has('detach_columns')) {
+                $screen->columns()->detach($request->detach_columns);
+            }
+        });
+
+        return Screen::findOrFail($request->id)->with('columns')->get();
     }
 
     public function destroy(ScreenRequest $request): Screen|Collection
