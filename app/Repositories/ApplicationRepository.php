@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 final class ApplicationRepository
 {
-    public function create(ApplicationRequest $request): Collection
+    public function create(ApplicationRequest $request): Application
     {
         return DB::transaction(function () use ($request) {
             $application = Application::create([
@@ -24,7 +24,7 @@ final class ApplicationRepository
                 $application->databases()->attach($request->databases);
             }
 
-            return $application->with('databases')->get();
+            return $application->load('databases');
         });
     }
 
@@ -43,7 +43,7 @@ final class ApplicationRepository
         return $query->with('databases')->get();
     }
 
-    public function update(ApplicationRequest $request): Collection
+    public function update(ApplicationRequest $request): Application
     {
         if ($request->has('project_id')) {
             $project = Project::where('id', $request->project_id)->first();
@@ -53,7 +53,7 @@ final class ApplicationRepository
             }
         }
 
-        DB::transaction(function () use ($request): void {
+        return DB::transaction(function () use ($request): Application {
             $application = Application::findOrFail($request->id);
             $application->update($request->only([
                 'name',
@@ -67,9 +67,9 @@ final class ApplicationRepository
             if ($request->has('detach_databases')) {
                 $application->databases()->detach($request->detach_databases);
             }
-        });
 
-        return Application::findOrFail($request->id)->with('databases')->get();
+            return $application->load('databases');
+        });
     }
 
     public function destroy(ApplicationRequest $request): Application|Collection
