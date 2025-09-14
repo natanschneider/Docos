@@ -46,16 +46,31 @@ final class EndpointRepository
     public function update(EndpointRequest $request): Collection
     {
         if ($request->has('application_id')) {
-            $company = Application::where('id', $request->application_id)->project->company;
+            $company = Application::findOrFail($request->application_id)->project->company;
 
             if ($request->user()->companies()->where('companies.id', $company->id)->doesntExist()) {
                 abort(403, 'Application does not belong to user or does not exist');
             }
         }
 
-        Endpoint::where('id', $request->id)->update($request->all());
+        DB::transaction(function () use ($request): void {
+            $endpoint = Endpoint::findOrFail($request->id);
 
-        return Endpoint::where('id', $request->id)->get();
+            $endpoint->update($request->only([
+                'name',
+                'application_id',
+            ]));
+
+            if ($request->has('columns')) {
+                $endpoint->columns()->syncWithoutDetaching($request->columns);
+            }
+
+            if ($request->has('detach_columns')) {
+                $endpoint->columns()->detach($request->detach_columns);
+            }
+        });
+
+        return Endpoint::findOrFail($request->id)->with('columns')->get();
     }
 
     public function destroy(EndpointRequest $request): Endpoint|Collection
