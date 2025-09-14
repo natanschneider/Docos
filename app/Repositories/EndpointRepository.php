@@ -73,12 +73,15 @@ final class EndpointRepository
         return Endpoint::findOrFail($request->id)->with('columns')->get();
     }
 
-    public function destroy(EndpointRequest $request): Endpoint|Collection
+    public function destroy(EndpointRequest $request): Collection
     {
-        $endpoint = Endpoint::find($request->id);
+        return DB::transaction(function () use ($request) {
+            $endpoint = Endpoint::findOrFail($request->id);
 
-        $endpoint->delete();
+            $endpoint->delete();
+            $endpoint->columns()->detach();
 
-        return $endpoint;
+            return $endpoint->with('columns')->get();
+        });
     }
 }
