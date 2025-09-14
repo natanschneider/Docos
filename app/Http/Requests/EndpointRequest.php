@@ -77,4 +77,14 @@ class EndpointRequest extends FormRequest
             abort(403, 'Endpoint does not belong to user or does not exist');
         }
     }
+
+    /**
+     * Determine if the endpoint id provided is empty
+     */
+    public function ensureEndpointIsEmpty(self $request): void
+    {
+        if (Endpoint::findOrFail($request->id)->columns()->exists()) {
+            abort(400, 'Endpoint is not empty');
+        }
+    }
 }
