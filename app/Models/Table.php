@@ -39,14 +39,6 @@ final class Table extends Model
     }
 
     /**
-     * Get the endpoints for the table.
-     */
-    public function endpoints(): BelongsToMany
-    {
-        return $this->belongsToMany(Endpoint::class, 'endpoint_tables');
-    }
-
-    /**
      * Get the screens for the table.
      */
     public function screens(): BelongsToMany

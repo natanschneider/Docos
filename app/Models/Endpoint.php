@@ -37,12 +37,4 @@ final class Endpoint extends Model
     {
         return $this->belongsToMany(Column::class, 'endpoint_columns');
     }
-
-    /**
-     * Get the endpoint's tables
-     */
-    public function tables(): BelongsToMany
-    {
-        return $this->belongsToMany(Table::class, 'endpoint_tables');
-    }
 }

@@ -26,15 +26,6 @@ return new class extends Migration
             $table->foreign('application_id')->references('id')->on('applications');
         });
 
-        Schema::create('endpoint_tables', function (Blueprint $table): void {
-            $table->id();
-            $table->unsignedBigInteger('endpoint_id');
-            $table->unsignedBigInteger('table_id');
-
-            $table->foreign('endpoint_id')->references('id')->on('endpoints');
-            $table->foreign('table_id')->references('id')->on('tables');
-        });
-
         Schema::create('endpoint_columns', function (Blueprint $table): void {
             $table->id();
             $table->unsignedBigInteger('endpoint_id');
@@ -51,7 +42,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('endpoints');
-        Schema::dropIfExists('endpoint_tables');
         Schema::dropIfExists('endpoint_columns');
     }
 };
