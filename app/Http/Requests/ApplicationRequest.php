@@ -47,6 +47,8 @@ class ApplicationRequest extends FormRequest
                 'id' => ['required', 'string', 'exists:applications,id'],
                 'name' => ['string', 'max:255'],
                 'project_id' => ['string', 'exists:projects,id'],
+                'databases' => ['array', 'exists:databases,id'],
+                'detach_databases' => ['array', 'exists:databases,id'],
             ],
             'DELETE' => [
                 'id' => ['required', 'string', 'exists:applications,id'],
@@ -56,6 +58,7 @@ class ApplicationRequest extends FormRequest
                 'name' => ['string', 'max:255'],
                 'project_id' => ['string', 'exists:projects,id'],
                 'databases' => ['array', 'exists:databases,id'],
+                'detach_databases' => ['array', 'exists:databases,id'],
                 'uuid' => ['uuid', 'exists:applications,uuid'],
                 'status' => ['boolean'],
             ],
