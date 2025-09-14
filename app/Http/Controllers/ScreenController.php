@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ScreenRequest;
-use App\Models\Screen;
 use App\Repositories\ScreenRepository;
 use Illuminate\Database\Eloquent\Collection;
 
 class ScreenController extends Controller
 {
-    public function store(ScreenRequest $request): Screen
+    public function store(ScreenRequest $request): Collection
     {
         return (new ScreenRepository())->create($request);
     }
@@ -32,7 +31,7 @@ class ScreenController extends Controller
         return (new ScreenRepository())->update($request);
     }
 
-    public function destroy(ScreenRequest $request): Screen|Collection
+    public function destroy(ScreenRequest $request): Collection
     {
         (new ScreenRequest())->ensureScreenBelongsToUser($request);
 
