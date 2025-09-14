@@ -8,12 +8,24 @@ use App\Http\Requests\EndpointRequest;
 use App\Models\Application;
 use App\Models\Endpoint;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 final class EndpointRepository
 {
-    public function create(EndpointRequest $request): Endpoint
+    public function create(EndpointRequest $request): Collection
     {
-        return Endpoint::create($request->all());
+        return DB::transaction(function () use ($request): Collection {
+            $endpoint = Endpoint::create($request->only([
+                'name',
+                'application_id',
+            ]));
+
+            if ($request->has('columns')) {
+                $endpoint->columns()->attach($request->columns);
+            }
+
+            return $endpoint->with('columns')->get();
+        });
     }
 
     public function get(EndpointRequest $request): Collection
