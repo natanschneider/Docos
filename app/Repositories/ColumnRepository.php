@@ -8,12 +8,28 @@ use App\Http\Requests\ColumnRequest;
 use App\Models\Column;
 use App\Models\Table;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 final class ColumnRepository
 {
     public function create(ColumnRequest $request): Column
     {
-        return Column::create($request->all());
+        return DB::transaction(function () use ($request) {
+            $column = Column::create($request->only([
+                'name',
+                'doc_file',
+                'table_id',
+                'type_id',
+            ]));
+
+            if ($request->has('index') && $request->index === true) {
+                $column->index()->create([
+                    'column_id' => $column->id,
+                ]);
+            }
+
+            return $column->load('index');
+        });
     }
 
     public function get(ColumnRequest $request): Collection
