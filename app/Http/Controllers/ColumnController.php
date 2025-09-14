@@ -25,7 +25,7 @@ class ColumnController extends Controller
         return (new ColumnRepository())->get($request);
     }
 
-    public function update(ColumnRequest $request): Collection
+    public function update(ColumnRequest $request): Column
     {
         (new ColumnRequest())->unsureColumnBelongsToUser($request);
 
