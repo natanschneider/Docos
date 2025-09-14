@@ -10,6 +10,7 @@ use App\Models\Pivot\Index;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 final class Column extends Model
 {
@@ -68,9 +69,9 @@ final class Column extends Model
     /**
      * Get the column's indexes.
      */
-    public function indexes(): BelongsToMany
+    public function index(): HasOne
     {
-        return $this->belongsToMany(Index::class, 'indexes');
+        return $this->hasOne(Index::class, 'column_id');
     }
 
     /**
