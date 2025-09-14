@@ -47,7 +47,7 @@ final class ColumnRepository
         return $query->with('index')->get();
     }
 
-    public function update(ColumnRequest $request): Collection
+    public function update(ColumnRequest $request): Column
     {
         if ($request->has('table_id')) {
             $company = Table::where('id', $request->table_id)->database->company;
@@ -57,9 +57,23 @@ final class ColumnRepository
             }
         }
 
-        Column::where('id', $request->id)->update($request->all());
+        return DB::transaction(function () use ($request): Column {
+            $column = Column::findOrFail($request->id);
+            $column->update($request->only([
+                'name',
+                'doc_file',
+                'table_id',
+                'type_id',
+            ]));
 
-        return Column::where('id', $request->id)->get();
+            if ($request->has('index')) {
+                $request->index === true
+                    ? $column->index()->firstOrCreate(['column_id' => $column->id])
+                    : optional($column->index)->delete();
+            }
+
+            return $column->load('index');
+        });
     }
 
     public function destroy(ColumnRequest $request): Column|Collection
