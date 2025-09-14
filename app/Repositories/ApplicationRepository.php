@@ -53,9 +53,23 @@ final class ApplicationRepository
             }
         }
 
-        Application::where('id', $request->id)->update($request->all());
+        DB::transaction(function () use ($request): void {
+            $application = Application::findOrFail($request->id);
+            $application->update($request->only([
+                'name',
+                'project_id',
+            ]));
 
-        return Application::where('id', $request->id)->get();
+            if ($request->has('databases')) {
+                $application->databases()->syncWithoutDetaching($request->databases);
+            }
+
+            if ($request->has('detach_databases')) {
+                $application->databases()->detach($request->detach_databases);
+            }
+        });
+
+        return Application::findOrFail($request->id)->with('databases')->get();
     }
 
     public function destroy(ApplicationRequest $request): Application|Collection
