@@ -84,7 +84,7 @@ class ApplicationRequest extends FormRequest
     {
         $application = Application::where('id', $request->id)->first();
 
-        if ($application->endpoints()->exists() || $application->screens()->exists()) {
+        if ($application->endpoints()->exists() || $application->screens()->exists() || $application->databases()->exists()) {
             abort(400, 'Application is not empty');
         }
 
