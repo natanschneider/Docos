@@ -37,6 +37,7 @@ class EndpointRequest extends FormRequest
             'POST' => [
                 'name' => ['required', 'string', 'max:255'],
                 'application_id' => ['required', 'string', 'exists:applications,id'],
+                'columns' => ['array', 'exists:databases,id'],
             ],
             'GET' => [
                 'id' => ['required_if:application_id,null', 'string', 'exists:endpoints,id'],
@@ -46,6 +47,8 @@ class EndpointRequest extends FormRequest
                 'id' => ['required', 'string', 'exists:endpoints,id'],
                 'name' => ['string', 'max:255'],
                 'application_id' => ['string', 'exists:applications,id'],
+                'columns' => ['array', 'exists:databases,id'],
+                'detach_columns' => ['array', 'exists:databases,id'],
             ],
             'DELETE' => [
                 'id' => ['required', 'string', 'exists:endpoints,id'],
@@ -55,6 +58,8 @@ class EndpointRequest extends FormRequest
                 'name' => ['string', 'max:255'],
                 'doc_file' => ['string', 'max:500'],
                 'application_id' => ['string', 'exists:applications,id'],
+                'columns' => ['array', 'exists:databases,id'],
+                'detach_columns' => ['array', 'exists:databases,id'],
                 'uuid' => ['uuid', 'exists:endpoints,uuid'],
                 'status' => ['boolean'],
             ]
