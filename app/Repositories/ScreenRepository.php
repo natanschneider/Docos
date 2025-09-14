@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\DB;
 
 final class ScreenRepository
 {
-    public function create(ScreenRequest $request): Collection
+    public function create(ScreenRequest $request): Screen
     {
-        return DB::transaction(function () use ($request): Collection {
+        return DB::transaction(function () use ($request): Screen {
             $screen = Screen::create($request->only([
                 'name',
                 'application_id',
@@ -24,7 +24,7 @@ final class ScreenRepository
                 $screen->columns()->attach($request->columns);
             }
 
-            return $screen->with('columns')->get();
+            return $screen->load('columns');
         });
     }
 
@@ -43,7 +43,7 @@ final class ScreenRepository
         return $query->with('columns')->get();
     }
 
-    public function update(ScreenRequest $request): Collection
+    public function update(ScreenRequest $request): Screen
     {
         if ($request->has('application_id')) {
             $company = Application::findOrFail($request->application_id)->project->company;
@@ -53,7 +53,7 @@ final class ScreenRepository
             }
         }
 
-        DB::transaction(function () use ($request): void {
+        return DB::transaction(function () use ($request): Screen {
             $screen = Screen::findOrFail($request->id);
 
             $screen->update($request->only([
@@ -68,12 +68,12 @@ final class ScreenRepository
             if ($request->has('detach_columns')) {
                 $screen->columns()->detach($request->detach_columns);
             }
-        });
 
-        return Screen::findOrFail($request->id)->with('columns')->get();
+            return $screen->load('columns');
+        });
     }
 
-    public function destroy(ScreenRequest $request): Collection
+    public function destroy(ScreenRequest $request): Screen
     {
         return DB::transaction(function () use ($request) {
             $screen = Screen::find($request->id);
@@ -81,7 +81,7 @@ final class ScreenRepository
             $screen->delete();
             $screen->columns()->detach();
 
-            return $screen->with('columns')->get();
+            return $screen->load('columns');
         });
     }
 }
