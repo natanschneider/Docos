@@ -26,15 +26,6 @@ return new class extends Migration
             $table->foreign('application_id')->references('id')->on('applications');
         });
 
-        Schema::create('screen_tables', function (Blueprint $table): void {
-            $table->id();
-            $table->unsignedBigInteger('screen_id');
-            $table->unsignedBigInteger('table_id');
-
-            $table->foreign('screen_id')->references('id')->on('screens');
-            $table->foreign('table_id')->references('id')->on('tables');
-        });
-
         Schema::create('screen_columns', function (Blueprint $table): void {
             $table->id();
             $table->unsignedBigInteger('screen_id');
@@ -51,7 +42,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('screens');
-        Schema::dropIfExists('screen_tables');
         Schema::dropIfExists('screen_columns');
     }
 };

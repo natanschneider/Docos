@@ -37,12 +37,4 @@ final class Screen extends Model
     {
         return $this->belongsToMany(Column::class, 'screen_columns');
     }
-
-    /**
-     * Get the screen's tables
-     */
-    public function tables(): BelongsToMany
-    {
-        return $this->belongsToMany(Table::class, 'screen_tables');
-    }
 }
