@@ -6,8 +6,8 @@ namespace App\Repositories;
 
 use App\Http\Requests\ProjectRequest;
 use App\Models\Project;
-use DB;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 final class ProjectRepository
 {
