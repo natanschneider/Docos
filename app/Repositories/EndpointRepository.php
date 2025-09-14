@@ -40,7 +40,7 @@ final class EndpointRepository
             $query->where('application_id', $request->application_id);
         }
 
-        return $query->get();
+        return $query->with('columns')->get();
     }
 
     public function update(EndpointRequest $request): Collection
