@@ -34,6 +34,7 @@ class ScreenController extends Controller
     public function destroy(ScreenRequest $request): Collection
     {
         (new ScreenRequest())->ensureScreenBelongsToUser($request);
+        (new ScreenRequest())->ensureSreenIsEmpty($request);
 
         return (new ScreenRepository())->destroy($request);
     }
