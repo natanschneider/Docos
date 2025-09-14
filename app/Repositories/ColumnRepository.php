@@ -76,12 +76,15 @@ final class ColumnRepository
         });
     }
 
-    public function destroy(ColumnRequest $request): Column|Collection
+    public function destroy(ColumnRequest $request): Column
     {
-        $column = Column::find($request->id);
+        return DB::transaction(function () use ($request) {
+            $column = Column::findOrFail($request->id);
 
-        $column->delete();
+            $column->index()->delete();
+            $column->delete();
 
-        return $column;
+            return $column->load('index');
+        });
     }
 }
