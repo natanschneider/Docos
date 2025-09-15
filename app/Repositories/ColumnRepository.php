@@ -103,9 +103,13 @@ final class ColumnRepository
             $column = Column::findOrFail($request->id);
 
             $column->index()->delete();
+            $column->constraints()->detach();
             $column->delete();
 
-            return $column->load('index');
+            return $column->load([
+                'index',
+                'constraints',
+            ]);
         });
     }
 }
