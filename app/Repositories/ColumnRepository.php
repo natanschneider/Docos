@@ -51,7 +51,10 @@ final class ColumnRepository
             $query->where('table_id', $request->table_id);
         }
 
-        return $query->with('index')->get();
+        return $query->with([
+            'index',
+            'constraints',
+        ])->get();
     }
 
     public function update(ColumnRequest $request): Column
