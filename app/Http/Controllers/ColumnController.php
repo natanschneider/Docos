@@ -35,6 +35,7 @@ class ColumnController extends Controller
     public function destroy(ColumnRequest $request): Column|Collection
     {
         (new ColumnRequest())->unsureColumnBelongsToUser($request);
+        (new ColumnRequest())->ensureColumnIsEmpty($request);
 
         return (new ColumnRepository())->destroy($request);
     }
