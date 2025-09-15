@@ -85,4 +85,14 @@ class ColumnRequest extends FormRequest
             abort(403, 'Column does not belong to user or does not exist');
         }
     }
+
+    /**
+     * Determine if the column id provided is empty
+     */
+    public function ensureColumnIsEmpty(self $request): void
+    {
+        if (Column::findOrFail($request->id)->constraints()->exists()) {
+            abort(400, 'Column is not empty');
+        }
+    }
 }
