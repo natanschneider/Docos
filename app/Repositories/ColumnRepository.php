@@ -28,7 +28,14 @@ final class ColumnRepository
                 ]);
             }
 
-            return $column->load('index');
+            if ($request->has('constraints')) {
+                $column->constraints()->sync($request->constraints);
+            }
+
+            return $column->load([
+                'index',
+                'constraints',
+            ]);
         });
     }
 
