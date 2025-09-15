@@ -82,7 +82,18 @@ final class ColumnRepository
                     : optional($column->index)->delete();
             }
 
-            return $column->load('index');
+            if ($request->has('constraints')) {
+                $column->constraints()->syncWithoutDetaching($request->constraints);
+            }
+
+            if ($request->has('detach_constraints')) {
+                $column->constraints()->detach($request->detach_constraints);
+            }
+
+            return $column->load([
+                'index',
+                'constraints',
+            ]);
         });
     }
 
