@@ -39,6 +39,7 @@ class ColumnRequest extends FormRequest
                 'doc_file' => ['string', 'max:500'],
                 'table_id' => ['required', 'string', 'exists:tables,id'],
                 'type_id' => ['required', 'string', 'exists:types,id'],
+                'constraints' => ['array', 'exists:constraints,id'],
                 'indexed' => ['boolean'],
             ],
             'GET' => [
@@ -51,6 +52,8 @@ class ColumnRequest extends FormRequest
                 'doc_file' => ['string', 'max:500'],
                 'table_id' => ['string', 'exists:tables,id'],
                 'type_id' => ['string', 'exists:types,id'],
+                'constraints' => ['array', 'exists:constraints,id'],
+                'detach_constraints' => ['array', 'exists:constraints,id'],
                 'indexed' => ['boolean'],
             ],
             'DELETE' => [
@@ -62,6 +65,8 @@ class ColumnRequest extends FormRequest
                 'doc_file' => ['string', 'max:500'],
                 'table_id' => ['string', 'exists:tables,id'],
                 'type_id' => ['string', 'exists:types,id'],
+                'constraints' => ['array', 'exists:constraints,id'],
+                'detach_constraints' => ['array', 'exists:constraints,id'],
                 'indexed' => ['boolean'],
                 'uuid' => ['uuid', 'exists:columns,uuid'],
                 'status' => ['boolean'],
