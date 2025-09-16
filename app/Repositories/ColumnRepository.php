@@ -66,6 +66,8 @@ final class ColumnRepository
         return $query->with([
             'index',
             'constraints',
+            'relatedPks',
+            'relatedFks',
         ])->get();
     }
 
