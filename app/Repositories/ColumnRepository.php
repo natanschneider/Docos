@@ -140,11 +140,15 @@ final class ColumnRepository
 
             $column->index()->delete();
             $column->constraints()->detach();
+            $column->relatedPks()->detach();
+            $column->relatedFks()->detach();
             $column->delete();
 
             return $column->load([
                 'index',
                 'constraints',
+                'relatedPks',
+                'relatedFks',
             ]);
         });
     }
