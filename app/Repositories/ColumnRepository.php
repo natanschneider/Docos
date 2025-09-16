@@ -104,9 +104,31 @@ final class ColumnRepository
                 $column->constraints()->detach($request->detach_constraints);
             }
 
+            if ($request->has('related_columns')) {
+                if (isset($request->related_columns['pk'])) {
+                    $column->relatedPks()->syncWithoutDetaching($request->related_columns['pk']);
+                }
+
+                if (isset($request->related_columns['fk'])) {
+                    $column->relatedFks()->syncWithoutDetaching($request->related_columns['fk']);
+                }
+            }
+
+            if ($request->has('detach_related_columns')) {
+                if (isset($request->detach_related_columns['pk'])) {
+                    $column->relatedPks()->detach($request->detach_related_columns['pk']);
+                }
+
+                if (isset($request->detach_related_columns['fk'])) {
+                    $column->relatedFks()->detach($request->detach_related_columns['fk']);
+                }
+            }
+
             return $column->load([
                 'index',
                 'constraints',
+                'relatedPks',
+                'relatedFks',
             ]);
         });
     }
