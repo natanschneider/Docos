@@ -29,12 +29,24 @@ final class ColumnRepository
             }
 
             if ($request->has('constraints')) {
-                $column->constraints()->sync($request->constraints);
+                $column->constraints()->attach($request->constraints);
+            }
+
+            if ($request->has('related_columns')) {
+                if (isset($request->related_columns['pk'])) {
+                    $column->relatedPks()->attach($request->related_columns['pk']);
+                }
+
+                if (isset($request->related_columns['fk'])) {
+                    $column->relatedFks()->attach($request->related_columns['fk']);
+                }
             }
 
             return $column->load([
                 'index',
                 'constraints',
+                'relatedPks',
+                'relatedFks',
             ]);
         });
     }
