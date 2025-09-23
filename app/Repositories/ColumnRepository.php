@@ -29,12 +29,24 @@ final class ColumnRepository
             }
 
             if ($request->has('constraints')) {
-                $column->constraints()->sync($request->constraints);
+                $column->constraints()->attach($request->constraints);
+            }
+
+            if ($request->has('related_columns')) {
+                if (isset($request->related_columns['pk'])) {
+                    $column->relatedPks()->attach($request->related_columns['pk']);
+                }
+
+                if (isset($request->related_columns['fk'])) {
+                    $column->relatedFks()->attach($request->related_columns['fk']);
+                }
             }
 
             return $column->load([
                 'index',
                 'constraints',
+                'relatedPks',
+                'relatedFks',
             ]);
         });
     }
@@ -54,6 +66,8 @@ final class ColumnRepository
         return $query->with([
             'index',
             'constraints',
+            'relatedPks',
+            'relatedFks',
         ])->get();
     }
 
@@ -90,9 +104,31 @@ final class ColumnRepository
                 $column->constraints()->detach($request->detach_constraints);
             }
 
+            if ($request->has('related_columns')) {
+                if (isset($request->related_columns['pk'])) {
+                    $column->relatedPks()->syncWithoutDetaching($request->related_columns['pk']);
+                }
+
+                if (isset($request->related_columns['fk'])) {
+                    $column->relatedFks()->syncWithoutDetaching($request->related_columns['fk']);
+                }
+            }
+
+            if ($request->has('detach_related_columns')) {
+                if (isset($request->detach_related_columns['pk'])) {
+                    $column->relatedPks()->detach($request->detach_related_columns['pk']);
+                }
+
+                if (isset($request->detach_related_columns['fk'])) {
+                    $column->relatedFks()->detach($request->detach_related_columns['fk']);
+                }
+            }
+
             return $column->load([
                 'index',
                 'constraints',
+                'relatedPks',
+                'relatedFks',
             ]);
         });
     }
@@ -104,11 +140,15 @@ final class ColumnRepository
 
             $column->index()->delete();
             $column->constraints()->detach();
+            $column->relatedPks()->detach();
+            $column->relatedFks()->detach();
             $column->delete();
 
             return $column->load([
                 'index',
                 'constraints',
+                'relatedPks',
+                'relatedFks',
             ]);
         });
     }

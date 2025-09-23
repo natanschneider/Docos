@@ -75,10 +75,18 @@ final class Column extends Model
     }
 
     /**
-     * Get the column's related columns.
+     * Get the column's related primary keys.
      */
-    public function relatedColumns(): BelongsToMany
+    public function relatedPks(): BelongsToMany
     {
-        return $this->belongsToMany(self::class, 'relationships', 'primary_key_id', 'foreing_key_id');
+        return $this->belongsToMany(self::class, 'relationships', 'foreign_key_id', 'primary_key_id');
+    }
+
+    /**
+     * Get the column's related foreign keys.
+     */
+    public function relatedFks(): BelongsToMany
+    {
+        return $this->belongsToMany(self::class, 'relationships', 'primary_key_id', 'foreign_key_id');
     }
 }
