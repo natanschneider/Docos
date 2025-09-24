@@ -8,18 +8,21 @@ use App\Http\Requests\ApplicationRequest;
 use App\Models\Application;
 use App\Repositories\ApplicationRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Gate;
 
 class ApplicationController extends Controller
 {
     public function store(ApplicationRequest $request): Application
     {
+        Gate::authorize('create', [Application::class, $request]);
+
         return (new ApplicationRepository())->create($request);
     }
 
     public function get(ApplicationRequest $request): Collection
     {
         if ($request->has('id')) {
-            (new ApplicationRequest())->ensureApplicationBelongsToUser($request);
+            Gate::authorize('update', Application::findOrFail($request->id));
         }
 
         return (new ApplicationRepository())->get($request);
@@ -27,16 +30,14 @@ class ApplicationController extends Controller
 
     public function update(ApplicationRequest $request): Application
     {
-        (new ApplicationRequest())->ensureApplicationBelongsToUser($request);
+        Gate::authorize('update', [Application::findOrFail($request->id), $request]);
 
         return (new ApplicationRepository())->update($request);
     }
 
     public function destroy(ApplicationRequest $request): Application|Collection
     {
-        $formRequest = new ApplicationRequest();
-        $formRequest->ensureApplicationBelongsToUser($request);
-        $formRequest->ensureApplicationIsEmpty($request);
+        Gate::authorize('delete', Application::findOrFail($request->id));
 
         return (new ApplicationRepository())->destroy($request);
     }
