@@ -47,11 +47,26 @@ class ApplicationPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Application $application): bool
+    public function update(User $user, Application $application, ApplicationRequest $request): bool
     {
-        return $user->companies()
-            ->where('companies.id', $application->project->company_id)
+        $project = Project::findOrFail($request->has('project_id') ? $request->project_id : $application->project_id);
+        $company = Company::findOrFail($project->company_id);
+
+        $companyBelongsToUser = $user->companies()
+            ->where('companies.id', $company->first()->id)
             ->exists();
+
+        if (! $companyBelongsToUser) {
+            return false;
+        }
+
+        if ($request->has('project_id') && $application->project_id !== (int) $request->project_id) {
+            $currentCompany = Company::findOrFail($application->project->company_id);
+
+            if ($company->first()->id !== $currentCompany->first()->id) {
+                return false;
+            }
+        }
     }
 
     /**
