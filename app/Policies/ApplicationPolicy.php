@@ -78,6 +78,16 @@ class ApplicationPolicy
             return false;
         }
 
+        $detach_check = 0;
+        $application->screens()->each(function ($screen) use ($request, $detach_check): void {
+            $detach_check += $screen->columns->databases()->whereIn('databases.id', $request->databases)->count();
+        });
+
+        $application->endpoints()->each(function ($endpoint) use ($request, $detach_check): void {
+            $detach_check += $endpoint->columns->databases()->whereIn('databases.id', $request->databases)->count();
+        });
+
+        return $detach_check === 0;
     }
 
     /**
