@@ -67,6 +67,17 @@ class ApplicationPolicy
                 return false;
             }
         }
+
+        if ((! $request->has('databases')) && (! $request->has('detach_databases'))) {
+            return true;
+        }
+
+        $databases_check = $company->databases()->whereIn('databases.id', $request->databases)->count() === count($request->databases);
+
+        if (! $databases_check) {
+            return false;
+        }
+
     }
 
     /**
