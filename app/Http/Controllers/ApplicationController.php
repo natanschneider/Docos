@@ -22,7 +22,7 @@ class ApplicationController extends Controller
     public function get(ApplicationRequest $request): Collection
     {
         if ($request->has('id')) {
-            Gate::authorize('update', Application::findOrFail($request->id));
+            Gate::authorize('view', Application::findOrFail($request->id));
         }
 
         return (new ApplicationRepository())->get($request);
