@@ -4,28 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
-use App\Models\Application;
-use App\Models\Project;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ApplicationRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        if ($this->has('project_id')) {
-            $project = Project::find($this->project_id);
-
-            if ($this->user()->companies()->where('companies.id', $project->company()->first()->id)->doesntExist()) {
-                abort(403, 'Project does not belong to user or does not exist');
-            }
-        }
-
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -63,31 +45,5 @@ class ApplicationRequest extends FormRequest
                 'status' => ['boolean'],
             ],
         };
-    }
-
-    /**
-     * Determine if the application id provided matches to a company that belongs to the user
-     */
-    public function ensureApplicationBelongsToUser(self $request): void
-    {
-        $project = Application::find($request->id)->project;
-
-        if ($request->user()->companies()->where('companies.id', $project->company_id)->doesntExist()) {
-            abort(403, 'Application does not belong to user or does not exist');
-        }
-    }
-
-    /**
-     * Determine if the application id provided is empty
-     */
-    public function ensureApplicationIsEmpty(self $request): bool
-    {
-        $application = Application::where('id', $request->id)->first();
-
-        if ($application->endpoints()->exists() || $application->screens()->exists() || $application->databases()->exists()) {
-            abort(400, 'Application is not empty');
-        }
-
-        return true;
     }
 }
