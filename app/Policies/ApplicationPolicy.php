@@ -27,11 +27,21 @@ class ApplicationPolicy
      */
     public function create(User $user, ApplicationRequest $request): bool
     {
-        $company = Company::findOrFail(Project::findOrFail($request->project_id)->company_id);
+        $project = Project::findOrFail($request->project_id)->first();
+        $company = Company::findOrFail($project->company_id);
 
-        return $user->companies()
+        $companyBelongsToUser = $user->companies()
             ->where('companies.id', $company->first()->id)
             ->exists();
+
+        if (! $companyBelongsToUser) {
+            return false;
+        }
+        if (! $request->has('databases')) {
+            return true;
+        }
+
+        return $company->databases()->whereIn('databases.id', $request->databases)->count() === count($request->databases);
     }
 
     /**
