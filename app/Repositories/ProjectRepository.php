@@ -36,10 +36,6 @@ final class ProjectRepository
 
     public function update(ProjectRequest $request): Collection
     {
-        if ($request->has('company_id') && $request->user()->companies()->where('companies.id', $request->company_id)->doesntExist()) {
-            abort(403, 'Provided company does not belong to user');
-        }
-
         Project::where('id', $request->id)->update($request->all());
 
         return Project::where('id', $request->id)->get();
