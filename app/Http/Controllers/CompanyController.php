@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Models\Company;
-use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\CompanyRequest;
+use App\Models\Company;
 use App\Repositories\CompanyRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Gate;
 
 final class CompanyController extends Controller
 {
     public function store(CompanyRequest $request): Company
     {
         Gate::authorize('create', Company::class);
+
         return (new CompanyRepository())->create($request);
     }
 
