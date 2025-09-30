@@ -4,28 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
-use App\Models\Column;
-use App\Models\Table;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ColumnRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        if ($this->has('table_id')) {
-            $database = Table::find($this->table_id)->database;
-
-            if ($this->user()->companies()->where('companies.id', $database->company_id)->doesntExist()) {
-                abort(403, 'Table does not belong to user or does not exist');
-            }
-        }
-
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -77,27 +59,5 @@ class ColumnRequest extends FormRequest
                 'status' => ['boolean'],
             ]
         };
-    }
-
-    /**
-     * Determine if the column id provided matches to a company that belongs to the user
-     */
-    public function unsureColumnBelongsToUser(self $request): void
-    {
-        $company = Column::find($request->id)->table->database->company;
-
-        if ($request->user()->companies()->where('companies.id', $company->id)->doesntExist()) {
-            abort(403, 'Column does not belong to user or does not exist');
-        }
-    }
-
-    /**
-     * Determine if the column id provided is empty
-     */
-    public function ensureColumnIsEmpty(self $request): void
-    {
-        if (Column::findOrFail($request->id)->constraints()->exists()) {
-            abort(400, 'Column is not empty');
-        }
     }
 }
