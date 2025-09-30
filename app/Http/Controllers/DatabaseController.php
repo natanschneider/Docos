@@ -8,35 +8,34 @@ use App\Http\Requests\DatabaseRequest;
 use App\Models\Database;
 use App\Repositories\DatabaseRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Gate;
 
 class DatabaseController extends Controller
 {
     public function store(DatabaseRequest $request): Database
     {
+        Gate::authorize('create', [Database::class, $request]);
+
         return (new DatabaseRepository())->create($request);
     }
 
     public function get(DatabaseRequest $request): Collection
     {
-        if ($request->has('id')) {
-            (new DatabaseRequest())->ensureDatabaseBelongsToUser($request);
-        }
+        Gate::authorize('view', [Database::class, $request]);
 
         return (new DatabaseRepository())->get($request);
     }
 
     public function update(DatabaseRequest $request): Collection
     {
-        (new DatabaseRequest())->ensureDatabaseBelongsToUser($request);
+        Gate::authorize('update', Database::findOrFail($request->id));
 
         return (new DatabaseRepository())->update($request);
     }
 
     public function destroy(DatabaseRequest $request): Database|Collection
     {
-        $formRequest = new DatabaseRequest();
-        $formRequest->ensureDatabaseBelongsToUser($request);
-        $formRequest->ensureDatabaseIsEmpty($request);
+        Gate::authorize('delete', Database::findOrFail($request->id));
 
         return (new DatabaseRepository())->destroy($request);
     }
