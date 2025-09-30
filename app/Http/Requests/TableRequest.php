@@ -4,28 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
-use App\Models\Database;
-use App\Models\Table;
 use Illuminate\Foundation\Http\FormRequest;
 
 class TableRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        if ($this->has('database_id')) {
-            $database = Database::find($this->database_id);
-
-            if ($this->user()->companies()->where('companies.id', $database->company_id)->doesntExist()) {
-                abort(403, 'Database does not belong to user or does not exist');
-            }
-        }
-
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -61,31 +43,5 @@ class TableRequest extends FormRequest
                 'status' => ['boolean'],
             ]
         };
-    }
-
-    /**
-     * Determine if the table id provided matches to a company that belongs to the user
-     */
-    public function ensureTableBelongsToUser(self $request): void
-    {
-        $database = Table::find($request->id)->database;
-
-        if ($request->user()->companies()->where('companies.id', $database->company_id)->doesntExist()) {
-            abort(403, 'Table does not belong to user or does not exist');
-        }
-    }
-
-    /**
-     * Determine if the table id provided is empty
-     */
-    public function ensureTableIsEmpty(self $request): bool
-    {
-        $table = Table::where('id', $request->id)->first();
-
-        if ($table->columns()->exists()) {
-            abort(400, 'Table is not empty');
-        }
-
-        return true;
     }
 }
