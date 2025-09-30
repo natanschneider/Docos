@@ -8,34 +8,34 @@ use App\Http\Requests\TableRequest;
 use App\Models\Table;
 use App\Repositories\TableRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Gate;
 
 class TableController extends Controller
 {
     public function store(TableRequest $request): Table
     {
+        Gate::authorize('create', [Table::class, $request]);
+
         return (new TableRepository())->create($request);
     }
 
     public function get(TableRequest $request): Collection
     {
-        if ($request->has('id')) {
-            (new TableRequest())->ensureTableBelongsToUser($request);
-        }
+        Gate::authorize('view', [Table::class, $request]);
 
         return (new TableRepository())->get($request);
     }
 
     public function update(TableRequest $request): Table
     {
-        (new TableRequest())->ensureTableBelongsToUser($request);
+        Gate::authorize('update', [Table::findOrFail($request->id), $request]);
 
         return (new TableRepository())->update($request);
     }
 
     public function destroy(TableRequest $request): Table|Collection
     {
-        (new TableRequest())->ensureTableBelongsToUser($request);
-        (new TableRequest())->ensureTableIsEmpty($request);
+        Gate::authorize('delete', Table::findOrFail($request->id));
 
         return (new TableRepository())->destroy($request);
     }
