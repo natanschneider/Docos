@@ -14,7 +14,7 @@ class ProjectPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Project $project, ProjectRequest $request): Response
+    public function view(User $user, ProjectRequest $request): Response
     {
         if (
             $request->has('company_id') &&
