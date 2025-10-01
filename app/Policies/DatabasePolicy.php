@@ -48,7 +48,7 @@ class DatabasePolicy
      */
     public function update(User $user, Database $database): Response
     {
-        return $user->companies()->where('companies.id', $database->company()->id)->doesntExist()
+        return $user->companies()->where('companies.id', $database->company->id)->doesntExist()
             ? Response::deny('Database provided does not belong to user or does not exist')
             : Response::allow();
     }
@@ -58,7 +58,7 @@ class DatabasePolicy
      */
     public function delete(User $user, Database $database): Response
     {
-        if ($user->companies()->where('companies.id', $database->company()->id)->doesntExist()) {
+        if ($user->companies()->where('companies.id', $database->company->id)->doesntExist()) {
             return Response::deny('Database provided does not belong to user or does not exist');
         }
 
