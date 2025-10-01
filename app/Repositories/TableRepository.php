@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Http\Requests\TableRequest;
-use App\Models\Database;
 use App\Models\Table;
 use DB;
 use Illuminate\Database\Eloquent\Collection;

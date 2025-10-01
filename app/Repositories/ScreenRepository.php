@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Http\Requests\ScreenRequest;
-use App\Models\Application;
 use App\Models\Screen;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;

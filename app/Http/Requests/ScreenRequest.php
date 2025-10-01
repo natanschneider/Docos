@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
-use App\Models\Application;
-use App\Models\Screen;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ScreenRequest extends FormRequest
