@@ -87,14 +87,13 @@ class ColumnPolicy
             return Response::deny('Table provided does not belong to same company as column');
         }
 
+        $validator = new ColumnValidator();
         if ($request->has('related_columns')) {
-            $validator = new ColumnValidator();
             $validator->updateAttachmentFk($request, $column);
             $validator->updateAttachmentPk($request, $column);
         }
 
         if ($request->has('detach_constraints')) {
-            $validator = new ColumnValidator();
             $validator->detachmentConstraints($request, $column);
         }
 
