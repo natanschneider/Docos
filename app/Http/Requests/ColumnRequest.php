@@ -55,8 +55,6 @@ class ColumnRequest extends FormRequest
                 'detach_constraints' => ['array', 'exists:constraints,id'],
                 'detach_related_columns' => ['array:fk,pk', 'exists:columns,id'],
                 'indexed' => ['boolean'],
-                'uuid' => ['uuid', 'exists:columns,uuid'],
-                'status' => ['boolean'],
             ]
         };
     }

@@ -17,7 +17,6 @@ final class Endpoint extends Model
      */
     protected $fillable = [
         'name',
-        'status',
         'doc_file',
         'application_id',
     ];

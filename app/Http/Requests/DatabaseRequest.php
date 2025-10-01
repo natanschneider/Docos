@@ -38,8 +38,6 @@ class DatabaseRequest extends FormRequest
                 'name' => ['string', 'max:255'],
                 'company_id' => ['string', 'exists:companies,id'],
                 'engine_id' => ['string', 'exists:engines,id'],
-                'uuid' => ['uuid', 'exists:databases,uuid'],
-                'status' => ['boolean'],
             ]
         };
     }

@@ -25,7 +25,6 @@ final class Company extends Model
     protected $fillable = [
         'name',
         'description',
-        'status',
     ];
 
     /**

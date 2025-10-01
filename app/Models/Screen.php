@@ -17,7 +17,6 @@ final class Screen extends Model
      */
     protected $fillable = [
         'name',
-        'status',
         'doc_file',
         'application_id',
     ];

@@ -39,8 +39,6 @@ class TableRequest extends FormRequest
                 'name' => ['string', 'max:255'],
                 'doc_file' => ['string', 'max:500'],
                 'database_id' => ['string', 'exists:databases,id'],
-                'uuid' => ['uuid', 'exists:tables,uuid'],
-                'status' => ['boolean'],
             ]
         };
     }

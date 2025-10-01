@@ -20,7 +20,6 @@ class CompanyRequest extends FormRequest
             'POST' => [
                 'name' => ['required', 'string', 'max:255'],
                 'description' => ['required', 'string', 'max:255'],
-                'status' => ['boolean'],
             ],
             'GET' => [
                 'id' => ['string', 'exists:companies,id'],
@@ -29,7 +28,6 @@ class CompanyRequest extends FormRequest
                 'id' => ['required', 'string', 'exists:companies,id'],
                 'name' => ['string', 'max:255'],
                 'description' => ['string', 'max:255'],
-                'status' => ['boolean'],
             ],
             'DELETE' => [
                 'id' => ['required', 'string', 'exists:companies,id'],
@@ -38,7 +36,6 @@ class CompanyRequest extends FormRequest
                 'id' => ['string', 'exists:companies,id'],
                 'name' => ['string', 'max:255'],
                 'description' => ['string', 'max:255'],
-                'status' => ['boolean'],
             ],
         };
     }

@@ -41,8 +41,6 @@ class ApplicationRequest extends FormRequest
                 'project_id' => ['string', 'exists:projects,id'],
                 'databases' => ['array', 'exists:databases,id'],
                 'detach_databases' => ['array', 'exists:databases,id'],
-                'uuid' => ['uuid', 'exists:applications,uuid'],
-                'status' => ['boolean'],
             ],
         };
     }

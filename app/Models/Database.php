@@ -21,7 +21,6 @@ final class Database extends Model
         'name',
         'company_id',
         'engine_id',
-        'status',
     ];
 
     /**

@@ -11,22 +11,6 @@ use Illuminate\Foundation\Http\FormRequest;
 class ScreenRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        if ($this->has('application_id')) {
-            $application = Application::find($this->application_id)->project;
-
-            if ($this->user()->companies()->where('companies.id', $application->company_id)->doesntExist()) {
-                abort(403, 'Application does not belong to user or does not exist');
-            }
-        }
-
-        return true;
-    }
-
-    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
@@ -60,31 +44,7 @@ class ScreenRequest extends FormRequest
                 'application_id' => ['string', 'exists:applications,id'],
                 'columns' => ['array', 'exists:databases,id'],
                 'detach_columns' => ['array', 'exists:databases,id'],
-                'uuid' => ['uuid', 'exists:screens,uuid'],
-                'status' => ['boolean'],
             ]
         };
-    }
-
-    /**
-     * Determine if the screen id provided matches to a company that belongs to the user
-     */
-    public function ensureScreenBelongsToUser(self $request): void
-    {
-        $company = Screen::find($request->id)->application->project->company;
-
-        if ($request->user()->companies()->where('companies.id', $company->id)->doesntExist()) {
-            abort(403, 'Screen does not belong to user or does not exist');
-        }
-    }
-
-    /**
-     * Determine if the screen is empty
-     */
-    public function ensureSreenIsEmpty(self $request): void
-    {
-        if (Screen::findOrFail($request->id)->columns()->exists()) {
-            abort(400, 'Screen is not empty');
-        }
     }
 }
