@@ -18,7 +18,6 @@ final class CompanyRepository
             $company = Company::create([
                 'name' => $request->name,
                 'description' => $request->description,
-                'status' => true,
             ]);
 
             UserCompany::create([
