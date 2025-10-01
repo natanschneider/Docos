@@ -221,6 +221,35 @@ class ColumnPolicy
             }
         }
 
+        if ($request->has('detach_constraints')) {
+            $constraints = $column->constraints()
+                ->whereIn('constraints.id', $request->detach_constraints)
+                ->whereIn('constraints.id', [1, 2, 9, 10])
+                ->pluck('constraints.id')
+                ->toArray();
+
+            if (is_array($constraints) && count($constraints) > 0) {
+                $column_qry = Column::query();
+                if (
+                    in_array(1, $constraints) &&
+                    $column_qry->whereHas('relatedFks', function ($query) use ($column): void {
+                        $query->where('columns.id', $column->id);
+                    })->exists()
+                ) {
+                    return Response::deny('Column has related foreign keys');
+                }
+
+                if (
+                    (!empty(array_intersect([2, 9, 10], $constraints))) &&
+                    $column_qry->whereHas('relatedPks', function ($query) use ($column): void {
+                        $query->where('columns.id', $column->id);
+                    })->exists()
+                ) {
+                    return Response::deny('Column has related primary keys');
+                }
+            }
+        }
+
         return Response::allow();
     }
 
