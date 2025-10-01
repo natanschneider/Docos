@@ -63,6 +63,10 @@ class ColumnPolicy
 
         if ($request->has('related_columns')) {
             if (isset($request->related_columns['pk'])) {
+                if (! ($request->has('constraints') && (!empty(array_intersect([2, 9, 10], $request->constraints))))) {
+                    return Response::deny('Relating primary keys requires a foreign key constraint');
+                }
+
                 $pk_counter = count($request->related_columns['pk']);
 
                 $qr_pk_counter = Column::query();
@@ -90,6 +94,10 @@ class ColumnPolicy
             }
 
             if (isset($request->related_columns['fk'])) {
+                if (! ($request->has('constraints') && (!empty(array_intersect([1], $request->constraints))))) {
+                    return Response::deny('Relating primary keys requires a foreign key constraint');
+                }
+
                 $fk_counter = count($request->related_columns['fk']);
 
                 $qr_fk_counter = Column::query();
@@ -137,7 +145,25 @@ class ColumnPolicy
         }
 
         if ($request->has('related_columns')) {
+            $constraints = $column->constraints()->get(['constraints.id'])->toArray();
+            if ($request->has('detach_constraints')) {
+                $constraints = $column->constraints()
+                    ->whereNotIn('constraints.id', $request->detach_constraints)
+                    ->get(['constraints.id'])->toArray();
+            }
+            $constraints = is_array($constraints) ? array_column($constraints, 'id') : [];
+
+            if ($request->has('constraints')) {
+                array_push(
+                    $constraints,
+                    ...$request->constraints
+                );
+            }
+
             if (isset($request->related_columns['pk'])) {
+                if (! ($request->has('constraints') && (!empty(array_intersect([2, 9, 10], $constraints))))) {
+                    return Response::deny('Relating primary keys requires a foreign key constraint');
+                }
                 $pk_counter = count($request->related_columns['pk']);
 
                 $qr_pk_counter = Column::query();
@@ -165,6 +191,9 @@ class ColumnPolicy
             }
 
             if (isset($request->related_columns['fk'])) {
+                if (! ($request->has('constraints') && (!empty(array_intersect([1], $constraints))))) {
+                    return Response::deny('Relating primary keys requires a foreign key constraint');
+                }
                 $fk_counter = count($request->related_columns['fk']);
 
                 $qr_fk_counter = Column::query();
