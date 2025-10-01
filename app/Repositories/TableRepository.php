@@ -29,7 +29,7 @@ final class TableRepository
             $query->where('database_id', $request->database_id);
         }
 
-        $query->whereHas('database.company', function ($query) use ($request) {
+        $query->whereHas('database.company', function ($query) use ($request): void {
             $query->whereIn('companies.id', $request->user()->companies()->pluck('companies.id')->toArray());
         });
 

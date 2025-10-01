@@ -63,8 +63,7 @@ final class ColumnRepository
             $query->where('table_id', $request->table_id);
         }
 
-
-        $query->whereHas('table.database.company', function ($query) use ($request) {
+        $query->whereHas('table.database.company', function ($query) use ($request): void {
             $query->whereIn('companies.id', $request->user()->companies()->pluck('companies.id')->toArray());
         });
 

@@ -40,7 +40,7 @@ final class EndpointRepository
             $query->where('application_id', $request->application_id);
         }
 
-        $query->whereHas('application.project.company', function ($query) use ($request) {
+        $query->whereHas('application.project.company', function ($query) use ($request): void {
             $query->whereIn('companies.id', $request->user()->companies()->pluck('companies.id')->toArray());
         });
 

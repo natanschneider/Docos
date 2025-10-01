@@ -63,7 +63,7 @@ class ColumnPolicy
 
         if ($request->has('related_columns')) {
             if (isset($request->related_columns['pk'])) {
-                if (! ($request->has('constraints') && (!empty(array_intersect([2, 9, 10], $request->constraints))))) {
+                if (! ($request->has('constraints') && (array_intersect([2, 9, 10], $request->constraints) !== []))) {
                     return Response::deny('Relating primary keys requires a foreign key constraint');
                 }
 
@@ -94,7 +94,7 @@ class ColumnPolicy
             }
 
             if (isset($request->related_columns['fk'])) {
-                if (! ($request->has('constraints') && (!empty(array_intersect([1], $request->constraints))))) {
+                if (! ($request->has('constraints') && (array_intersect([1], $request->constraints) !== []))) {
                     return Response::deny('Relating primary keys requires a foreign key constraint');
                 }
 
@@ -161,7 +161,7 @@ class ColumnPolicy
             }
 
             if (isset($request->related_columns['pk'])) {
-                if (! ($request->has('constraints') && (!empty(array_intersect([2, 9, 10], $constraints))))) {
+                if (! ($request->has('constraints') && (array_intersect([2, 9, 10], $constraints) !== []))) {
                     return Response::deny('Relating primary keys requires a foreign key constraint');
                 }
                 $pk_counter = count($request->related_columns['pk']);
@@ -191,7 +191,7 @@ class ColumnPolicy
             }
 
             if (isset($request->related_columns['fk'])) {
-                if (! ($request->has('constraints') && (!empty(array_intersect([1], $constraints))))) {
+                if (! ($request->has('constraints') && (array_intersect([1], $constraints) !== []))) {
                     return Response::deny('Relating primary keys requires a foreign key constraint');
                 }
                 $fk_counter = count($request->related_columns['fk']);
@@ -240,7 +240,7 @@ class ColumnPolicy
                 }
 
                 if (
-                    (!empty(array_intersect([2, 9, 10], $constraints))) &&
+                    (array_intersect([2, 9, 10], $constraints) !== []) &&
                     $column_qry->whereHas('relatedPks', function ($query) use ($column): void {
                         $query->where('columns.id', $column->id);
                     })->exists()
