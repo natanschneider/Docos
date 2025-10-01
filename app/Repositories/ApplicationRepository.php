@@ -49,14 +49,6 @@ final class ApplicationRepository
 
     public function update(ApplicationRequest $request): Application
     {
-        if ($request->has('project_id')) {
-            $project = Project::where('id', $request->project_id)->first();
-
-            if ($request->user()->companies()->where('companies.id', $project->company_id)->doesntExist()) {
-                abort(403, 'Project does not belong to user or does not exist');
-            }
-        }
-
         return DB::transaction(function () use ($request): Application {
             $application = Application::findOrFail($request->id);
             $application->update($request->only([

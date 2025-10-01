@@ -49,14 +49,6 @@ final class EndpointRepository
 
     public function update(EndpointRequest $request): Endpoint
     {
-        if ($request->has('application_id')) {
-            $company = Application::findOrFail($request->application_id)->project->company;
-
-            if ($request->user()->companies()->where('companies.id', $company->id)->doesntExist()) {
-                abort(403, 'Application does not belong to user or does not exist');
-            }
-        }
-
         return DB::transaction(function () use ($request): Endpoint {
             $endpoint = Endpoint::findOrFail($request->id);
 

@@ -77,14 +77,6 @@ final class ColumnRepository
 
     public function update(ColumnRequest $request): Column
     {
-        if ($request->has('table_id')) {
-            $company = Table::where('id', $request->table_id)->database->company;
-
-            if ($request->user()->companies()->where('companies.id', $company->id)->doesntExist()) {
-                abort(403, 'Table does not belong to user or does not exist');
-            }
-        }
-
         return DB::transaction(function () use ($request): Column {
             $column = Column::findOrFail($request->id);
             $column->update($request->only([
