@@ -61,14 +61,59 @@ class ColumnPolicy
             return Response::deny('Table provided does not belong to user or does not exist');
         }
 
-        // TODO: verify if columns to attach, exists, belong to same database and have a PK/FK constraint
         if ($request->has('related_columns')) {
             if (isset($request->related_columns['pk'])) {
                 $pk_counter = count($request->related_columns['pk']);
+
+                $qr_pk_counter = Column::query();
+
+                $qr_pk_counter->whereIn('id', $request->related_columns['pk']);
+                if ($qr_pk_counter->count() !== $pk_counter) {
+                    return Response::deny('Some of the provided primary keys do not exist');
+                }
+
+                $qr_pk_counter->whereHas('table', function ($query) use ($request): void {
+                    $query->whereHas('database', function ($subQuery) use ($request): void {
+                        $subQuery->where('id', Table::find($request->table_id)->database_id);
+                    });
+                });
+                if ($qr_pk_counter->count() !== $pk_counter) {
+                    return Response::deny('Some of the provided primary keys do not belong to same database');
+                }
+
+                $qr_pk_counter->whereHas('constraints', function ($query): void {
+                    $query->where('constraints.id', 1);
+                });
+                if ($qr_pk_counter->count() !== $pk_counter) {
+                    return Response::deny('Some of the provided primary keys do not have a primary key constraint');
+                }
             }
 
             if (isset($request->related_columns['fk'])) {
                 $fk_counter = count($request->related_columns['fk']);
+
+                $qr_fk_counter = Column::query();
+
+                $qr_fk_counter->whereIn('id', $request->related_columns['fk']);
+                if ($qr_fk_counter->count() !== $fk_counter) {
+                    return Response::deny('Some of the provided foreing keys do not exist');
+                }
+
+                $qr_fk_counter->whereHas('table', function ($query) use ($request): void {
+                    $query->whereHas('database', function ($subQuery) use ($request): void {
+                        $subQuery->where('id', Table::find($request->table_id)->database_id);
+                    });
+                });
+                if ($qr_fk_counter->count() !== $fk_counter) {
+                    return Response::deny('Some of the provided foreing keys do not belong to same database');
+                }
+
+                $qr_fk_counter->whereHas('constraints', function ($query): void {
+                    $query->whereIn('constraints.id', [2, 9, 10]);
+                });
+                if ($qr_fk_counter->count() !== $fk_counter) {
+                    return Response::deny('Some of the provided foreing keys do not have a foreing key constraint');
+                }
             }
         }
 
@@ -91,14 +136,59 @@ class ColumnPolicy
             return Response::deny('Table provided does not belong to same company as column');
         }
 
-        // TODO: verify if columns to attach, exists, belong to same database and have a PK/FK constraint
         if ($request->has('related_columns')) {
             if (isset($request->related_columns['pk'])) {
                 $pk_counter = count($request->related_columns['pk']);
+
+                $qr_pk_counter = Column::query();
+
+                $qr_pk_counter->whereIn('id', $request->related_columns['pk']);
+                if ($qr_pk_counter->count() !== $pk_counter) {
+                    return Response::deny('Some of the provided primary keys do not exist');
+                }
+
+                $qr_pk_counter->whereHas('table', function ($query) use ($column): void {
+                    $query->whereHas('database', function ($subQuery) use ($column): void {
+                        $subQuery->where('id', $column->table->database_id);
+                    });
+                });
+                if ($qr_pk_counter->count() !== $pk_counter) {
+                    return Response::deny('Some of the provided primary keys do not belong to same database');
+                }
+
+                $qr_pk_counter->whereHas('constraints', function ($query): void {
+                    $query->where('constraints.id', 1);
+                });
+                if ($qr_pk_counter->count() !== $pk_counter) {
+                    return Response::deny('Some of the provided primary keys do not have a primary key constraint');
+                }
             }
 
             if (isset($request->related_columns['fk'])) {
                 $fk_counter = count($request->related_columns['fk']);
+
+                $qr_fk_counter = Column::query();
+
+                $qr_fk_counter->whereIn('id', $request->related_columns['fk']);
+                if ($qr_fk_counter->count() !== $fk_counter) {
+                    return Response::deny('Some of the provided foreing keys do not exist');
+                }
+
+                $qr_fk_counter->whereHas('table', function ($query) use ($column): void {
+                    $query->whereHas('database', function ($subQuery) use ($column): void {
+                        $subQuery->where('id', $column->table->database_id);
+                    });
+                });
+                if ($qr_fk_counter->count() !== $fk_counter) {
+                    return Response::deny('Some of the provided foreing keys do not belong to same database');
+                }
+
+                $qr_fk_counter->whereHas('constraints', function ($query): void {
+                    $query->whereIn('constraints.id', [2, 9, 10]);
+                });
+                if ($qr_fk_counter->count() !== $fk_counter) {
+                    return Response::deny('Some of the provided foreing keys do not have a foreing key constraint');
+                }
             }
         }
 
