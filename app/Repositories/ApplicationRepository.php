@@ -40,6 +40,10 @@ final class ApplicationRepository
             $query->where('project_id', $request->project_id);
         }
 
+        $query->whereHas('project.company', function ($query) use ($request) {
+            $query->whereIn('companies.id', $request->user()->companies()->pluck('companies.id')->toArray());
+        });
+
         return $query->with('databases')->get();
     }
 

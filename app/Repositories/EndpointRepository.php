@@ -40,6 +40,10 @@ final class EndpointRepository
             $query->where('application_id', $request->application_id);
         }
 
+        $query->whereHas('application.project.company', function ($query) use ($request) {
+            $query->whereIn('companies.id', $request->user()->companies()->pluck('companies.id')->toArray());
+        });
+
         return $query->with('columns')->get();
     }
 
