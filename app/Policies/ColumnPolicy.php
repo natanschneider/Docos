@@ -89,12 +89,22 @@ class ColumnPolicy
 
         $validator = new ColumnValidator();
         if ($request->has('related_columns')) {
-            $validator->updateAttachmentFk($request, $column);
-            $validator->updateAttachmentPk($request, $column);
+            $upd_fk = $validator->updateAttachmentFk($request, $column);
+            if (! is_bool($upd_fk)) {
+                return $upd_fk;
+            }
+
+            $upd_pk = $validator->updateAttachmentPk($request, $column);
+            if (! is_bool($upd_pk)) {
+                return $upd_pk;
+            }
         }
 
         if ($request->has('detach_constraints')) {
-            $validator->detachmentConstraints($request, $column);
+            $detach_constraints = $validator->detachmentConstraints($request, $column);
+            if (! is_bool($detach_constraints)) {
+                return $detach_constraints;
+            }
         }
 
         return Response::allow();
