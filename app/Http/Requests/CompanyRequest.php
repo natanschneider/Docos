@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
-use App\Models\Company;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CompanyRequest extends FormRequest
@@ -38,21 +37,5 @@ class CompanyRequest extends FormRequest
                 'description' => ['string', 'max:255'],
             ],
         };
-    }
-
-    public function ensureCompanyBelongsToUser(self $request): void
-    {
-        if ($request->user()->companies()->where('companies.id', $request->id)->doesntExist()) {
-            abort(403);
-        }
-    }
-
-    public function ensureCompanyIsEmpty(self $request): void
-    {
-        $company = Company::where('id', $request->id)->first();
-
-        if ($company->databases()->exists() || $company->projects()->exists()) {
-            abort(403);
-        }
     }
 }
