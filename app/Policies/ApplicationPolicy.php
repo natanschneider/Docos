@@ -42,12 +42,12 @@ class ApplicationPolicy
      */
     public function create(User $user, ApplicationRequest $request): Response
     {
-        $project = Project::findOrFail($request->project_id)->first();
+        $project = Project::findOrFail($request->project_id);
         $company = Company::findOrFail($project->company_id);
 
         $companyBelongsToUser = $user->companies()
-            ->where('companies.id', $company->first()->id)
-            ->exists();
+            ->where('companies.id', $company->id)
+            ->get();
 
         if (! $companyBelongsToUser) {
             return Response::deny('Company provided does not belong to user or does not exist');
@@ -70,7 +70,7 @@ class ApplicationPolicy
         $company = Company::findOrFail($project->company_id);
 
         $companyBelongsToUser = $user->companies()
-            ->where('companies.id', $company->first()->id)
+            ->where('companies.id', $company->id)
             ->exists();
 
         if (! $companyBelongsToUser) {
@@ -80,7 +80,7 @@ class ApplicationPolicy
         if ($request->has('project_id') && $application->project_id !== (int) $request->project_id) {
             $currentCompany = Company::findOrFail($application->project->company_id);
 
-            if ($company->first()->id !== $currentCompany->first()->id) {
+            if ($company->id !== $currentCompany->id) {
                 return Response::deny('Company provided does not belong to user or does not exist');
             }
         }
