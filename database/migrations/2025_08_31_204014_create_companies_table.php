@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Hidehalo\Nanoid\Client as Nanoid;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,6 +18,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 255);
             $table->string('description', 255)->nullable();
+            $table->string('public_key', 15)->default((new Nanoid())->generateId(15));
             $table->timestamps();
         });
 
