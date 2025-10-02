@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use App\Models\User;
+use App\Http\Requests\ScreenRequest;
+use App\Models\Application;
 use App\Models\Column;
 use App\Models\Screen;
-use App\Models\Application;
-use App\Http\Requests\ScreenRequest;
+use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
 class ScreenPolicy

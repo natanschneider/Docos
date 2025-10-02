@@ -7,7 +7,6 @@ namespace App\Policies;
 use App\Http\Requests\EndpointRequest;
 use App\Models\Application;
 use App\Models\Column;
-use App\Models\Database;
 use App\Models\Endpoint;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
