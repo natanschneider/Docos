@@ -26,7 +26,7 @@ class TableController extends Controller
         return (new TableRepository())->get($request);
     }
 
-    public function update(TableRequest $request): Table
+    public function update(TableRequest $request): Collection
     {
         Gate::authorize('update', [Table::findOrFail($request->id), $request]);
 
