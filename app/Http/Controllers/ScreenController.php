@@ -8,34 +8,34 @@ use App\Http\Requests\ScreenRequest;
 use App\Models\Screen;
 use App\Repositories\ScreenRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Gate;
 
 class ScreenController extends Controller
 {
     public function store(ScreenRequest $request): Screen
     {
+        Gate::authorize('create', [Screen::class, $request]);
+
         return (new ScreenRepository())->create($request);
     }
 
     public function get(ScreenRequest $request): Collection
     {
-        if ($request->has('id')) {
-            (new ScreenRequest())->ensureScreenBelongsToUser($request);
-        }
+        Gate::authorize('view', [Screen::class, $request]);
 
         return (new ScreenRepository())->get($request);
     }
 
     public function update(ScreenRequest $request): Screen
     {
-        (new ScreenRequest())->ensureScreenBelongsToUser($request);
+        Gate::authorize('update', [Screen::findOrFail($request->id), $request]);
 
         return (new ScreenRepository())->update($request);
     }
 
     public function destroy(ScreenRequest $request): Screen
     {
-        (new ScreenRequest())->ensureScreenBelongsToUser($request);
-        (new ScreenRequest())->ensureSreenIsEmpty($request);
+        Gate::authorize('delete', Screen::findOrFail($request->id));
 
         return (new ScreenRepository())->destroy($request);
     }

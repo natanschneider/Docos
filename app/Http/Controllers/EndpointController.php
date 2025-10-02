@@ -8,34 +8,34 @@ use App\Http\Requests\EndpointRequest;
 use App\Models\Endpoint;
 use App\Repositories\EndpointRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Gate;
 
 class EndpointController extends Controller
 {
     public function store(EndpointRequest $request): Endpoint
     {
+        Gate::authorize('create', [Endpoint::class, $request]);
+
         return (new EndpointRepository())->create($request);
     }
 
     public function get(EndpointRequest $request): Collection
     {
-        if ($request->has('id')) {
-            (new EndpointRequest())->ensureEndpointBelongsToUser($request);
-        }
+        Gate::authorize('view', [Endpoint::class, $request]);
 
         return (new EndpointRepository())->get($request);
     }
 
     public function update(EndpointRequest $request): Endpoint
     {
-        (new EndpointRequest())->ensureEndpointBelongsToUser($request);
+        Gate::authorize('update', [Endpoint::findOrFail($request->id), $request]);
 
         return (new EndpointRepository())->update($request);
     }
 
     public function destroy(EndpointRequest $request): Endpoint|Collection
     {
-        (new EndpointRequest())->ensureEndpointBelongsToUser($request);
-        (new EndpointRequest())->ensureEndpointIsEmpty($request);
+        Gate::authorize('delete', Endpoint::findOrFail($request->id));
 
         return (new EndpointRepository())->destroy($request);
     }
