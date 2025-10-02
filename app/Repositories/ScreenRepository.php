@@ -73,8 +73,8 @@ final class ScreenRepository
         return DB::transaction(function () use ($request) {
             $screen = Screen::find($request->id);
 
-            $screen->delete();
             $screen->columns()->detach();
+            $screen->delete();
 
             return $screen->load('columns');
         });

@@ -73,8 +73,8 @@ final class EndpointRepository
         return DB::transaction(function () use ($request) {
             $endpoint = Endpoint::findOrFail($request->id);
 
-            $endpoint->delete();
             $endpoint->columns()->detach();
+            $endpoint->delete();
 
             return $endpoint->load('columns');
         });
