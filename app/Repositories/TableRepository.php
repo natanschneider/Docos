@@ -35,11 +35,11 @@ final class TableRepository
         return $query->get();
     }
 
-    public function update(TableRequest $request)
+    public function update(TableRequest $request): Collection
     {
         Table::where('id', $request->id)->update($request->all());
 
-        return Table::where('id', $request->id)->first();
+        return Table::where('id', $request->id)->get();
     }
 
     public function destroy(TableRequest $request): Table|Collection
