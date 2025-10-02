@@ -16,13 +16,25 @@ class ApplicationPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Application $application): Response
+    public function view(User $user, ApplicationRequest $request): Response
     {
-        return $user->companies()
-            ->where('companies.id', $application->project->company_id)
-            ->exists()
-                ? Response::allow()
-                : Response::deny('Application provided does not belong to user or does not exist');
+        if (
+            $request->has('id') &&
+            $user->companies()
+                ->where('companies.id', Application::findOrFail($request->id)->project->company_id)
+                ->doesntExist()
+        ) {
+            return Response::deny('Application provided does not belong to user or does not exist');
+        }
+
+        if (
+            $request->has('project_id') &&
+            $user->companies()->where('companies.id', Project::findOrFail($request->project_id)->company_id)->doesntExist()
+        ) {
+            return Response::deny('Project provided does not belong to user or does not exist');
+        }
+
+        return Response::allow();
     }
 
     /**
