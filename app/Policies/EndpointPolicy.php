@@ -6,6 +6,8 @@ namespace App\Policies;
 
 use App\Http\Requests\EndpointRequest;
 use App\Models\Application;
+use App\Models\Column;
+use App\Models\Database;
 use App\Models\Endpoint;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -15,7 +17,7 @@ class EndpointPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Endpoint $endpoint, EndpointRequest $request): Response
+    public function view(User $user, EndpointRequest $request): Response
     {
         if ($request->has('application_id')) {
             $company = Application::find($request->application_id)->project->company;
@@ -50,7 +52,11 @@ class EndpointPolicy
         }
 
         if ($request->has('columns')) {
-            return $company->databases()->columns()->whereIn('columns.id', $request->columns)->count() === count($request->columns)
+            $cl = Column::whereIn('id', $request->columns)
+                ->has('table.database.company', $company->id)
+                ->count();
+
+            return $cl === count($request->columns)
                 ? Response::allow()
                 : Response::deny('Columns provided do not belong to application provided');
         }
@@ -86,7 +92,11 @@ class EndpointPolicy
         }
 
         if ($request->has('columns')) {
-            if ($company->databases->columns()->whereIn('columns.id', $request->columns)->count() !== count($request->columns)) {
+            $cl = Column::whereIn('id', $request->columns)
+                ->has('table.database.company', $company->id)
+                ->count();
+
+            if ($cl !== count($request->columns)) {
                 return Response::deny('Columns provided do not belong to same company');
             }
 
