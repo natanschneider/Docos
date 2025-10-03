@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Hidehalo\Nanoid\Client as Nanoid;
 use App\Models\Descriptions\Constraint;
 use App\Models\Descriptions\Type;
 use App\Models\Pivot\Index;
@@ -25,6 +26,15 @@ final class Column extends Model
         'table_id',
         'type_id',
     ];
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function ($model): void {
+            $model->public_key = (new Nanoid())->generateId(15);
+        });
+    }
 
     /**
      * Get the table that owns the column.

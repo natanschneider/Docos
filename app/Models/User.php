@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Hidehalo\Nanoid\Client as Nanoid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -36,6 +37,15 @@ final class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function ($model): void {
+            $model->public_key = (new Nanoid())->generateId(15);
+        });
+    }
 
     /**
      * Get the user's companies.
