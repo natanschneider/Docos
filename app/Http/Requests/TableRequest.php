@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rules\File;
 use Illuminate\Foundation\Http\FormRequest;
 
 class TableRequest extends FormRequest
@@ -18,7 +19,7 @@ class TableRequest extends FormRequest
         return match ($this->method()) {
             'POST' => [
                 'name' => ['required', 'string', 'max:255'],
-                'doc_file' => ['string', 'max:500'],
+                'doc_file' => [File::types(['text/markdown'])->max('10mb')],
                 'database_id' => ['required', 'string', 'exists:databases,id'],
             ],
             'GET' => [
@@ -28,7 +29,7 @@ class TableRequest extends FormRequest
             'PUT' => [
                 'id' => ['required', 'string', 'exists:tables,id'],
                 'name' => ['string', 'max:255'],
-                'doc_file' => ['string', 'max:500'],
+                'doc_file' => [File::types(['text/markdown'])->max('10mb')],
                 'database_id' => ['string', 'exists:databases,id'],
             ],
             'DELETE' => [
@@ -37,7 +38,7 @@ class TableRequest extends FormRequest
             'DEFAULT' => [
                 'id' => ['string', 'exists:tables,id'],
                 'name' => ['string', 'max:255'],
-                'doc_file' => ['string', 'max:500'],
+                'doc_file' => [File::types(['text/markdown'])->max('10mb')],
                 'database_id' => ['string', 'exists:databases,id'],
             ]
         };

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rules\File;
 use Illuminate\Foundation\Http\FormRequest;
 
 class EndpointRequest extends FormRequest
@@ -18,6 +19,7 @@ class EndpointRequest extends FormRequest
         return match ($this->method()) {
             'POST' => [
                 'name' => ['required', 'string', 'max:255'],
+                'doc_file' => [File::types(['text/markdown'])->max('10mb')],
                 'application_id' => ['required', 'string', 'exists:applications,id'],
                 'columns' => ['array', 'exists:columns,id'],
             ],
@@ -28,6 +30,7 @@ class EndpointRequest extends FormRequest
             'PUT' => [
                 'id' => ['required', 'string', 'exists:endpoints,id'],
                 'name' => ['string', 'max:255'],
+                'doc_file' => [File::types(['text/markdown'])->max('10mb')],
                 'application_id' => ['string', 'exists:applications,id'],
                 'columns' => ['array', 'exists:columns,id'],
                 'detach_columns' => ['array', 'exists:columns,id'],
@@ -38,7 +41,7 @@ class EndpointRequest extends FormRequest
             'DEFAULT' => [
                 'id' => ['string', 'exists:endpoints,id'],
                 'name' => ['string', 'max:255'],
-                'doc_file' => ['string', 'max:500'],
+                'doc_file' => [File::types(['text/markdown'])->max('10mb')],
                 'application_id' => ['string', 'exists:applications,id'],
                 'columns' => ['array', 'exists:columns,id'],
                 'detach_columns' => ['array', 'exists:columns,id'],
