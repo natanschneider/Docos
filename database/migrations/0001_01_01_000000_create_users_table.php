@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('public_key', 15)->default((new Nanoid())->generateId(15));
+            $table->string('public_key', 15);
             $table->rememberToken();
             $table->timestamps();
         });

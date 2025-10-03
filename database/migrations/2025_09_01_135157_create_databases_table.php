@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('name', 255);
             $table->unsignedBigInteger('company_id');
             $table->unsignedBigInteger('engine_id');
-            $table->string('public_key', 15)->default((new Nanoid())->generateId(15));
+            $table->string('public_key', 15);
             $table->timestamps();
 
             $table->foreign('company_id')->references('id')->on('companies');

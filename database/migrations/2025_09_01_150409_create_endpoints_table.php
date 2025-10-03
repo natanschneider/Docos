@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('name', 255);
             $table->string('doc_file', 500)->nullable();
             $table->unsignedBigInteger('application_id');
-            $table->string('public_key', 15)->default((new Nanoid())->generateId(15));
+            $table->string('public_key', 15);
             $table->timestamps();
 
             $table->foreign('application_id')->references('id')->on('applications');

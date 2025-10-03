@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('doc_file', 500)->nullable();
             $table->unsignedBigInteger('table_id');
             $table->unsignedBigInteger('type_id');
-            $table->string('public_key', 15)->default((new Nanoid())->generateId(15));
+            $table->string('public_key', 15);
             $table->timestamps();
 
             $table->foreign('table_id')->references('id')->on('tables');
