@@ -38,21 +38,21 @@ final class User extends Authenticatable
         'remember_token',
     ];
 
-    protected static function boot(): void
-    {
-        parent::boot();
-
-        static::creating(function ($model): void {
-            $model->public_key = (new Nanoid())->generateId(15);
-        });
-    }
-
     /**
      * Get the user's companies.
      */
     public function companies(): BelongsToMany
     {
         return $this->belongsToMany(Company::class, 'user_company');
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        self::creating(function ($model): void {
+            $model->public_key = (new Nanoid())->generateId(15);
+        });
     }
 
     /**

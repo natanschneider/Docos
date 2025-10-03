@@ -21,15 +21,6 @@ final class Project extends Model
         'company_id',
     ];
 
-    protected static function boot(): void
-    {
-        parent::boot();
-
-        static::creating(function ($model): void {
-            $model->public_key = (new Nanoid())->generateId(15);
-        });
-    }
-
     /**
      * Get the project's company.
      */
@@ -44,5 +35,14 @@ final class Project extends Model
     public function applications(): HasMany
     {
         return $this->hasMany(Application::class);
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        self::creating(function ($model): void {
+            $model->public_key = (new Nanoid())->generateId(15);
+        });
     }
 }

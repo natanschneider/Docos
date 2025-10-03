@@ -22,15 +22,6 @@ final class Table extends Model
         'database_id',
     ];
 
-    protected static function boot(): void
-    {
-        parent::boot();
-
-        static::creating(function ($model): void {
-            $model->public_key = (new Nanoid())->generateId(15);
-        });
-    }
-
     /**
      * Get the database for the table.
      */
@@ -45,5 +36,14 @@ final class Table extends Model
     public function columns(): HasMany
     {
         return $this->hasMany(Column::class);
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        self::creating(function ($model): void {
+            $model->public_key = (new Nanoid())->generateId(15);
+        });
     }
 }

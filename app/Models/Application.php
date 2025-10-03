@@ -22,15 +22,6 @@ final class Application extends Model
         'project_id',
     ];
 
-    protected static function boot(): void
-    {
-        parent::boot();
-
-        static::creating(function ($model): void {
-            $model->public_key = (new Nanoid())->generateId(15);
-        });
-    }
-
     /**
      * Get the application's project
      */
@@ -61,5 +52,14 @@ final class Application extends Model
     public function databases(): BelongsToMany
     {
         return $this->belongsToMany(Database::class, 'application_databases');
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        self::creating(function ($model): void {
+            $model->public_key = (new Nanoid())->generateId(15);
+        });
     }
 }

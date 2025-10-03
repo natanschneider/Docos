@@ -22,15 +22,6 @@ final class Screen extends Model
         'application_id',
     ];
 
-    protected static function boot(): void
-    {
-        parent::boot();
-
-        static::creating(function ($model): void {
-            $model->public_key = (new Nanoid())->generateId(15);
-        });
-    }
-
     /**
      * Get the screen's application
      */
@@ -45,5 +36,14 @@ final class Screen extends Model
     public function columns(): BelongsToMany
     {
         return $this->belongsToMany(Column::class, 'screen_columns');
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        self::creating(function ($model): void {
+            $model->public_key = (new Nanoid())->generateId(15);
+        });
     }
 }

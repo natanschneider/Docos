@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Hidehalo\Nanoid\Client as Nanoid;
 use App\Models\Descriptions\Engine;
+use Hidehalo\Nanoid\Client as Nanoid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -23,15 +23,6 @@ final class Database extends Model
         'company_id',
         'engine_id',
     ];
-
-    protected static function boot(): void
-    {
-        parent::boot();
-
-        static::creating(function ($model): void {
-            $model->public_key = (new Nanoid())->generateId(15);
-        });
-    }
 
     /**
      * Get the database's company.
@@ -63,5 +54,14 @@ final class Database extends Model
     public function applications(): BelongsToMany
     {
         return $this->belongsToMany(Application::class, 'application_databases');
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        self::creating(function ($model): void {
+            $model->public_key = (new Nanoid())->generateId(15);
+        });
     }
 }

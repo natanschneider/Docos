@@ -28,15 +28,6 @@ final class Company extends Model
         'description',
     ];
 
-    protected static function boot(): void
-    {
-        parent::boot();
-
-        static::creating(function ($model): void {
-            $model->public_key = (new Nanoid())->generateId(15);
-        });
-    }
-
     /**
      * Get the company's users.
      */
@@ -59,5 +50,14 @@ final class Company extends Model
     public function databases(): HasMany
     {
         return $this->hasMany(Database::class);
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        self::creating(function ($model): void {
+            $model->public_key = (new Nanoid())->generateId(15);
+        });
     }
 }
