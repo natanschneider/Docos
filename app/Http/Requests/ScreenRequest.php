@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
-use Illuminate\Validation\Rules\File;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ScreenRequest extends FormRequest
@@ -19,7 +18,6 @@ class ScreenRequest extends FormRequest
         return match ($this->method()) {
             'POST' => [
                 'name' => ['required', 'string', 'max:255'],
-                'doc_file' => [File::types(['text/markdown'])->max('10mb')],
                 'application_id' => ['required', 'string', 'exists:applications,id'],
                 'columns' => ['array', 'exists:columns,id'],
             ],
@@ -30,7 +28,6 @@ class ScreenRequest extends FormRequest
             'PUT' => [
                 'id' => ['required', 'string', 'exists:screens,id'],
                 'name' => ['string', 'max:255'],
-                'doc_file' => [File::types(['text/markdown'])->max('10mb')],
                 'application_id' => ['string', 'exists:applications,id'],
                 'columns' => ['array', 'exists:columns,id'],
                 'detach_columns' => ['array', 'exists:columns,id'],
@@ -41,7 +38,6 @@ class ScreenRequest extends FormRequest
             'DEFAULT' => [
                 'id' => ['string', 'exists:screens,id'],
                 'name' => ['string', 'max:255'],
-                'doc_file' => [File::types(['text/markdown'])->max('10mb')],
                 'application_id' => ['string', 'exists:applications,id'],
                 'columns' => ['array', 'exists:columns,id'],
                 'detach_columns' => ['array', 'exists:columns,id'],
