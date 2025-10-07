@@ -16,7 +16,6 @@ final class ColumnRepository
         return DB::transaction(function () use ($request) {
             $column = Column::create($request->only([
                 'name',
-                'doc_file',
                 'table_id',
                 'type_id',
             ]));
@@ -80,7 +79,6 @@ final class ColumnRepository
             $column = Column::findOrFail($request->id);
             $column->update($request->only([
                 'name',
-                'doc_file',
                 'table_id',
                 'type_id',
             ]));
