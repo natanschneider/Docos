@@ -15,10 +15,14 @@ class FileRequest extends FormRequest
      */
     public function rules(): array
     {
+        $this->merge([
+            'id' => $this->route('id'),
+        ]);
+
         return [
-            'id' => ['required', 'string|integer'],
-            'file' => [
-                'required',
+            'id' => ['required', 'string'],
+            'doc_file' => [
+                'required_if:_method,POST',
                 'file',
                 function ($attribute, $value, $fail): void {
                     $mimeType = $value->getMimeType();
@@ -41,7 +45,7 @@ class FileRequest extends FormRequest
                         $fail("The {$attribute} must have an extension of .md");
                     }
                 },
-                'max:10240',
+                'max:36700160',
             ],
         ];
     }
