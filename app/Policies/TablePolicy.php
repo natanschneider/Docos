@@ -87,4 +87,13 @@ class TablePolicy
             ? Response::deny('Table provided contains columns')
             : Response::allow();
     }
+
+    public function handleFiles(User $user, Table $table): Response
+    {
+        return $user->companies()
+            ->where('companies.id', $table->database->company_id)
+            ->doesntExist()
+                ? Response::deny('Table does not belong to user or does not exist')
+                : Response::allow();
+    }
 }

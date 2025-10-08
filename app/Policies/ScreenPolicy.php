@@ -120,4 +120,13 @@ class ScreenPolicy
             ? Response::allow()
             : Response::deny('Screen does not belong to user or does not exist');
     }
+
+    public function handleFiles(User $user, Screen $screen): Response
+    {
+        return $user->companies()
+            ->where('companies.id', $screen->application->project->company_id)
+            ->doesntExist()
+                ? Response::deny('Screen does not belong to user or does not exist')
+                : Response::allow();
+    }
 }

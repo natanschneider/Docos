@@ -120,4 +120,13 @@ class EndpointPolicy
             ? Response::allow()
             : Response::deny('Endpoint does not belong to user or does not exist');
     }
+
+    public function handleFiles(User $user, Endpoint $endpoint): Response
+    {
+        return $user->companies()
+            ->where('companies.id', $endpoint->application->project->company_id)
+            ->doesntExist()
+                ? Response::deny('Endpoint does not belong to user or does not exist')
+                : Response::allow();
+    }
 }

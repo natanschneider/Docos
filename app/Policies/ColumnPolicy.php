@@ -129,4 +129,13 @@ class ColumnPolicy
 
         return Response::allow();
     }
+
+    public function handleFiles(User $user, Column $column): Response
+    {
+        return $user->companies()
+            ->where('companies.id', $column->table->database->company_id)
+            ->doesntExist()
+                ? Response::deny('Column does not belong to user or does not exist')
+                : Response::allow();
+    }
 }
