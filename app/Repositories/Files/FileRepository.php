@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Repositories;
+namespace App\Repositories\Files;
 
 use Exception;
 use Illuminate\Http\UploadedFile;
@@ -38,11 +38,19 @@ class FileRepository
         ];
     }
 
-    public function delete(string $folder, string $name): bool
+    public function delete(string $folder, string $name): array
     {
-        Storage::disk('s3')->delete("$folder/$name");
+        $disk = Storage::disk('s3');
+        $disk->exists("$folder/$name") ?: throw new Exception('File not found');
 
-        return true;
+        $returnArr = [
+            'name' => $name,
+            'size' => $disk->size("$folder/$name"),
+        ];
+
+        $disk->delete("$folder/$name");
+
+        return $returnArr;
     }
 
     public function get(string $folder, string $name): string
@@ -52,7 +60,7 @@ class FileRepository
 
     protected function validateFile(UploadedFile $file): void
     {
-        $maxFileSize = 5 * 1024; // 5MB
+        $maxFileSize = 36700160; // 35MB
 
         if ($file->getSize() > $maxFileSize) {
             throw new Exception('File is too large');
