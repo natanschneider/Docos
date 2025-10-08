@@ -8,6 +8,7 @@ use App\Http\Controllers\ColumnController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DatabaseController;
 use App\Http\Controllers\EndpointController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ScreenController;
 use App\Http\Controllers\TableController;
@@ -19,6 +20,20 @@ Route::post('login', [AuthenticatedSessionController::class, 'createToken']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', function (Request $request) {
         return $request->user();
+    });
+
+    Route::controller(FileController::class)->group(function () {
+        Route::post('table/{id}/file', 'storeTable');
+        Route::delete('table/{id}/file', 'deleteTable');
+
+        Route::post('column/{id}/file', 'storeColumn');
+        Route::delete('column/{id}/file', 'deleteColumn');
+
+        Route::post('endpoint/{id}/file', 'storeEndpoint');
+        Route::delete('endpoint/{id}/file', 'deleteEndpoint');
+
+        Route::post('screen/{id}/file', 'storeScreen');
+        Route::delete('screen/{id}/file', 'deleteScreen');
     });
 
     Route::controller(CompanyController::class)->group(function () {
