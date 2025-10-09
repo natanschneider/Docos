@@ -40,3 +40,15 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface UpdateItem {
+    id: string
+    name: string
+    updatedAt: string
+}
+
+export interface Category {
+    id: string
+    name: string
+    items: UpdateItem[]
+}
