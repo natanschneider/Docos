@@ -11,6 +11,10 @@ class HandleSelectedCompany
 {
     public function handle(Request $request): ?int
     {
+        if ($request->hasCookie('currentCompany')) {
+            $this->ensureCompanyBelongsToUser($request);
+        }
+
         return $request->hasCookie('currentCompany') ? (int) $request->cookie('currentCompany') : $this->getLatestCompany($request);
     }
 
@@ -27,5 +31,14 @@ class HandleSelectedCompany
         }
 
         return $company;
+    }
+
+    private function ensureCompanyBelongsToUser(Request $request): int
+    {
+        $company = (int) $request->cookie('currentCompany');
+
+        return $request->user()->companies()->where('companies.id', $company)->exists()
+            ? abort(403, 'Company provided does not belong to user or does not exist')
+            : $company;
     }
 }
