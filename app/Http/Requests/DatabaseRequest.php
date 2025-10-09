@@ -18,26 +18,26 @@ class DatabaseRequest extends FormRequest
         return match ($this->method()) {
             'POST' => [
                 'name' => ['required', 'string', 'max:255'],
-                'company_id' => ['required', 'string', 'exists:companies,id'],
-                'engine_id' => ['required', 'string', 'exists:engines,id'],
+                'company_id' => ['required', 'int', 'exists:companies,id'],
+                'engine_id' => ['required', 'int', 'exists:engines,id'],
             ],
             'GET' => [
-                'id' => ['required_if:company_id,null', 'string', 'exists:databases,id'],
-                'company_id' => ['required_if:id,null', 'string', 'exists:companies,id'],
+                'id' => ['required_if:company_id,null', 'int', 'exists:databases,id'],
+                'company_id' => ['required_if:id,null', 'int', 'exists:companies,id'],
             ],
             'PUT' => [
-                'id' => ['required', 'string', 'exists:databases,id'],
+                'id' => ['required', 'int', 'exists:databases,id'],
                 'name' => ['string', 'max:255'],
-                'engine_id' => ['string', 'exists:engines,id'],
+                'engine_id' => ['int', 'exists:engines,id'],
             ],
             'DELETE' => [
-                'id' => ['required', 'string', 'exists:databases,id'],
+                'id' => ['required', 'int', 'exists:databases,id'],
             ],
             default => [
-                'id' => ['string', 'exists:databases,id'],
+                'id' => ['int', 'exists:databases,id'],
                 'name' => ['string', 'max:255'],
-                'company_id' => ['string', 'exists:companies,id'],
-                'engine_id' => ['string', 'exists:engines,id'],
+                'company_id' => ['int', 'exists:companies,id'],
+                'engine_id' => ['int', 'exists:engines,id'],
             ]
         };
     }

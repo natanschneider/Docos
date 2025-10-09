@@ -18,27 +18,27 @@ class ScreenRequest extends FormRequest
         return match ($this->method()) {
             'POST' => [
                 'name' => ['required', 'string', 'max:255'],
-                'application_id' => ['required', 'string', 'exists:applications,id'],
+                'application_id' => ['required', 'int', 'exists:applications,id'],
                 'columns' => ['array', 'exists:columns,id'],
             ],
             'GET' => [
-                'id' => ['required_if:application_id,null', 'string', 'exists:screens,id'],
-                'application_id' => ['required_if:id,null', 'string', 'exists:applications,id'],
+                'id' => ['required_if:application_id,null', 'int', 'exists:screens,id'],
+                'application_id' => ['required_if:id,null', 'int', 'exists:applications,id'],
             ],
             'PUT' => [
-                'id' => ['required', 'string', 'exists:screens,id'],
+                'id' => ['required', 'int', 'exists:screens,id'],
                 'name' => ['string', 'max:255'],
-                'application_id' => ['string', 'exists:applications,id'],
+                'application_id' => ['int', 'exists:applications,id'],
                 'columns' => ['array', 'exists:columns,id'],
                 'detach_columns' => ['array', 'exists:columns,id'],
             ],
             'DELETE' => [
-                'id' => ['required', 'string', 'exists:screens,id'],
+                'id' => ['required', 'int', 'exists:screens,id'],
             ],
             'DEFAULT' => [
-                'id' => ['string', 'exists:screens,id'],
+                'id' => ['int', 'exists:screens,id'],
                 'name' => ['string', 'max:255'],
-                'application_id' => ['string', 'exists:applications,id'],
+                'application_id' => ['int', 'exists:applications,id'],
                 'columns' => ['array', 'exists:columns,id'],
                 'detach_columns' => ['array', 'exists:columns,id'],
             ]

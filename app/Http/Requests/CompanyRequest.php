@@ -21,18 +21,18 @@ class CompanyRequest extends FormRequest
                 'description' => ['required', 'string', 'max:255'],
             ],
             'GET' => [
-                'id' => ['string', 'exists:companies,id'],
+                'id' => ['int', 'exists:companies,id'],
             ],
             'PUT' => [
-                'id' => ['required', 'string', 'exists:companies,id'],
+                'id' => ['required', 'int', 'exists:companies,id'],
                 'name' => ['string', 'max:255'],
                 'description' => ['string', 'max:255'],
             ],
             'DELETE' => [
-                'id' => ['required', 'string', 'exists:companies,id'],
+                'id' => ['required', 'int', 'exists:companies,id'],
             ],
             default => [
-                'id' => ['string', 'exists:companies,id'],
+                'id' => ['int', 'exists:companies,id'],
                 'name' => ['string', 'max:255'],
                 'description' => ['string', 'max:255'],
             ],

@@ -18,27 +18,27 @@ class ApplicationRequest extends FormRequest
         return match ($this->method()) {
             'POST' => [
                 'name' => ['required', 'string', 'max:255'],
-                'project_id' => ['required', 'string', 'exists:projects,id'],
+                'project_id' => ['required', 'int', 'exists:projects,id'],
                 'databases' => ['array', 'exists:databases,id'],
             ],
             'GET' => [
-                'id' => ['required_if:project_id,null', 'string', 'exists:applications,id'],
-                'project_id' => ['required_if:id,null', 'string', 'exists:projects,id'],
+                'id' => ['required_if:project_id,null', 'int', 'exists:applications,id'],
+                'project_id' => ['required_if:id,null', 'int', 'exists:projects,id'],
             ],
             'PUT' => [
-                'id' => ['required', 'string', 'exists:applications,id'],
+                'id' => ['required', 'int', 'exists:applications,id'],
                 'name' => ['string', 'max:255'],
-                'project_id' => ['string', 'exists:projects,id'],
+                'project_id' => ['int', 'exists:projects,id'],
                 'databases' => ['array', 'exists:databases,id'],
                 'detach_databases' => ['array', 'exists:databases,id'],
             ],
             'DELETE' => [
-                'id' => ['required', 'string', 'exists:applications,id'],
+                'id' => ['required', 'int', 'exists:applications,id'],
             ],
             'DEFAULT' => [
-                'id' => ['string', 'exists:applications,id'],
+                'id' => ['int', 'exists:applications,id'],
                 'name' => ['string', 'max:255'],
-                'project_id' => ['string', 'exists:projects,id'],
+                'project_id' => ['int', 'exists:projects,id'],
                 'databases' => ['array', 'exists:databases,id'],
                 'detach_databases' => ['array', 'exists:databases,id'],
             ],

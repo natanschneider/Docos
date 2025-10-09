@@ -18,24 +18,24 @@ class TableRequest extends FormRequest
         return match ($this->method()) {
             'POST' => [
                 'name' => ['required', 'string', 'max:255'],
-                'database_id' => ['required', 'string', 'exists:databases,id'],
+                'database_id' => ['required', 'int', 'exists:databases,id'],
             ],
             'GET' => [
-                'id' => ['required_if:database_id,null', 'string', 'exists:tables,id'],
-                'database_id' => ['required_if:id,null', 'string', 'exists:databases,id'],
+                'id' => ['required_if:database_id,null', 'int', 'exists:tables,id'],
+                'database_id' => ['required_if:id,null', 'int', 'exists:databases,id'],
             ],
             'PUT' => [
-                'id' => ['required', 'string', 'exists:tables,id'],
+                'id' => ['required', 'int', 'exists:tables,id'],
                 'name' => ['string', 'max:255'],
-                'database_id' => ['string', 'exists:databases,id'],
+                'database_id' => ['int', 'exists:databases,id'],
             ],
             'DELETE' => [
-                'id' => ['required', 'string', 'exists:tables,id'],
+                'id' => ['required', 'int', 'exists:tables,id'],
             ],
             'DEFAULT' => [
-                'id' => ['string', 'exists:tables,id'],
+                'id' => ['int', 'exists:tables,id'],
                 'name' => ['string', 'max:255'],
-                'database_id' => ['string', 'exists:databases,id'],
+                'database_id' => ['int', 'exists:databases,id'],
             ]
         };
     }

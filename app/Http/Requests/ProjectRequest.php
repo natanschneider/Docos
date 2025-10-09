@@ -18,24 +18,24 @@ class ProjectRequest extends FormRequest
         return match ($this->method()) {
             'POST' => [
                 'name' => ['required', 'string', 'max:255'],
-                'company_id' => ['required', 'string', 'exists:companies,id'],
+                'company_id' => ['required', 'int', 'exists:companies,id'],
             ],
             'GET' => [
-                'id' => ['required_if:company_id,null', 'string', 'exists:projects,id'],
-                'company_id' => ['required_if:id,null', 'string', 'exists:companies,id'],
+                'id' => ['required_if:company_id,null', 'int', 'exists:projects,id'],
+                'company_id' => ['required_if:id,null', 'int', 'exists:companies,id'],
             ],
             'PUT' => [
-                'id' => ['required', 'string', 'exists:projects,id'],
+                'id' => ['required', 'int', 'exists:projects,id'],
                 'name' => ['string', 'max:255'],
-                'company_id' => ['string', 'exists:companies,id'],
+                'company_id' => ['int', 'exists:companies,id'],
             ],
             'DELETE' => [
-                'id' => ['required', 'string', 'exists:projects,id'],
+                'id' => ['required', 'int', 'exists:projects,id'],
             ],
             default => [
-                'id' => ['string', 'exists:projects,id'],
+                'id' => ['int', 'exists:projects,id'],
                 'name' => ['string', 'max:255'],
-                'company_id' => ['string', 'exists:companies,id'],
+                'company_id' => ['int', 'exists:companies,id'],
             ]
         };
     }
