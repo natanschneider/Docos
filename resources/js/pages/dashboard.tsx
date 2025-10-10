@@ -21,26 +21,24 @@ export default function Dashboard({ categories }: { categories: Category[] }) {
             <AppLayout breadcrumbs={breadcrumbs}>
                 <Head title="Dashboard" />
                 <div className="flex flex-col items-center justify-center py-16 text-center">
-                    {
-                        companies.length === 0 ? (
-                            <>
-                                <div className="mb-4 rounded-full bg-muted p-6">
-                                    <TriangleAlert className="h-12 w-12 text-muted-foreground" />
-                                </div>
-                                <h3 className="mb-2 text-xl font-semibold text-foreground">No Companies Found</h3>
-                                <p className="text-sm text-muted-foreground">There are no companies available at the moment.</p>
-                                <p className="mt-1 text-xs text-muted-foreground/70">Please add a company to get started.</p>
-                            </>
-                        ) : (
-                            <>
-                                <div className="mb-4 rounded-full bg-muted p-6">
-                                    <ClockAlert className="h-12 w-12 text-muted-foreground" />
-                                </div>
-                                <h3 className="mb-2 text-xl font-semibold text-foreground">No Company was Selected</h3>
-                                <p className="text-sm text-muted-foreground">Please select a company to get started.</p>
-                            </>
-                        )
-                    }
+                    {companies.length === 0 ? (
+                        <>
+                            <div className="mb-4 rounded-full bg-muted p-6">
+                                <TriangleAlert className="h-12 w-12 text-muted-foreground" />
+                            </div>
+                            <h3 className="mb-2 text-xl font-semibold text-foreground">No Companies Found</h3>
+                            <p className="text-sm text-muted-foreground">There are no companies available at the moment.</p>
+                            <p className="mt-1 text-xs text-muted-foreground/70">Please add a company to get started.</p>
+                        </>
+                    ) : (
+                        <>
+                            <div className="mb-4 rounded-full bg-muted p-6">
+                                <ClockAlert className="h-12 w-12 text-muted-foreground" />
+                            </div>
+                            <h3 className="mb-2 text-xl font-semibold text-foreground">No Company was Selected</h3>
+                            <p className="text-sm text-muted-foreground">Please select a company to get started.</p>
+                        </>
+                    )}
                 </div>
             </AppLayout>
         );

@@ -44,13 +44,13 @@ export interface User {
 }
 
 export interface UpdateItem {
-    id: string
-    name: string
-    updatedAt: string
+    id: string;
+    name: string;
+    updatedAt: string;
 }
 
 export interface Category {
-    id: string
-    name: string
-    items: UpdateItem[]
+    id: string;
+    name: string;
+    items: UpdateItem[];
 }
