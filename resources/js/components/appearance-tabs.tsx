@@ -3,7 +3,13 @@ import { cn } from '@/lib/utils';
 import { LucideIcon, Monitor, Moon, Sun } from 'lucide-react';
 import { HTMLAttributes } from 'react';
 
-export default function AppearanceToggleTab({ className = '', ...props }: HTMLAttributes<HTMLDivElement>) {
+export default function AppearanceToggleTab({
+    className = '',
+    showLabel=true,
+    ...props
+}: HTMLAttributes<HTMLDivElement> & {
+    showLabel?: boolean
+}) {
     const { appearance, updateAppearance } = useAppearance();
 
     const tabs: { value: Appearance; icon: LucideIcon; label: string }[] = [
@@ -26,7 +32,7 @@ export default function AppearanceToggleTab({ className = '', ...props }: HTMLAt
                     )}
                 >
                     <Icon className="-ml-1 h-4 w-4" />
-                    <span className="ml-1.5 text-sm">{label}</span>
+                    { showLabel && <span className="ml-1.5 text-sm">{label}</span> }
                 </button>
             ))}
         </div>
