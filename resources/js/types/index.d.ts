@@ -27,6 +27,8 @@ export interface SharedData {
     quote: { message: string; author: string };
     auth: Auth;
     sidebarOpen: boolean;
+    currentCompany: number | null;
+    companies: { id: number; name: string; public_key: string }[];
     [key: string]: unknown;
 }
 
