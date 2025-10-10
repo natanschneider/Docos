@@ -1,4 +1,4 @@
-import { NavFooter } from '@/components/nav-footer';
+import AppearanceTabs from '@/components/appearance-tabs';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
@@ -49,7 +49,7 @@ export function AppSidebar() {
             </SidebarContent>
 
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
+                <AppearanceTabs showLabel={false} className="w-full justify-center" />
                 <NavUser />
             </SidebarFooter>
         </Sidebar>
