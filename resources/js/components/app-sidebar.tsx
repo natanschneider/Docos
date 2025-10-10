@@ -1,11 +1,12 @@
 import AppearanceTabs from '@/components/appearance-tabs';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import { TeamSwitcher } from '@/components/team-switcher';
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarGroupLabel } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
+import { type NavItem, type SharedData } from '@/types';
+import { Link, usePage } from '@inertiajs/react';
+import { AudioWaveform, Command, GalleryVerticalEnd, LayoutGrid } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -16,20 +17,27 @@ const mainNavItems: NavItem[] = [
     },
 ];
 
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
-    },
-];
-
 export function AppSidebar() {
+    // const { companies } = usePage<SharedData>().props;
+
+    const teams = [
+        {
+            name: 'Acme Inc',
+            logo: GalleryVerticalEnd,
+            plan: 'Enterprise',
+        },
+        {
+            name: 'Acme Corp.',
+            logo: AudioWaveform,
+            plan: 'Startup',
+        },
+        {
+            name: 'Evil Corp.',
+            logo: Command,
+            plan: 'Free',
+        },
+    ];
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
@@ -40,6 +48,10 @@ export function AppSidebar() {
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    <SidebarMenuItem>
+                        <SidebarGroupLabel>Company</SidebarGroupLabel>
+                        <TeamSwitcher teams={teams} />
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
