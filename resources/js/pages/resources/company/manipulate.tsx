@@ -23,7 +23,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function Company(company: companyModel | null) {
     const name = useRef<HTMLInputElement>(null);
-    const description = useRef<HTMLInputElement>(null);
+    const description = useRef<HTMLTextAreaElement>(null);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
