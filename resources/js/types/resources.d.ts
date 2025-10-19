@@ -4,6 +4,7 @@ import { edit } from '@/routes/profile';
 import { InertiaLinkProps } from '@inertiajs/react';
 import { LucideIcon } from 'lucide-react';
 import { type ReactNode } from 'react';
+import company from '@/routes/company';
 
 export interface companyModel {
     id: number;
@@ -49,7 +50,12 @@ export const SettingsNavItems: NavItem[] = [
 export const CompanyNavItems: NavItem[] = [
     {
         title: 'Create',
-        href: company(),
+        href: company.create().url,
         icon: null,
     },
+    {
+        title: 'List',
+        href: company.index().url,
+        icon: null
+    }
 ];
