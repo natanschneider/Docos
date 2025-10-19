@@ -5,10 +5,10 @@ import { HTMLAttributes } from 'react';
 
 export default function AppearanceToggleTab({
     className = '',
-    showLabel=true,
+    showLabel = true,
     ...props
 }: HTMLAttributes<HTMLDivElement> & {
-    showLabel?: boolean
+    showLabel?: boolean;
 }) {
     const { appearance, updateAppearance } = useAppearance();
 
@@ -32,7 +32,7 @@ export default function AppearanceToggleTab({
                     )}
                 >
                     <Icon className="-ml-1 h-4 w-4" />
-                    { showLabel && <span className="ml-1.5 text-sm">{label}</span> }
+                    {showLabel && <span className="ml-1.5 text-sm">{label}</span>}
                 </button>
             ))}
         </div>

@@ -2,12 +2,23 @@ import AppearanceTabs from '@/components/appearance-tabs';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { TeamSwitcher } from '@/components/team-switcher';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarGroupLabel } from '@/components/ui/sidebar';
+import {
+    Sidebar,
+    SidebarContent,
+    SidebarFooter,
+    SidebarGroupLabel,
+    SidebarHeader,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
+} from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import { type NavItem, type SharedData } from '@/types';
-import { Link, usePage } from '@inertiajs/react';
-import { AudioWaveform, Command, GalleryVerticalEnd, LayoutGrid } from 'lucide-react';
+import { type NavItem } from '@/types';
+import { Link } from '@inertiajs/react';
+import { AudioWaveform, Command, GalleryVerticalEnd, icons, LayoutGrid } from 'lucide-react';
 import AppLogo from './app-logo';
+import { title } from 'process';
+import company from '@/routes/company';
 
 const mainNavItems: NavItem[] = [
     {
@@ -15,6 +26,11 @@ const mainNavItems: NavItem[] = [
         href: dashboard(),
         icon: LayoutGrid,
     },
+    {
+        title: 'Companies',
+        href: company.index().url,
+        icon: null
+    }
 ];
 
 export function AppSidebar() {
