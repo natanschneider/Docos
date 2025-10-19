@@ -27,11 +27,11 @@ export default function Company(company: companyModel | null) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Password settings" />
+            <Head title={company !== null ? 'Edit a company' : 'Create a company'} />
 
-            <ResourcesLayout title="Settings" description="Manage your profile and account settings" sidebarNavItems={CompanyNavItems}>
-                <div className="space-y-6">
-                    <HeadingSmall title="Update password" description="Ensure your account is using a long, random password to stay secure" />
+            <ResourcesLayout title="Company" description="Manage your company information" sidebarNavItems={CompanyNavItems}>
+                <div className="border-spacing-x-60 space-y-6">
+                    <HeadingSmall title={company !== null ? 'Edit a company' : 'Create a company'} description='Edit the information of your company' />
 
                     <Form
                         {...CompanyController.update.form()}
