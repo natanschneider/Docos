@@ -24,9 +24,10 @@ class HandleSelectedCompany
 
     private function getLatestCompany(Request $request): ?int
     {
-        if (!$request->user()) {
+        if (! $request->user()) {
             return null;
-        } else if ($request->user()->companies()->doesntExist()) {
+        }
+        if ($request->user()->companies()->doesntExist()) {
             return null;
         }
 
