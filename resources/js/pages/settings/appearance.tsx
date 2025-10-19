@@ -5,7 +5,7 @@ import HeadingSmall from '@/components/heading-small';
 import { type BreadcrumbItem } from '@/types';
 
 import AppLayout from '@/layouts/app-layout';
-import SettingsLayout from '@/layouts/settings/layout';
+import ResourcesLayout from '@/layouts/resources/layout';
 import { appearance } from '@/routes';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -20,12 +20,12 @@ export default function Appearance() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Appearance settings" />
 
-            <SettingsLayout>
+            <ResourcesLayout title="Settings" description="Manage your profile and account settings" sidebarNavItems={SettingsNavItems}>
                 <div className="space-y-6">
                     <HeadingSmall title="Appearance settings" description="Update your account's appearance settings" />
                     <AppearanceTabs />
                 </div>
-            </SettingsLayout>
+            </ResourcesLayout>
         </AppLayout>
     );
 }

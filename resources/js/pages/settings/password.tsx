@@ -1,7 +1,8 @@
 import PasswordController from '@/actions/App/Http/Controllers/Settings/PasswordController';
 import InputError from '@/components/input-error';
 import AppLayout from '@/layouts/app-layout';
-import SettingsLayout from '@/layouts/settings/layout';
+import ResourcesLayout from '@/layouts/resources/layout';
+import { edit } from '@/routes/password';
 import { type BreadcrumbItem } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Form, Head } from '@inertiajs/react';
@@ -28,7 +29,7 @@ export default function Password() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Password settings" />
 
-            <SettingsLayout>
+            <ResourcesLayout title="Settings" description="Manage your profile and account settings" sidebarNavItems={SettingsNavItems}>
                 <div className="space-y-6">
                     <HeadingSmall title="Update password" description="Ensure your account is using a long, random password to stay secure" />
 
@@ -116,7 +117,7 @@ export default function Password() {
                         )}
                     </Form>
                 </div>
-            </SettingsLayout>
+            </ResourcesLayout>
         </AppLayout>
     );
 }
