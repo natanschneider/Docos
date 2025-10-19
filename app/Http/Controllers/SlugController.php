@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use Illuminate\Http\RedirectResponse;
-use Str;
+use Illuminate\Support\Str;
 
 class SlugController extends Controller
 {
@@ -28,6 +28,7 @@ class SlugController extends Controller
     private function explodeSlug(string $slug): array
     {
         $parts = array_reverse(explode('-', strrev($slug), 2));
+
         return array_map('strrev', $parts);
     }
 }
