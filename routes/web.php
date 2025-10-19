@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\ViewsController;
+use App\Http\Controllers\ViewResources\CompanyController;
+use App\Repositories\ViewsRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -14,9 +15,11 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function (Request $request) {
         return Inertia::render('dashboard', [
-            'categories' => (new ViewsController())->dashboard($request),
+            'categories' => (new ViewsRepository())->dashboard($request),
         ]);
     })->name('dashboard');
+
+    Route::resource('company', CompanyController::class);
 });
 
 require __DIR__.'/settings.php';
