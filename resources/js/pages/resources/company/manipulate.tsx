@@ -12,11 +12,12 @@ import { CompanyNavItems, type companyModel } from '@/types/resources.d';
 import { Transition } from '@headlessui/react';
 import { Form, Head } from '@inertiajs/react';
 import { useRef } from 'react';
+import company from '@/routes/company';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Company',
-        href: '',
+        href: company.index().url
     },
 ];
 
