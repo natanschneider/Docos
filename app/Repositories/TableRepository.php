@@ -13,7 +13,10 @@ final class TableRepository
 {
     public function create(TableRequest $request): Table
     {
-        return Table::create($request->all());
+        return Table::create($request->only([
+            'name',
+            'database_id'
+        ]));
     }
 
     public function get(TableRequest $request): Collection
@@ -37,7 +40,10 @@ final class TableRepository
 
     public function update(TableRequest $request): Collection
     {
-        Table::where('id', $request->id)->update($request->all());
+        Table::where('id', $request->id)->update($request->only([
+            'name',
+            'database_id'
+        ]));
 
         return Table::where('id', $request->id)->get();
     }

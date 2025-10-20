@@ -13,7 +13,11 @@ final class DatabaseRepository
 {
     public function create(DatabaseRequest $request): Database
     {
-        return Database::create($request->all());
+        return Database::create($request->only([
+            'name',
+            'company_id',
+            'engine_id'
+        ]));
     }
 
     public function get(DatabaseRequest $request): Collection
@@ -37,7 +41,10 @@ final class DatabaseRepository
 
     public function update(DatabaseRequest $request): Collection
     {
-        Database::where('id', $request->id)->update($request->all());
+        Database::where('id', $request->id)->update($request->only([
+            'name',
+            'engine_id'
+        ]));
 
         return Database::where('id', $request->id)->get();
     }

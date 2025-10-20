@@ -42,7 +42,7 @@ final class CompanyRepository
 
     public function update(CompanyRequest $request): Collection
     {
-        Company::where('id', $request->id)->update($request->all());
+        Company::where('id', $request->id)->update($request->only(['name', 'description']));
 
         return Company::where('id', $request->id)->get();
     }

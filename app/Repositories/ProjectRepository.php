@@ -40,7 +40,10 @@ final class ProjectRepository
 
     public function update(ProjectRequest $request): Collection
     {
-        Project::where('id', $request->id)->update($request->all());
+        Project::where('id', $request->id)->update($request->only([
+            'name',
+            'company_id'
+        ]));
 
         return Project::where('id', $request->id)->get();
     }
