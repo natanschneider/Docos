@@ -1,4 +1,4 @@
-import CompanyController from '@/actions/App/Http/Controllers/CompanyController';
+import CompanyController from '@/actions/App/Http/Controllers/ViewResources/CompanyController';
 import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
@@ -21,7 +21,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Company(company: companyModel | null) {
+export default function ManipulateCompany({ company }: { company: companyModel | null }) {
     const name = useRef<HTMLInputElement>(null);
     const description = useRef<HTMLTextAreaElement>(null);
 
@@ -34,20 +34,31 @@ export default function Company(company: companyModel | null) {
                     <HeadingSmall title={company !== null ? 'Edit a company' : 'Create a company'} description='Edit the information of your company' />
 
                     <Form
-                        {...CompanyController.update.form()}
+                        {
+                            ...company !== null
+                                ? CompanyController.update.form({
+                                    company: company?.id,
+                                })
+                                : CompanyController.store.form()
+                        }
                         options={{
                             preserveScroll: true,
                         }}
-                        resetOnError={['password', 'password_confirmation', 'current_password']}
+                        resetOnError={['name', 'description']}
                         resetOnSuccess
                         className="space-y-6"
                     >
                         {({ errors, processing, recentlySuccessful }) => (
                             <>
+                                {
+                                    company !== null ?
+                                        <input type="hidden" name="id" value={ company?.id } />
+                                        : null
+                                }
                                 <div className="grid gap-2">
-                                    <Label htmlFor="current_password">Name</Label>
+                                    <Label htmlFor="name">Name</Label>
 
-                                    <Input id="name" ref={name} name="name" type="text" className="mt-1 block w-full" autoComplete="name" />
+                                    <Input id="name" ref={name} name="name" type="text" className="mt-1 block w-full" autoComplete="name" defaultValue={ company?.name } />
 
                                     <InputError message={errors.name} />
                                 </div>
@@ -62,6 +73,7 @@ export default function Company(company: companyModel | null) {
                                         className="mt-1 block w-full"
                                         autoComplete="description"
                                         placeholder="Company's Description"
+                                        defaultValue={ company?.description }
                                     />
 
                                     <InputError message={errors.description} />
