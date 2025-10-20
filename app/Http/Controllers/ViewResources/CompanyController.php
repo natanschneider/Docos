@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\ViewResources;
 
-use App\Http\Controllers\CompanyController as Company;
+use Inertia\Inertia;
+use Inertia\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CompanyRequest;
-use Inertia\Inertia;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Controllers\CompanyController as Company;
 
 class CompanyController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(CompanyRequest $request)
+    public function index(CompanyRequest $request): Response
     {
         $companies = (new Company)->get($request);
 
@@ -26,25 +28,27 @@ class CompanyController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): Response
     {
-        return Inertia::render('resources/company/manipulate');
+        return Inertia::render('resources/company/manipulate', [
+            'company' => null,
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CompanyRequest $request): void
+    public function store(CompanyRequest $request): RedirectResponse
     {
         (new Company)->store($request);
 
-        back();
+        return back();
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(CompanyRequest $request)
+    public function show(CompanyRequest $request): Response
     {
         $company = (new Company)->get($request);
 
@@ -56,32 +60,32 @@ class CompanyController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CompanyRequest $request)
+    public function edit(CompanyRequest $request): Response
     {
         $company = (new Company)->get($request);
 
         return Inertia::render('resources/company/manipulate', [
-            'company' => $company,
+            'company' => $company[0],
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(CompanyRequest $request): void
+    public function update(CompanyRequest $request): RedirectResponse
     {
         (new Company)->update($request);
 
-        back();
+        return back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CompanyRequest $request): void
+    public function destroy(CompanyRequest $request): RedirectResponse
     {
         (new Company)->destroy($request);
 
-        back();
+        return back();
     }
 }
