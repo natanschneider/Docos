@@ -77,7 +77,7 @@ export function AppSidebar() {
             </SidebarContent>
 
             <SidebarFooter>
-                <AppearanceTabs showLabel={false} className="w-full justify-center" />
+                <AppearanceTabs showLabel={false} className="w-full justify-center flex-wrap" />
                 <NavUser />
             </SidebarFooter>
         </Sidebar>
