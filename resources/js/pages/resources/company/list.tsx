@@ -16,7 +16,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function ManipulateCompany({ companies }: { companies: companyModel[] }) {
+export default function ListCompanies({ companies }: { companies: companyModel[] }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="List of companies" />
