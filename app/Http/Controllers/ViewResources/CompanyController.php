@@ -48,8 +48,9 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CompanyRequest $request): Response
+    public function show(int $id, CompanyRequest $request): Response
     {
+        $request->merge(['id' => $id]);
         $company = (new Company)->get($request);
 
         return Inertia::render('resources/company/manipulate', [
@@ -60,12 +61,13 @@ class CompanyController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CompanyRequest $request): Response
+    public function edit(int $id, CompanyRequest $request): Response
     {
+        $request->merge(['id' => $id]);
         $company = (new Company)->get($request);
 
         return Inertia::render('resources/company/manipulate', [
-            'company' => $company[0],
+            'company' => Inertia::always($company[0]),
         ]);
     }
 
@@ -82,8 +84,9 @@ class CompanyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CompanyRequest $request): RedirectResponse
+    public function destroy(int $id, CompanyRequest $request): RedirectResponse
     {
+        $request->merge(['id' => $id]);
         (new Company)->destroy($request);
 
         return back();
