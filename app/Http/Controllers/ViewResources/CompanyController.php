@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CompanyRequest;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\CompanyController as Company;
+use Illuminate\Http\JsonResponse;
 
 class CompanyController extends Controller
 {
@@ -84,11 +85,11 @@ class CompanyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $id, CompanyRequest $request): RedirectResponse
+    public function destroy(int $id, CompanyRequest $request): JsonResponse
     {
         $request->merge(['id' => $id]);
-        (new Company)->destroy($request);
+        $response = (new Company)->destroy($request);
 
-        return back();
+        return response()->json($response);
     }
 }
