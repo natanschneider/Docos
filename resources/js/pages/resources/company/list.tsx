@@ -1,9 +1,8 @@
 import HeadingSmall from '@/components/heading-small';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
+import ResourceListItem from '@/components/resource-list-item';
 import AppLayout from '@/layouts/app-layout';
 import ResourcesLayout from '@/layouts/resources/layout';
-import * as CompanyController from '@/routes/company';
+import * as CompanyRoute from '@/routes/company';
 import { type BreadcrumbItem } from '@/types';
 import { CompanyNavItems, type companyModel } from '@/types/resources.d';
 import { Head } from '@inertiajs/react';
@@ -12,7 +11,7 @@ import { TriangleAlert } from 'lucide-react';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Company',
-        href: CompanyController.index().url,
+        href: CompanyRoute.index().url,
     },
 ];
 
@@ -37,27 +36,16 @@ export default function ListCompanies({ companies }: { companies: companyModel[]
                             <HeadingSmall title="Companies" description="List of all companies" />
 
                             {companies.map((company) => (
-                                <div key={company.id} className="rounded-lg border border-border bg-card p-4 transition-colors hover:bg-accent/50">
-                                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                                        <div className="flex-1 space-y-1">
-                                            <Label className="text-base font-medium text-foreground">{company.name}</Label>
-                                            <p className="text-sm text-muted-foreground">{company.description}</p>
-                                        </div>
-                                        <div className="flex gap-2">
-                                            <Button size="sm" variant="outline" onClick={() => window.location.href = CompanyController.edit(company.id).url} className="min-w-[4rem]">
-                                                Edit
-                                            </Button>
-                                            <Button
-                                                size="sm"
-                                                variant="outline"
-                                                onClick={() => window.location.href = CompanyController.destroy(company.id).url}
-                                                className="min-w-[4rem] text-destructive hover:bg-destructive/10 hover:text-destructive"
-                                            >
-                                                Delete
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </div>
+                                <ResourceListItem
+                                    key={company.id}
+                                    resource={ {
+                                        id: company.id,
+                                        name: company.name,
+                                        description: company.description,
+                                        edit_url: CompanyRoute.edit(company.id).url,
+                                        delete_url: CompanyRoute.destroy(company.id).url
+                                    }}
+                                />
                             ))}
                         </>
                     )}
