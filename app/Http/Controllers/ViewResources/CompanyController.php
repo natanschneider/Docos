@@ -11,6 +11,7 @@ use App\Http\Requests\CompanyRequest;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\CompanyController as Company;
 use Illuminate\Http\JsonResponse;
+use App\Http\Middleware\HandleSelectedCompany;
 
 class CompanyController extends Controller
 {
@@ -89,6 +90,8 @@ class CompanyController extends Controller
     {
         $request->merge(['id' => $id]);
         $response = (new Company)->destroy($request);
+
+        (new HandleSelectedCompany())->handle($request);
 
         return response()->json($response);
     }
