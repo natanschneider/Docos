@@ -43,7 +43,8 @@ export default function ListCompanies({ companies }: { companies: companyModel[]
                                         name: company.name,
                                         description: company.description,
                                         edit_url: CompanyRoute.edit(company.id).url,
-                                        delete_url: CompanyRoute.destroy(company.id).url
+                                        delete_url: CompanyRoute.destroy(company.id).url,
+                                        list_url: CompanyRoute.index().url,
                                     }}
                                 />
                             ))}
