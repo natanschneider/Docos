@@ -49,7 +49,7 @@ class HandleSelectedCompany
         $company = (int) $request->cookie('currentCompany');
 
         return $request->user()->companies()->where('companies.id', $company)->exists()
-            ? abort(403, 'Company provided does not belong to user or does not exist')
-            : $company;
+            ? $company
+            : abort(403, 'Company provided does not belong to user or does not exist');
     }
 }
