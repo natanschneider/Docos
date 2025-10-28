@@ -8,22 +8,27 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
+import { Link, router } from '@inertiajs/react';
+import { create } from '@/routes/company'
 import { ChevronsUpDown, Plus } from 'lucide-react';
 import * as React from 'react';
+import { usePage } from '@inertiajs/react';
+import { type SharedData } from '@/types';
+import { changeCompany } from '@/routes';
 
 export function TeamSwitcher({
     teams,
 }: {
     teams: {
         name: string;
-        logo: React.ElementType;
-        plan: string;
+        id: number;
     }[];
 }) {
+    const { currentCompany } = usePage<SharedData>().props;
     const { isMobile } = useSidebar();
-    const [activeTeam, setActiveTeam] = React.useState(teams[0]);
+    const [activeCompany, setActiveCompany] = React.useState(teams[currentCompany]);
 
-    if (!activeTeam) {
+    if (!activeCompany) {
         return null;
     }
 
@@ -33,12 +38,8 @@ export function TeamSwitcher({
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
-                            <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                                <activeTeam.logo className="size-4" />
-                            </div>
                             <div className="grid flex-1 text-left text-sm leading-tight">
-                                <span className="truncate font-medium">{activeTeam.name}</span>
-                                <span className="truncate text-xs">{activeTeam.plan}</span>
+                                <span className="truncate font-medium">{activeCompany.name}</span>
                             </div>
                             <ChevronsUpDown className="ml-auto" />
                         </SidebarMenuButton>
@@ -49,12 +50,9 @@ export function TeamSwitcher({
                         side={isMobile ? 'bottom' : 'right'}
                         sideOffset={4}
                     >
-                        <DropdownMenuLabel className="text-xs text-muted-foreground">Teams</DropdownMenuLabel>
-                        {teams.map((team, index) => (
-                            <DropdownMenuItem key={team.name} onClick={() => setActiveTeam(team)} className="gap-2 p-2">
-                                <div className="flex size-6 items-center justify-center rounded-md border">
-                                    <team.logo className="size-3.5 shrink-0" />
-                                </div>
+                        <DropdownMenuLabel className="text-xs text-muted-foreground">Companies</DropdownMenuLabel>
+                        { Object.values(teams).map((team, index) => (
+                            <DropdownMenuItem key={team.name} onClick={() => router.get(changeCompany(team.id))} className="gap-2 p-2">
                                 {team.name}
                                 <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
                             </DropdownMenuItem>
@@ -64,7 +62,7 @@ export function TeamSwitcher({
                             <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
                                 <Plus className="size-4" />
                             </div>
-                            <div className="font-medium text-muted-foreground">Add team</div>
+                            <Link href={ create().url } className="font-medium text-muted-foreground">Add company</Link>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
