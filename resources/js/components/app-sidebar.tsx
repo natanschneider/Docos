@@ -13,12 +13,13 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import { type NavItem } from '@/types';
+import { type NavItem } from '@/types/resources';
 import { Link } from '@inertiajs/react';
-import { AudioWaveform, Command, GalleryVerticalEnd, icons, LayoutGrid } from 'lucide-react';
+import { LayoutGrid } from 'lucide-react';
 import AppLogo from './app-logo';
-import { title } from 'process';
 import company from '@/routes/company';
+import { usePage } from '@inertiajs/react';
+import { SharedData } from '@/types';
 
 const mainNavItems: NavItem[] = [
     {
@@ -34,25 +35,15 @@ const mainNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
-    // const { companies } = usePage<SharedData>().props;
+    const { companies } = usePage<SharedData>().props;
 
-    const teams = [
-        {
-            name: 'Acme Inc',
-            logo: GalleryVerticalEnd,
-            plan: 'Enterprise',
-        },
-        {
-            name: 'Acme Corp.',
-            logo: AudioWaveform,
-            plan: 'Startup',
-        },
-        {
-            name: 'Evil Corp.',
-            logo: Command,
-            plan: 'Free',
-        },
-    ];
+    const teams = companies.reduce((acc, company) => {
+        acc[company.id] = {
+            name: company.name,
+            id: company.id
+        };
+        return acc;
+    }, {} as Record<string, { name: string; id: number }>);
 
     return (
         <Sidebar collapsible="icon" variant="inset">
