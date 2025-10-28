@@ -16,7 +16,7 @@ final class DatabaseRepository
         return Database::create($request->only([
             'name',
             'company_id',
-            'engine_id'
+            'engine_id',
         ]));
     }
 
@@ -43,7 +43,7 @@ final class DatabaseRepository
     {
         Database::where('id', $request->id)->update($request->only([
             'name',
-            'engine_id'
+            'engine_id',
         ]));
 
         return Database::where('id', $request->id)->get();

@@ -42,7 +42,7 @@ final class ProjectRepository
     {
         Project::where('id', $request->id)->update($request->only([
             'name',
-            'company_id'
+            'company_id',
         ]));
 
         return Project::where('id', $request->id)->get();

@@ -15,7 +15,7 @@ final class TableRepository
     {
         return Table::create($request->only([
             'name',
-            'database_id'
+            'database_id',
         ]));
     }
 
@@ -42,7 +42,7 @@ final class TableRepository
     {
         Table::where('id', $request->id)->update($request->only([
             'name',
-            'database_id'
+            'database_id',
         ]));
 
         return Table::where('id', $request->id)->get();
