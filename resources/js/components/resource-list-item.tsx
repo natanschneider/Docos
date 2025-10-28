@@ -19,7 +19,7 @@ import { Link, router } from '@inertiajs/react';
 interface resourceItem {
     id: number;
     name: string;
-    description: string;
+    description?: string;
     edit_url: string;
     delete_url: string;
     list_url: string;
@@ -88,7 +88,7 @@ export default function ResourceListItem({ resource }: { resource: resourceItem 
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                     <div className="flex-1 space-y-1">
                         <Label className="text-base font-medium text-foreground">{resource.name}</Label>
-                        <p className="text-sm text-muted-foreground">{resource.description}</p>
+                        { resource.description && <p className="text-sm text-muted-foreground">{resource.description}</p> }
                     </div>
                     <div className="flex gap-2">
                         <Button
