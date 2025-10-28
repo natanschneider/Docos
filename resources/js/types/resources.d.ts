@@ -5,6 +5,7 @@ import { InertiaLinkProps } from '@inertiajs/react';
 import { LucideIcon } from 'lucide-react';
 import { type ReactNode } from 'react';
 import company from '@/routes/company';
+import project from '@/routes/project';
 
 export interface companyModel {
     id: number;
@@ -56,6 +57,27 @@ export const CompanyNavItems: NavItem[] = [
     {
         title: 'List',
         href: company.index().url,
+        icon: null
+    }
+];
+
+export interface projectModel {
+    id: number;
+    name: string;
+    created_at: string;
+    updated_at: string;
+    public_key: string;
+}
+
+export const ProjectNavItems: NavItem[] = [
+    {
+        title: 'Create',
+        href: project.create().url,
+        icon: null,
+    },
+    {
+        title: 'List',
+        href: project.index().url,
         icon: null
     }
 ];
