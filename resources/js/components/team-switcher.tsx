@@ -32,6 +32,12 @@ export function TeamSwitcher({
         return null;
     }
 
+    const changeComp = (id: number) => {
+        setActiveCompany(teams[id]);
+        router.flushAll();
+        router.get(changeCompany(id));
+    }
+
     return (
         <SidebarMenu>
             <SidebarMenuItem>
@@ -52,7 +58,7 @@ export function TeamSwitcher({
                     >
                         <DropdownMenuLabel className="text-xs text-muted-foreground">Companies</DropdownMenuLabel>
                         { Object.values(teams).map((team, index) => (
-                            <DropdownMenuItem key={team.name} onClick={() => router.get(changeCompany(team.id))} className="gap-2 p-2">
+                            <DropdownMenuItem key={team.name} onClick={() => changeComp(team.id) } className="gap-2 p-2">
                                 {team.name}
                                 <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
                             </DropdownMenuItem>
