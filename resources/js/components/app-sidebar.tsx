@@ -18,6 +18,7 @@ import { Link } from '@inertiajs/react';
 import { LayoutGrid } from 'lucide-react';
 import AppLogo from './app-logo';
 import company from '@/routes/company';
+import project from '@/routes/project';
 import { usePage } from '@inertiajs/react';
 import { SharedData } from '@/types';
 
@@ -30,6 +31,11 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Companies',
         href: company.index().url,
+        icon: null
+    },
+    {
+        title: 'Projects',
+        href: project.index().url,
         icon: null
     }
 ];
