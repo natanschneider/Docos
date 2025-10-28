@@ -15,7 +15,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function ListCompanies({ projects }: { projects: projectModel[] }) {
+export default function ListProjects({ projects }: { projects: projectModel[] }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="List of projects" />
