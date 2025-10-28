@@ -20,6 +20,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::resource('company', CompanyController::class);
+
+    Route::get('change-company/{company}', function ($company) {
+        return Redirect::route('dashboard')->withCookie('currentCompany', $company);
+    })->name('change-company');
 });
 
 require __DIR__.'/settings.php';
