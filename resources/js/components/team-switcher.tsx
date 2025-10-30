@@ -19,14 +19,11 @@ import { changeCompany } from '@/routes';
 export function TeamSwitcher({
     teams,
 }: {
-    teams: {
-        name: string;
-        id: number;
-    }[];
+    teams: Record<string, { name: string; id: number }>;
 }) {
     const { currentCompany } = usePage<SharedData>().props;
     const { isMobile } = useSidebar();
-    const [activeCompany, setActiveCompany] = React.useState(teams[currentCompany]);
+    const [activeCompany, setActiveCompany] = React.useState(teams[currentCompany ?? 0]);
 
     if (!activeCompany) {
         return null;
