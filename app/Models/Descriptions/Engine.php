@@ -12,7 +12,7 @@ class Engine extends Model
 {
     public $timestamps = false;
 
-    protected $table = 'engine';
+    protected $table = 'engines';
 
     protected $fillable = [];
 
