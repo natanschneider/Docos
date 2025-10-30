@@ -36,6 +36,8 @@ final class DatabaseRepository
             $query->whereIn('companies.id', $request->user()->companies()->pluck('companies.id')->toArray());
         });
 
+        $query->with('engine');
+
         return $query->get();
     }
 
