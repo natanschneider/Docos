@@ -1,11 +1,12 @@
 import { appearance } from '@/routes';
+import company from '@/routes/company';
+import database from '@/routes/database';
 import { edit as editPassword } from '@/routes/password';
 import { edit } from '@/routes/profile';
+import project from '@/routes/project';
 import { InertiaLinkProps } from '@inertiajs/react';
 import { LucideIcon } from 'lucide-react';
 import { type ReactNode } from 'react';
-import company from '@/routes/company';
-import project from '@/routes/project';
 
 export interface companyModel {
     id: number;
@@ -57,8 +58,8 @@ export const CompanyNavItems: NavItem[] = [
     {
         title: 'List',
         href: company.index().url,
-        icon: null
-    }
+        icon: null,
+    },
 ];
 
 export interface projectModel {
@@ -78,6 +79,34 @@ export const ProjectNavItems: NavItem[] = [
     {
         title: 'List',
         href: project.index().url,
-        icon: null
-    }
+        icon: null,
+    },
 ];
+
+export interface databaseModel {
+    id: number;
+    name: string;
+    engine_id: number;
+    engine: engineModel;
+    created_at: string;
+    updated_at: string;
+    public_key: string;
+}
+
+export const DatabaseNavItems: NavItem[] = [
+    {
+        title: 'Create',
+        href: database.create().url,
+        icon: null,
+    },
+    {
+        title: 'List',
+        href: database.index().url,
+        icon: null,
+    },
+];
+
+export interface engineModel {
+    id: number;
+    name: string;
+}
