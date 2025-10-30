@@ -38,7 +38,7 @@ export default function ListProjects({ projects }: { projects: projectModel[] })
                             {projects.map((project) => (
                                 <ResourceListItem
                                     key={project.id}
-                                    resource={ {
+                                    resource={{
                                         id: project.id,
                                         name: project.name,
                                         edit_url: ProjectRoute.edit(project.id).url,

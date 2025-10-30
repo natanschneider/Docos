@@ -38,7 +38,7 @@ export default function ListCompanies({ companies }: { companies: companyModel[]
                             {companies.map((company) => (
                                 <ResourceListItem
                                     key={company.id}
-                                    resource={ {
+                                    resource={{
                                         id: company.id,
                                         name: company.name,
                                         description: company.description,

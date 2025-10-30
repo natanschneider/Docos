@@ -1,3 +1,4 @@
+import { AutoCloseAlert } from '@/components/auto-close-alert';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -11,10 +12,9 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { AutoCloseAlert } from "@/components/auto-close-alert";
-import axios from 'axios';
-import { useState } from "react";
 import { Link, router } from '@inertiajs/react';
+import axios from 'axios';
+import { useState } from 'react';
 
 interface resourceItem {
     id: number;
@@ -35,7 +35,7 @@ export default function ResourceListItem({ resource }: { resource: resourceItem 
     }>({
         type: 'success',
         message: '',
-        subMessage: ''
+        subMessage: '',
     });
 
     const deleteItem = async (delete_url: string, id: number) => {
@@ -46,9 +46,9 @@ export default function ResourceListItem({ resource }: { resource: resourceItem 
                 },
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    Accept: 'application/json',
                 },
-                withCredentials: true
+                withCredentials: true,
             });
 
             if (response.status === 200) {
@@ -57,7 +57,7 @@ export default function ResourceListItem({ resource }: { resource: resourceItem 
                 setAlertInfo({
                     type: 'success',
                     message: 'Success',
-                    subMessage: 'The resource has been deleted'
+                    subMessage: 'The resource has been deleted',
                 });
                 setIsOpen(true);
 
@@ -75,7 +75,7 @@ export default function ResourceListItem({ resource }: { resource: resourceItem 
             setAlertInfo({
                 type: 'error',
                 message: msg,
-                subMessage: subMsg
+                subMessage: subMsg,
             });
             setIsOpen(true);
         }
@@ -83,49 +83,48 @@ export default function ResourceListItem({ resource }: { resource: resourceItem 
 
     return (
         <>
-        { isVisible && (
-            <div key={resource.id} className="rounded-lg border border-border bg-card p-4 transition-colors hover:bg-accent/50">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                    <div className="flex-1 space-y-1">
-                        <Label className="text-base font-medium text-foreground">{resource.name}</Label>
-                        { resource.description && <p className="text-sm text-muted-foreground">{resource.description}</p> }
-                    </div>
-                    <div className="flex gap-2">
-                        <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => (window.location.href = resource.edit_url)}
-                            className="min-w-[4rem]"
-                        >
-                            <Link href={resource.edit_url} prefetch>Edit</Link>
-                        </Button>
-                        <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                                <Button
-                                    size="sm"
-                                    variant="outline"
-                                    className="min-w-[4rem] text-destructive hover:bg-destructive/10 hover:text-destructive"
-                                >
-                                    Delete
-                                </Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                                <AlertDialogHeader>
-                                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                                    <AlertDialogDescription>
-                                        This action cannot be undone. This will permanently delete and remove the data.
-                                    </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                    <AlertDialogAction className='text-destructive' onClick={() => deleteItem(resource.delete_url, resource.id) }>Delete</AlertDialogAction>
-                                </AlertDialogFooter>
-                            </AlertDialogContent>
-                        </AlertDialog>
+            {isVisible && (
+                <div key={resource.id} className="rounded-lg border border-border bg-card p-4 transition-colors hover:bg-accent/50">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                        <div className="flex-1 space-y-1">
+                            <Label className="text-base font-medium text-foreground">{resource.name}</Label>
+                            {resource.description && <p className="text-sm text-muted-foreground">{resource.description}</p>}
+                        </div>
+                        <div className="flex gap-2">
+                            <Button size="sm" variant="outline" onClick={() => (window.location.href = resource.edit_url)} className="min-w-[4rem]">
+                                <Link href={resource.edit_url} prefetch>
+                                    Edit
+                                </Link>
+                            </Button>
+                            <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                    <Button
+                                        size="sm"
+                                        variant="outline"
+                                        className="min-w-[4rem] text-destructive hover:bg-destructive/10 hover:text-destructive"
+                                    >
+                                        Delete
+                                    </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            This action cannot be undone. This will permanently delete and remove the data.
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                        <AlertDialogAction className="text-destructive" onClick={() => deleteItem(resource.delete_url, resource.id)}>
+                                            Delete
+                                        </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
+                        </div>
                     </div>
                 </div>
-            </div>
-        ) }
+            )}
             <AutoCloseAlert
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}

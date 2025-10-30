@@ -13,15 +13,14 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
+import company from '@/routes/company';
 import database from '@/routes/database';
+import project from '@/routes/project';
+import { SharedData } from '@/types';
 import { type NavItem } from '@/types/resources';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { LayoutGrid } from 'lucide-react';
 import AppLogo from './app-logo';
-import company from '@/routes/company';
-import project from '@/routes/project';
-import { usePage } from '@inertiajs/react';
-import { SharedData } from '@/types';
 
 const mainNavItems: NavItem[] = [
     {
@@ -32,11 +31,12 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Companies',
         href: company.index().url,
-        icon: null
+        icon: null,
     },
     {
         title: 'Projects',
         href: project.index().url,
+        icon: null,
     },
     {
         title: 'Databases',
@@ -48,13 +48,16 @@ const mainNavItems: NavItem[] = [
 export function AppSidebar() {
     const { companies } = usePage<SharedData>().props;
 
-    const teams = companies.reduce((acc, company) => {
-        acc[company.id] = {
-            name: company.name,
-            id: company.id
-        };
-        return acc;
-    }, {} as Record<string, { name: string; id: number }>);
+    const teams = companies.reduce(
+        (acc, company) => {
+            acc[company.id] = {
+                name: company.name,
+                id: company.id,
+            };
+            return acc;
+        },
+        {} as Record<string, { name: string; id: number }>,
+    );
 
     return (
         <Sidebar collapsible="icon" variant="inset">
@@ -79,7 +82,7 @@ export function AppSidebar() {
             </SidebarContent>
 
             <SidebarFooter>
-                <AppearanceTabs showLabel={false} className="w-full justify-center flex-wrap" />
+                <AppearanceTabs showLabel={false} className="w-full flex-wrap justify-center" />
                 <NavUser />
             </SidebarFooter>
         </Sidebar>

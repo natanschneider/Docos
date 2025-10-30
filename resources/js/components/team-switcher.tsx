@@ -8,13 +8,12 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
-import { Link, router } from '@inertiajs/react';
-import { create } from '@/routes/company'
+import { changeCompany } from '@/routes';
+import { create } from '@/routes/company';
+import { type SharedData } from '@/types';
+import { Link, router, usePage } from '@inertiajs/react';
 import { ChevronsUpDown, Plus } from 'lucide-react';
 import * as React from 'react';
-import { usePage } from '@inertiajs/react';
-import { type SharedData } from '@/types';
-import { changeCompany } from '@/routes';
 
 export function TeamSwitcher({
     teams,
@@ -33,7 +32,7 @@ export function TeamSwitcher({
         setActiveCompany(teams[id]);
         router.flushAll();
         router.get(changeCompany(id));
-    }
+    };
 
     return (
         <SidebarMenu>
@@ -54,8 +53,8 @@ export function TeamSwitcher({
                         sideOffset={4}
                     >
                         <DropdownMenuLabel className="text-xs text-muted-foreground">Companies</DropdownMenuLabel>
-                        { Object.values(teams).map((team, index) => (
-                            <DropdownMenuItem key={team.name} onClick={() => changeComp(team.id) } className="gap-2 p-2">
+                        {Object.values(teams).map((team, index) => (
+                            <DropdownMenuItem key={team.name} onClick={() => changeComp(team.id)} className="gap-2 p-2">
                                 {team.name}
                                 <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
                             </DropdownMenuItem>
@@ -65,7 +64,9 @@ export function TeamSwitcher({
                             <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
                                 <Plus className="size-4" />
                             </div>
-                            <Link href={ create().url } className="font-medium text-muted-foreground">Add company</Link>
+                            <Link href={create().url} className="font-medium text-muted-foreground">
+                                Add company
+                            </Link>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

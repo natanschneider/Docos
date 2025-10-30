@@ -6,19 +6,17 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import ResourcesLayout from '@/layouts/resources/layout';
-import { type BreadcrumbItem } from '@/types';
+import project from '@/routes/project';
+import { type BreadcrumbItem, type SharedData } from '@/types';
 import { ProjectNavItems, type projectModel } from '@/types/resources.d';
 import { Transition } from '@headlessui/react';
-import { Form, Head } from '@inertiajs/react';
+import { Form, Head, usePage } from '@inertiajs/react';
 import { useRef } from 'react';
-import project from '@/routes/project';
-import { usePage } from '@inertiajs/react';
-import { type SharedData } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Project',
-        href: project.index().url
+        href: project.index().url,
     },
 ];
 
@@ -32,16 +30,17 @@ export default function ManipulateProject({ project }: { project: projectModel |
 
             <ResourcesLayout title="Project" description="Manage your project information" sidebarNavItems={ProjectNavItems}>
                 <div className="border-spacing-x-60 space-y-6">
-                    <HeadingSmall title={project !== null ? 'Edit a project' : 'Create a project'} description='Edit the information of your project' />
+                    <HeadingSmall
+                        title={project !== null ? 'Edit a project' : 'Create a project'}
+                        description="Edit the information of your project"
+                    />
 
                     <Form
-                        {
-                            ...project !== null
-                                ? ProjectController.update.form({
-                                    project: project?.id,
-                                })
-                                : ProjectController.store.form()
-                        }
+                        {...(project !== null
+                            ? ProjectController.update.form({
+                                  project: project?.id,
+                              })
+                            : ProjectController.store.form())}
                         options={{
                             preserveScroll: true,
                         }}
@@ -51,16 +50,20 @@ export default function ManipulateProject({ project }: { project: projectModel |
                     >
                         {({ errors, processing, recentlySuccessful }) => (
                             <>
-                                {
-                                    project !== null ?
-                                        <input type="hidden" name="id" value={ project?.id } />
-                                        : null
-                                }
-                                <input type="hidden" name="company_id" value={ currentCompany ?? '' } />
+                                {project !== null ? <input type="hidden" name="id" value={project?.id} /> : null}
+                                <input type="hidden" name="company_id" value={currentCompany ?? ''} />
                                 <div className="grid gap-2">
                                     <Label htmlFor="name">Name</Label>
 
-                                    <Input id="name" ref={name} name="name" type="text" className="mt-1 block w-full" autoComplete="name" defaultValue={ project?.name } />
+                                    <Input
+                                        id="name"
+                                        ref={name}
+                                        name="name"
+                                        type="text"
+                                        className="mt-1 block w-full"
+                                        autoComplete="name"
+                                        defaultValue={project?.name}
+                                    />
 
                                     <InputError message={errors.name} />
                                 </div>
