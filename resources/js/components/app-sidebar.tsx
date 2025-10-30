@@ -13,6 +13,7 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
+import database from '@/routes/database';
 import { type NavItem } from '@/types/resources';
 import { Link } from '@inertiajs/react';
 import { LayoutGrid } from 'lucide-react';
@@ -36,8 +37,12 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Projects',
         href: project.index().url,
-        icon: null
-    }
+    },
+    {
+        title: 'Databases',
+        href: database.index().url,
+        icon: null,
+    },
 ];
 
 export function AppSidebar() {
