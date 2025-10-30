@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\ViewResources\CompanyController;
+use App\Http\Controllers\ViewResources\DatabaseController;
 use App\Http\Controllers\ViewResources\ProjectController;
 use App\Repositories\ViewsRepository;
 use Illuminate\Http\Request;
@@ -21,6 +22,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::resource('company', CompanyController::class);
+    Route::resource('database', DatabaseController::class);
 
     Route::get('change-company/{company}', function ($company) {
         return Redirect::route('dashboard')->withCookie('currentCompany', $company);
