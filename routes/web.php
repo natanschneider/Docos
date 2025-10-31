@@ -28,8 +28,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('database', DatabaseController::class);
     Route::resource('application', ApplicationController::class);
 
-    Route::get('change-company/{company}', function ($company) {
-        return Redirect::route('dashboard')->withCookie('currentCompany', $company);
+    Route::get('change-company/{company}', function (string $company, Request $request) {
+        $request->cookies->set('currentCompany', $company);
+        $currentProject = (new ProjectRepository())->getLatest($request);
+        $currentProject = (is_array($currentProject) && isset($currentProject['id'])) ? $currentProject['id'] : null;
+
+        return Redirect::route('dashboard')
+            ->withCookie('currentCompany', $company)
+            ->withCookie('currentProject', $currentProject);
     })->name('change-company');
 
     Route::get('change-project/{project}', function (string $project, Request $request) {
