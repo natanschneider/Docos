@@ -20,7 +20,7 @@ import project from '@/routes/project';
 import { SharedData } from '@/types';
 import { type NavItem } from '@/types/resources';
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutGrid } from 'lucide-react';
+import { LayoutGrid, Building, Presentation, Database, AppWindowMac } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -32,16 +32,17 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Companies',
         href: company.index().url,
-        icon: null,
+        icon: Building,
     },
     {
         title: 'Projects',
         href: project.index().url,
-        icon: null,
+        icon: Presentation,
     },
     {
         title: 'Databases',
         href: database.index().url,
+        icon: Database,
     },
     {
         title: 'Applications',
