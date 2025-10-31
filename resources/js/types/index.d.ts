@@ -20,6 +20,7 @@ export interface SharedData {
     auth: Auth;
     sidebarOpen: boolean;
     currentCompany: number | null;
+    currentProject: number | null;
     companies: { id: number; name: string; public_key: string }[];
     [key: string]: unknown;
 }
