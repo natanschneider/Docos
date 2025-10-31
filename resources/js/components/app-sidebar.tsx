@@ -13,6 +13,7 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
+import application from '@/routes/application';
 import company from '@/routes/company';
 import database from '@/routes/database';
 import project from '@/routes/project';
@@ -41,7 +42,11 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Databases',
         href: database.index().url,
-        icon: null,
+    },
+    {
+        title: 'Applications',
+        href: application.index().url,
+        icon: AppWindowMac,
     },
 ];
 
