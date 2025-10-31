@@ -39,7 +39,7 @@ export interface User {
 export interface UpdateItem {
     id: string;
     name: string;
-    updatedAt: string;
+    updated_at: string;
 }
 
 export interface Category {

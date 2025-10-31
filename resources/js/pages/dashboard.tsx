@@ -75,7 +75,7 @@ export default function Dashboard({ categories }: { categories: Category[] }) {
                                                     <span className="text-sm leading-relaxed font-medium text-foreground">{item.name}</span>
                                                     <div className="flex items-center gap-1.5 text-xs whitespace-nowrap text-muted-foreground">
                                                         <Clock className="h-3.5 w-3.5" />
-                                                        <span>{formatDate(item.updatedAt)}</span>
+                                                        <span>{formatDate(item.updated_at)}</span>
                                                     </div>
                                                 </div>
                                             ))}
