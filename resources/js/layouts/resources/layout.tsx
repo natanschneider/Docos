@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { type ResourcesLayoutProps } from '@/types/resources.d';
 import { Link } from '@inertiajs/react';
 
-export default function ResourcesLayout({ sidebarNavItems, title, description, children, ...props }: ResourcesLayoutProps) {
+export default function ResourcesLayout({ sidebarNavItems, title, description, children, sidebarExtraNavItems, ...props }: ResourcesLayoutProps) {
     // When server-side rendering, we only render the layout on the client...
     if (typeof window === 'undefined') {
         return null;
@@ -20,6 +20,7 @@ export default function ResourcesLayout({ sidebarNavItems, title, description, c
             <div className="flex flex-col lg:flex-row lg:space-x-12">
                 <aside className="w-full max-w-xl lg:w-48">
                     <nav className="flex flex-col space-y-1 space-x-0">
+                        {sidebarExtraNavItems && sidebarExtraNavItems}
                         {sidebarNavItems.map((item, index) => (
                             <Button
                                 key={`${typeof item.href === 'string' ? item.href : item.href.url}-${index}`}
