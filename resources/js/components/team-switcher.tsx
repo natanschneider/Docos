@@ -15,11 +15,7 @@ import { Link, router, usePage } from '@inertiajs/react';
 import { ChevronsUpDown, Plus } from 'lucide-react';
 import * as React from 'react';
 
-export function TeamSwitcher({
-    teams,
-}: {
-    teams: Record<string, { name: string; id: number }>;
-}) {
+export function TeamSwitcher({ teams }: { teams: Record<string, { name: string; id: number }> }) {
     const { currentCompany } = usePage<SharedData>().props;
     const { isMobile } = useSidebar();
     const [activeCompany, setActiveCompany] = React.useState(teams[currentCompany ?? 0]);
