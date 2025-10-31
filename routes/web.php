@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\ViewResources\ApplicationController;
 use App\Http\Controllers\ViewResources\CompanyController;
 use App\Http\Controllers\ViewResources\DatabaseController;
 use App\Http\Controllers\ViewResources\ProjectController;
+use App\Repositories\ProjectRepository;
 use App\Repositories\ViewsRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,10 +26,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('company', CompanyController::class);
     Route::resource('project', ProjectController::class);
     Route::resource('database', DatabaseController::class);
+    Route::resource('application', ApplicationController::class);
 
     Route::get('change-company/{company}', function ($company) {
         return Redirect::route('dashboard')->withCookie('currentCompany', $company);
     })->name('change-company');
+
+    Route::get('change-project/{project}', function (string $project, Request $request) {
+        $currentProject = (new ProjectRepository())->getLatest($request, (int) $project);
+        $currentProject = (is_array($currentProject) && isset($currentProject['id'])) ? $currentProject['id'] : null;
+
+        return Redirect::route('application.index')->withCookie('currentProject', $currentProject);
+    })->name('change-project');
 });
 
 require __DIR__.'/settings.php';
