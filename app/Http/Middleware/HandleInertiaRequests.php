@@ -49,6 +49,7 @@ final class HandleInertiaRequests extends Middleware
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'currentCompany' => (new HandleSelectedCompany())->handle($request),
+            'currentProject' => (new HandleSelectedProject())->handle($request),
             'companies' => $request->user()?->companies()->get(['companies.id', 'companies.name', 'companies.public_key'])->toArray(),
         ];
     }
