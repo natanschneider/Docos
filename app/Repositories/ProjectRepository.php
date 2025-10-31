@@ -7,6 +7,7 @@ namespace App\Repositories;
 use App\Http\Requests\ProjectRequest;
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 final class ProjectRepository
@@ -62,5 +63,18 @@ final class ProjectRepository
 
             return $project;
         });
+    }
+
+    public function getLatest(Request|ProjectRequest $request, ?int $id = null): array
+    {
+        $project = Project::where('company_id', $request->cookie('currentCompany'));
+
+        if ($id !== null && $id !== '' && $id !== '0') {
+            $project->where('id', $id);
+        } else {
+            $project->latest();
+        }
+
+        return $project?->first()?->toArray() ?? [ 'id' => null ];
     }
 }
