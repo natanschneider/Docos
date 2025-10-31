@@ -1,4 +1,5 @@
 import { appearance } from '@/routes';
+import application from '@/routes/application';
 import company from '@/routes/company';
 import database from '@/routes/database';
 import { edit as editPassword } from '@/routes/password';
@@ -22,6 +23,7 @@ export interface ResourcesLayoutProps {
     title: string;
     description: string;
     children: ReactNode;
+    sidebarExtraNavItems?: ReactNode;
 }
 
 export interface NavItem {
@@ -110,3 +112,26 @@ export interface engineModel {
     id: number;
     name: string;
 }
+
+export interface applicationModel {
+    id: number;
+    name: string;
+    project_id: number;
+    created_at: string;
+    updated_at: string;
+    public_key: string;
+    databases: databaseModel[];
+}
+
+export const ApplicationNavItems: NavItem[] = [
+    {
+        title: 'Create',
+        href: application.create().url,
+        icon: null,
+    },
+    {
+        title: 'List',
+        href: application.index().url,
+        icon: null,
+    },
+];
