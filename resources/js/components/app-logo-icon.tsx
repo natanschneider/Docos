@@ -3,8 +3,8 @@ import { SVGAttributes } from 'react';
 export default function AppLogoIcon(props: SVGAttributes<SVGElement>) {
     return (
         <svg {...props} fill="#ffffff" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
-            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+            <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
             <g id="SVGRepo_iconCarrier">
                 <g id="_x31_"></g> <g id="_x32_"></g> <g id="_x33_"></g> <g id="_x34_"></g> <g id="_x35_"></g> <g id="_x36_"></g>
                 <g id="_x37_">
