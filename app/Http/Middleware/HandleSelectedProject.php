@@ -21,8 +21,7 @@ class HandleSelectedProject
             return null;
         }
 
-        $id = $request->hasCookie('currentProject') ? (int) $request->cookie('currentProject') : null;
-        $id = (new ProjectController())->getLatest($request, $id)['id'];
+        $id = $request->hasCookie('currentProject') ? (int) $request->cookie('currentProject') : (new ProjectController())->getLatest($request)['id'];
 
         $request->cookies->set('currentProject', $id);
 
