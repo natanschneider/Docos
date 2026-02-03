@@ -39,6 +39,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('change-company');
 
     Route::get('change-project/{project}', function (string $project, Request $request) {
+        $request->cookies->set('currentProject', $project);
         $currentProject = (new ProjectRepository())->getLatest($request, (int) $project);
         $currentProject = (is_array($currentProject) && isset($currentProject['id'])) ? $currentProject['id'] : null;
 
