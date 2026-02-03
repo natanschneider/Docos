@@ -69,7 +69,7 @@ final class ProjectRepository
     {
         $project = Project::where('company_id', $request->cookie('currentCompany'));
 
-        if ($id !== null && $id !== '' && $id !== '0') {
+        if ($id !== null) {
             $project->where('id', $id);
         } else {
             $project->latest();
