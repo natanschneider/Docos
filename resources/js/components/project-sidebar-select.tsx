@@ -1,6 +1,6 @@
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { index } from '@/routes/application';
+import { changeProject as changeProj } from '@/routes';
 import { type SharedData } from '@/types';
 import { projectModel } from '@/types/resources';
 import { router, usePage } from '@inertiajs/react';
@@ -13,7 +13,7 @@ export default function ProjectSidebarSelect(projects: projectModel[]) {
     const changeProject = (value: string) => {
         setProject(value);
         router.flushAll();
-        router.get(index().url);
+        router.get(changeProj(value));
     };
 
     return (
