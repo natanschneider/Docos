@@ -5,6 +5,7 @@ import database from '@/routes/database';
 import { edit as editPassword } from '@/routes/password';
 import { edit } from '@/routes/profile';
 import project from '@/routes/project';
+import screen from '@/routes/screen';
 import { InertiaLinkProps } from '@inertiajs/react';
 import { LucideIcon } from 'lucide-react';
 import { type ReactNode } from 'react';
@@ -135,3 +136,37 @@ export const ApplicationNavItems: NavItem[] = [
         icon: null,
     },
 ];
+
+export interface screenModel {
+    id: number;
+    name: string;
+    application_id: number;
+    created_at: string;
+    updated_at: string;
+    public_key: string;
+    columns: columnModel[];
+};
+
+export const ScreenNavItems: NavItem[] = [
+    {
+        title: 'Create',
+        href: screen.create().url,
+        icon: null,
+    },
+    {
+        title: 'List',
+        href: screen.index().url,
+        icon: null,
+    },
+];
+
+export interface columnModel {
+    id: number;
+    name: string;
+    doc_file: string;
+    table_id: number;
+    type_id: number;
+    created_at: string;
+    updated_at: string;
+    public_key: string;
+};
