@@ -160,6 +160,17 @@ export const ScreenNavItems: NavItem[] = [
     },
 ];
 
+export interface tableModel {
+    id: number;
+    name: string;
+    doc_file: string;
+    database_id: number;
+    created_at: string;
+    updated_at: string;
+    public_key: string;
+    columns: columnModel[] | null;
+};
+
 export interface columnModel {
     id: number;
     name: string;
