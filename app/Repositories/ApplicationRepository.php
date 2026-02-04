@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Http\Requests\ApplicationRequest;
 use App\Models\Application;
+use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -83,5 +84,18 @@ final class ApplicationRepository
 
             return $application;
         });
+    }
+
+    public function getLatest(Request|ApplicationRequest $request, ?int $id = null): array
+    {
+        $application = Application::where('project_id', $request->cookie('currentProject'));
+
+        if ($id !== null) {
+            $application->where('id', $id);
+        } else {
+            $application->latest();
+        }
+
+        return $application?->first()?->toArray() ?? [ 'id' => null ];
     }
 }

@@ -9,6 +9,7 @@ use App\Models\Application;
 use App\Repositories\ApplicationRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\Request;
 
 class ApplicationController extends Controller
 {
@@ -38,5 +39,14 @@ class ApplicationController extends Controller
         Gate::authorize('delete', Application::findOrFail($request->id));
 
         return (new ApplicationRepository())->destroy($request);
+    }
+
+    public function getLatest(Request $request, ?int $id = null): array
+    {
+        $application = (new ApplicationRepository())->getLatest($request, $id);
+        $id = isset($application['id']) ? (int) $application['id'] : null;
+        cookie()->queue('currentApplication', $id, 60);
+
+        return $application;
     }
 }
