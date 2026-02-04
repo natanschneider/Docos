@@ -2,15 +2,17 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\ViewResources\ApplicationController;
-use App\Http\Controllers\ViewResources\CompanyController;
-use App\Http\Controllers\ViewResources\DatabaseController;
-use App\Http\Controllers\ViewResources\ProjectController;
-use App\Repositories\ProjectRepository;
-use App\Repositories\ViewsRepository;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Repositories\ApplicationRepository;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
+use App\Repositories\ViewsRepository;
+use Illuminate\Support\Facades\Route;
+use App\Repositories\ProjectRepository;
+use App\Http\Controllers\ViewResources\ScreenController;
+use App\Http\Controllers\ViewResources\CompanyController;
+use App\Http\Controllers\ViewResources\ProjectController;
+use App\Http\Controllers\ViewResources\DatabaseController;
+use App\Http\Controllers\ViewResources\ApplicationController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -27,6 +29,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('project', ProjectController::class);
     Route::resource('database', DatabaseController::class);
     Route::resource('application', ApplicationController::class);
+    Route::resource('screen', ScreenController::class);
 
     Route::get('change-company/{company}', function (string $company, Request $request) {
         $request->cookies->set('currentCompany', $company);
@@ -45,6 +48,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         return Redirect::route('application.index')->withCookie('currentProject', $currentProject);
     })->name('change-project');
+
+    Route::get('change-application/{application}', function (string $application, Request $request) {
+        $request->cookies->set('currentApplication', $application);
+        $currentApplication = (new ApplicationRepository())->getLatest($request, (int) $application);
+        $currentApplication = (is_array($currentApplication) && isset($currentApplication['id'])) ? $currentApplication['id'] : null;
+
+        return Redirect::route('screen.index')->withCookie('currentApplication', $currentApplication);
+    })->name('change-application');
 });
 
 require __DIR__.'/settings.php';
