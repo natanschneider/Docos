@@ -114,9 +114,30 @@ class ScreenController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id, ScreenRequest $request): Response
     {
-        //
+        $applicationRequest = ApplicationRequest::createFrom($request);
+        $applicationRequest->merge([
+            'company_id' => $request->cookie('currentCompany'),
+            'project_id' => $request->cookie('currentProject')
+        ]);
+        $applications = (new ApplicationController())->get($applicationRequest);
+
+        $currentApplication = $request->hasCookie('currentApplication')
+            ? $request->cookie('currentApplication')
+            : (new ApplicationController())->getLatest($request)['id'];
+
+        $request->merge(['application_id' => $currentApplication]);
+        $tables = (new TableRepository())->getWithColumns($request);
+
+        $request->merge(['id' => $id, 'application_id' => $currentApplication]);
+        $screen = (new Screen())->get($request);
+
+        return Inertia::render('resources/screen/manipulate', [
+            'screen' => $screen,
+            'tables' => $tables,
+            'applications' => $applications,
+        ]);
     }
 
     /**
