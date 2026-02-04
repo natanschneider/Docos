@@ -4,7 +4,6 @@ namespace App\Http\Controllers\ViewResources;
 
 use App\Http\Requests\ApplicationRequest;
 use App\Repositories\TableRepository;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ScreenController as Screen;
 use App\Http\Requests\ScreenRequest;
@@ -19,10 +18,10 @@ class ScreenController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(ScreenRequest $request)
+    public function index(ScreenRequest $request): Response
     {
         $applicationRequest = ApplicationRequest::createFrom($request);
-        $applicationRequest->mergeIfMissing([
+        $applicationRequest->merge([
             'company_id' => $request->cookie('currentCompany'),
             'project_id' => $request->cookie('currentProject')
         ]);
