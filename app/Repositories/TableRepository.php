@@ -8,6 +8,7 @@ use App\Http\Requests\TableRequest;
 use App\Models\Table;
 use DB;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 
 final class TableRepository
 {
@@ -62,5 +63,32 @@ final class TableRepository
 
             return $table;
         });
+    }
+
+    public function getWithColumns(Request $request)
+    {
+        $query = Table::query();
+
+        if ($request->has('id')) {
+            $query->where('id', $request->id);
+        }
+
+        if ($request->has('database_id')) {
+            $query->where('database_id', $request->database_id);
+        }
+
+        if ($request->has('application_id')) {
+            $query->whereHas('database.applications', function ($query) use ($request): void {
+                $query->where('applications.id', $request->application_id);
+            });
+        }
+
+        $query->whereHas('database.company', function ($query) use ($request): void {
+            $query->whereIn('companies.id', $request->user()->companies()->pluck('companies.id')->toArray());
+        });
+
+        $query->with('columns');
+
+        return $query->get();
     }
 }
