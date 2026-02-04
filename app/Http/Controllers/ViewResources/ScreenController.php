@@ -158,8 +158,15 @@ class ScreenController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id, ScreenRequest $request): JsonResponse
     {
-        //
+        $currentApplication = $request->hasCookie('currentApplication')
+            ? $request->cookie('currentApplication')
+            : (new ApplicationController())->getLatest($request)['id'];
+
+        $request->merge(['id' => $id, 'application_id' => $currentApplication]);
+        $response = (new Screen())->destroy($request);
+
+        return response()->json($response);
     }
 }
