@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\ScreenController as Screen;
 use App\Http\Requests\ScreenRequest;
 use App\Http\Controllers\ApplicationController;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -68,9 +70,16 @@ class ScreenController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ScreenRequest $request): RedirectResponse
     {
-        //
+        $currentApplication = $request->hasCookie('currentApplication')
+            ? $request->cookie('currentApplication')
+            : (new ApplicationController())->getLatest($request)['id'];
+
+        $request->merge(['application_id' => $currentApplication]);
+        (new Screen())->store($request);
+
+        return redirect()->route('screen.index');
     }
 
     /**
