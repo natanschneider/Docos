@@ -42,9 +42,27 @@ class ScreenController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(ScreenRequest $request)
+    public function create(ScreenRequest $request): Response
     {
-        //
+        $applicationRequest = ApplicationRequest::createFrom($request);
+        $applicationRequest->merge([
+            'company_id' => $request->cookie('currentCompany'),
+            'project_id' => $request->cookie('currentProject')
+        ]);
+        $applications = (new ApplicationController())->get($applicationRequest);
+
+        $currentApplication = $request->hasCookie('currentApplication')
+            ? $request->cookie('currentApplication')
+            : (new ApplicationController())->getLatest($request)['id'];
+
+        $request->merge(['application_id' => $currentApplication]);
+        $tables = (new TableRepository())->getWithColumns($request);
+
+        return Inertia::render('resources/screen/manipulate', [
+            'screen' => null,
+            'tables' => $tables,
+            'applications' => $applications,
+        ]);
     }
 
     /**
