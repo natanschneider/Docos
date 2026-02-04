@@ -20,8 +20,9 @@ import project from '@/routes/project';
 import { SharedData } from '@/types';
 import { type NavItem } from '@/types/resources';
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutGrid, Building, Presentation, Database, AppWindowMac } from 'lucide-react';
+import { LayoutGrid, Building, Presentation, Database, AppWindowMac, ScreenShare } from 'lucide-react';
 import AppLogo from './app-logo';
+import screen from '@/routes/screen';
 
 const mainNavItems: NavItem[] = [
     {
@@ -49,6 +50,11 @@ const mainNavItems: NavItem[] = [
         href: application.index().url,
         icon: AppWindowMac,
     },
+    {
+        title: 'Screen',
+        href: screen.index().url,
+        icon: ScreenShare
+    }
 ];
 
 export function AppSidebar() {
