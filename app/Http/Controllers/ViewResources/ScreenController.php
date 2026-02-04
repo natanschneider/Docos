@@ -143,9 +143,16 @@ class ScreenController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ScreenRequest $request, string $id): RedirectResponse
     {
-        //
+        $currentApplication = $request->hasCookie('currentApplication')
+            ? $request->cookie('currentApplication')
+            : (new ApplicationController())->getLatest($request)['id'];
+
+        $request->merge(['id' => $id, 'application_id' => $currentApplication]);
+        (new Screen())->update($request);
+
+        return redirect()->route('screen.index');
     }
 
     /**
