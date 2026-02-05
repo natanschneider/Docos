@@ -16,27 +16,27 @@ class DatabaseController extends Controller
     {
         Gate::authorize('create', [Database::class, $request]);
 
-        return (new DatabaseRepository())->create($request);
+        return new DatabaseRepository()->create($request);
     }
 
     public function get(DatabaseRequest $request): Collection
     {
         Gate::authorize('view', [Database::class, $request]);
 
-        return (new DatabaseRepository())->get($request);
+        return new DatabaseRepository()->get($request);
     }
 
     public function update(DatabaseRequest $request): Collection
     {
         Gate::authorize('update', Database::findOrFail($request->id));
 
-        return (new DatabaseRepository())->update($request);
+        return new DatabaseRepository()->update($request);
     }
 
     public function destroy(DatabaseRequest $request): Database|Collection
     {
         Gate::authorize('delete', Database::findOrFail($request->id));
 
-        return (new DatabaseRepository())->destroy($request);
+        return new DatabaseRepository()->destroy($request);
     }
 }

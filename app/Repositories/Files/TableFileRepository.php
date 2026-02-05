@@ -28,7 +28,7 @@ final class TableFileRepository
 
     public function delete(Table $table): array
     {
-        $delete = (new FileRepository())->delete('docs', $table->doc_file);
+        $delete = new FileRepository()->delete('docs', $table->doc_file);
 
         $table->update([
             'doc_file' => null,

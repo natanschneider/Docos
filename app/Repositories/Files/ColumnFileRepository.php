@@ -28,7 +28,7 @@ final class ColumnFileRepository
 
     public function delete(Column $column): array
     {
-        $delete = (new FileRepository())->delete('docs', $column->doc_file);
+        $delete = new FileRepository()->delete('docs', $column->doc_file);
 
         $column->update([
             'doc_file' => null,

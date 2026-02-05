@@ -145,7 +145,7 @@ export interface screenModel {
     updated_at: string;
     public_key: string;
     columns: columnModel[];
-};
+}
 
 export const ScreenNavItems: NavItem[] = [
     {
@@ -169,7 +169,7 @@ export interface tableModel {
     updated_at: string;
     public_key: string;
     columns: columnModel[] | null;
-};
+}
 
 export interface columnModel {
     id: number;
@@ -180,4 +180,4 @@ export interface columnModel {
     created_at: string;
     updated_at: string;
     public_key: string;
-};
+}

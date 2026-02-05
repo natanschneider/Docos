@@ -51,7 +51,7 @@ export default function ManipulateScreen({
 
     const addItem = (item: string) => {
         if (!items?.includes(item)) {
-            setItems([...items??[], item]);
+            setItems([...(items ?? []), item]);
         }
 
         setSelected('');
@@ -70,13 +70,10 @@ export default function ManipulateScreen({
                 title="Screen"
                 description="Manage your screen information"
                 sidebarNavItems={ScreenNavItems}
-                sidebarExtraNavItems={ApplicationSidebarSelect({projects, applications})}
+                sidebarExtraNavItems={ApplicationSidebarSelect({ projects, applications })}
             >
                 <div className="border-spacing-x-60 space-y-6">
-                    <HeadingSmall
-                        title={screen !== null ? 'Edit a screen' : 'Create a screen'}
-                        description="Edit the information of your screen"
-                    />
+                    <HeadingSmall title={screen !== null ? 'Edit a screen' : 'Create a screen'} description="Edit the information of your screen" />
 
                     <Form
                         {...(screen !== null
@@ -105,7 +102,7 @@ export default function ManipulateScreen({
                                         type="text"
                                         className="mt-1 block w-full"
                                         autoComplete="name"
-                                        defaultValue={ screen !== null ? screen[0]?.name : undefined }
+                                        defaultValue={screen !== null ? screen[0]?.name : undefined}
                                         required
                                     />
 
@@ -145,7 +142,7 @@ export default function ManipulateScreen({
                                         <input type="hidden" name="databases[]" value={items} />
                                         <CollapsibleContent className="mt-3 flex flex-col gap-2">
                                             {items?.map((item, index) => (
-                                                <div className="flex rounded-md border px-4 py-2 font-mono text-sm items-center" key={index}>
+                                                <div className="flex items-center rounded-md border px-4 py-2 font-mono text-sm" key={index}>
                                                     <p className="grow">{tableArr[item]}</p>
                                                     <Button
                                                         size="sm"

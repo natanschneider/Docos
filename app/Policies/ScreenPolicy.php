@@ -18,7 +18,7 @@ class ScreenPolicy
      */
     public function view(User $user, ScreenRequest $request): Response
     {
-        if ($request->has('application_id') && $request->application_id != 0) {
+        if ($request->has('application_id') && $request->application_id !== 0) {
             $company = Application::find($request?->application_id)?->project?->company;
 
             if ($user->companies()->where('companies.id', $company?->id)->doesntExist()) {

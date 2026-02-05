@@ -16,7 +16,15 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function ListScreens({ screens, projects, applications }: { screens: screenModel[]; projects: projectModel[]; applications: applicationModel[] }) {
+export default function ListScreens({
+    screens,
+    projects,
+    applications,
+}: {
+    screens: screenModel[];
+    projects: projectModel[];
+    applications: applicationModel[];
+}) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="List of screens" />
@@ -25,7 +33,7 @@ export default function ListScreens({ screens, projects, applications }: { scree
                 title="Screens"
                 description="Manage your screens information"
                 sidebarNavItems={ScreenNavItems}
-                sidebarExtraNavItems={ApplicationSidebarSelect({projects, applications})}
+                sidebarExtraNavItems={ApplicationSidebarSelect({ projects, applications })}
             >
                 <div className="border-spacing-x-60 space-y-6">
                     {screens.length === 0 ? (

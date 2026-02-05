@@ -16,7 +16,7 @@ final class CompanyController extends Controller
     {
         Gate::authorize('create', Company::class);
 
-        return (new CompanyRepository())->create($request);
+        return new CompanyRepository()->create($request);
     }
 
     public function get(CompanyRequest $request): Collection
@@ -25,20 +25,20 @@ final class CompanyController extends Controller
             Gate::authorize('view', Company::findOrFail($request->id));
         }
 
-        return (new CompanyRepository())->get($request);
+        return new CompanyRepository()->get($request);
     }
 
     public function update(CompanyRequest $request): Collection
     {
         Gate::authorize('update', Company::findOrFail($request->id));
 
-        return (new CompanyRepository())->update($request);
+        return new CompanyRepository()->update($request);
     }
 
     public function destroy(CompanyRequest $request): Company|Collection
     {
         Gate::authorize('delete', Company::findOrFail($request->id));
 
-        return (new CompanyRepository())->delete($request);
+        return new CompanyRepository()->delete($request);
     }
 }

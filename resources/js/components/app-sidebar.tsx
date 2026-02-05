@@ -17,12 +17,12 @@ import application from '@/routes/application';
 import company from '@/routes/company';
 import database from '@/routes/database';
 import project from '@/routes/project';
+import screen from '@/routes/screen';
 import { SharedData } from '@/types';
 import { type NavItem } from '@/types/resources';
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutGrid, Building, Presentation, Database, AppWindowMac, ScreenShare } from 'lucide-react';
+import { AppWindowMac, Building, Database, LayoutGrid, Presentation, ScreenShare } from 'lucide-react';
 import AppLogo from './app-logo';
-import screen from '@/routes/screen';
 
 const mainNavItems: NavItem[] = [
     {
@@ -53,8 +53,8 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Screen',
         href: screen.index().url,
-        icon: ScreenShare
-    }
+        icon: ScreenShare,
+    },
 ];
 
 export function AppSidebar() {

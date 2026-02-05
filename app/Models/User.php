@@ -51,7 +51,7 @@ final class User extends Authenticatable
         parent::boot();
 
         self::creating(function ($model): void {
-            $model->public_key = (new Nanoid())->generateId(15);
+            $model->public_key = new Nanoid()->generateId(15);
         });
     }
 

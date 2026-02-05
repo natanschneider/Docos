@@ -17,33 +17,33 @@ class ProjectController extends Controller
     {
         Gate::authorize('create', [Project::class, $request]);
 
-        return (new ProjectRepository())->create($request);
+        return new ProjectRepository()->create($request);
     }
 
     public function get(ProjectRequest $request): Collection
     {
         Gate::authorize('view', [Project::class, $request]);
 
-        return (new ProjectRepository())->get($request);
+        return new ProjectRepository()->get($request);
     }
 
     public function update(ProjectRequest $request): Collection
     {
         Gate::authorize('update', [Project::findOrFail($request->id), $request]);
 
-        return (new ProjectRepository())->update($request);
+        return new ProjectRepository()->update($request);
     }
 
     public function destroy(ProjectRequest $request): Project|Collection
     {
         Gate::authorize('delete', [Project::findOrFail($request->id), $request]);
 
-        return (new ProjectRepository())->destroy($request);
+        return new ProjectRepository()->destroy($request);
     }
 
     public function getLatest(Request $request, ?int $id = null): array
     {
-        $project = (new ProjectRepository())->getLatest($request, $id);
+        $project = new ProjectRepository()->getLatest($request, $id);
         $id = isset($project['id']) ? (int) $project['id'] : null;
 
         if ($id) {

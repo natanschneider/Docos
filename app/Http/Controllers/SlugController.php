@@ -29,6 +29,6 @@ class SlugController extends Controller
     {
         $parts = array_reverse(explode('-', strrev($slug), 2));
 
-        return array_map('strrev', $parts);
+        return array_map(strrev(...), $parts);
     }
 }

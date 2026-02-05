@@ -16,27 +16,27 @@ class EndpointController extends Controller
     {
         Gate::authorize('create', [Endpoint::class, $request]);
 
-        return (new EndpointRepository())->create($request);
+        return new EndpointRepository()->create($request);
     }
 
     public function get(EndpointRequest $request): Collection
     {
         Gate::authorize('view', [Endpoint::class, $request]);
 
-        return (new EndpointRepository())->get($request);
+        return new EndpointRepository()->get($request);
     }
 
     public function update(EndpointRequest $request): Endpoint
     {
         Gate::authorize('update', [Endpoint::findOrFail($request->id), $request]);
 
-        return (new EndpointRepository())->update($request);
+        return new EndpointRepository()->update($request);
     }
 
     public function destroy(EndpointRequest $request): Endpoint|Collection
     {
         Gate::authorize('delete', Endpoint::findOrFail($request->id));
 
-        return (new EndpointRepository())->destroy($request);
+        return new EndpointRepository()->destroy($request);
     }
 }

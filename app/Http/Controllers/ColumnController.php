@@ -16,27 +16,27 @@ class ColumnController extends Controller
     {
         Gate::authorize('create', [Column::class, $request]);
 
-        return (new ColumnRepository())->create($request);
+        return new ColumnRepository()->create($request);
     }
 
     public function get(ColumnRequest $request): Collection
     {
         Gate::authorize('view', [Column::class, $request]);
 
-        return (new ColumnRepository())->get($request);
+        return new ColumnRepository()->get($request);
     }
 
     public function update(ColumnRequest $request): Column
     {
         Gate::authorize('update', [Column::findOrFail($request->id), $request]);
 
-        return (new ColumnRepository())->update($request);
+        return new ColumnRepository()->update($request);
     }
 
     public function destroy(ColumnRequest $request): Column|Collection
     {
         Gate::authorize('delete', Column::findOrFail($request->id));
 
-        return (new ColumnRepository())->destroy($request);
+        return new ColumnRepository()->destroy($request);
     }
 }

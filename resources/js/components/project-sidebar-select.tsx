@@ -17,7 +17,7 @@ export default function ProjectSidebarSelect(projects: projectModel[]) {
     };
 
     return (
-        <div className="w-full justify-start my-4">
+        <div className="my-4 w-full justify-start">
             <Label htmlFor="project">Project</Label>
 
             <input type="hidden" name="project" value={project} />
