@@ -14,14 +14,12 @@ export default function ApplicationSidebarSelect({ projects, applications }: { p
     const changeProject = (value: string) => {
         setProject(value);
         router.flushAll();
-        console.log({ project, application });
         router.get(changeApp({ project, application }));
     };
 
     const changeApplication = (value: string) => {
         setApplication(value);
         router.flushAll();
-        console.log({ project, application });
         router.get(changeApp({ project, application }));
     };
 
