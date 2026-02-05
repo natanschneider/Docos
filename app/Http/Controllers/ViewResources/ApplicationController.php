@@ -27,7 +27,7 @@ class ApplicationController extends Controller
         $projectRequest->merge(['company_id' => $request->cookie('currentCompany')]);
         $projects = (new ProjectController())->get($projectRequest);
 
-        $currentProject = $request->hasCookie('currentProject')
+        $currentProject = ($request->hasCookie('currentProject') && $request->cookie('currentProject'))
             ? $request->cookie('currentProject')
             : (new ProjectController())->getLatest($request)['id'];
 
@@ -68,7 +68,7 @@ class ApplicationController extends Controller
      */
     public function store(ApplicationRequest $request): RedirectResponse
     {
-        $currentProject = $request->hasCookie('currentProject')
+        $currentProject = ($request->hasCookie('currentProject') && $request->cookie('currentProject'))
             ? $request->cookie('currentProject')
             : (new ProjectController())->getLatest($request)['id'];
 
@@ -87,7 +87,7 @@ class ApplicationController extends Controller
         $projectRequest->merge(['company_id' => $request->cookie('currentCompany')]);
         $projects = (new ProjectController())->get($projectRequest);
 
-        $currentProject = $request->hasCookie('currentProject')
+        $currentProject = ($request->hasCookie('currentProject') && $request->cookie('currentProject'))
             ? $request->cookie('currentProject')
             : (new ProjectController())->getLatest($request)['id'];
 
@@ -117,7 +117,7 @@ class ApplicationController extends Controller
         $projectRequest->merge(['company_id' => $request->cookie('currentCompany')]);
         $projects = (new ProjectController())->get($projectRequest);
 
-        $currentProject = $request->hasCookie('currentProject')
+        $currentProject = ($request->hasCookie('currentProject') && $request->cookie('currentProject'))
             ? $request->cookie('currentProject')
             : (new ProjectController())->getLatest($request)['id'];
 
@@ -143,7 +143,7 @@ class ApplicationController extends Controller
      */
     public function update(string $id, ApplicationRequest $request): RedirectResponse
     {
-        $currentProject = $request->hasCookie('currentProject')
+        $currentProject = ($request->hasCookie('currentProject') && $request->cookie('currentProject'))
             ? $request->cookie('currentProject')
             : (new ProjectController())->getLatest($request)['id'];
 
@@ -158,7 +158,7 @@ class ApplicationController extends Controller
      */
     public function destroy(string $id, ApplicationRequest $request): JsonResponse
     {
-        $currentProject = $request->hasCookie('currentProject')
+        $currentProject = ($request->hasCookie('currentProject') && $request->cookie('currentProject'))
             ? $request->cookie('currentProject')
             : (new ProjectController())->getLatest($request)['id'];
 

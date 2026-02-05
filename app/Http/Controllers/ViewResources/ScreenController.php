@@ -26,7 +26,7 @@ class ScreenController extends Controller
         $projectRequest->merge(['company_id' => $request->cookie('currentCompany')]);
         $projects = (new ProjectController())->get($projectRequest);
 
-        $currentProject = $request->hasCookie('currentProject')
+        $currentProject = ($request->hasCookie('currentProject') && $request->cookie('currentProject'))
             ? $request->cookie('currentProject')
             : (new ProjectController())->getLatest($request)['id'];
 
@@ -37,7 +37,7 @@ class ScreenController extends Controller
         ]);
         $applications = (new ApplicationController())->get($applicationRequest);
 
-        $currentApplication = $request->hasCookie('currentApplication')
+        $currentApplication = ($request->hasCookie('currentApplication') && $request->cookie('currentApplication'))
             ? $request->cookie('currentApplication')
             : (new ApplicationController())->getLatest($request)['id'];
 
@@ -60,7 +60,7 @@ class ScreenController extends Controller
         $projectRequest->merge(['company_id' => $request->cookie('currentCompany')]);
         $projects = (new ProjectController())->get($projectRequest);
 
-        $currentProject = $request->hasCookie('currentProject')
+        $currentProject = ($request->hasCookie('currentProject') && $request->cookie('currentProject'))
             ? $request->cookie('currentProject')
             : (new ProjectController())->getLatest($request)['id'];
 
@@ -71,7 +71,7 @@ class ScreenController extends Controller
         ]);
         $applications = (new ApplicationController())->get($applicationRequest);
 
-        $currentApplication = $request->hasCookie('currentApplication')
+        $currentApplication = ($request->hasCookie('currentApplication') && $request->cookie('currentApplication'))
             ? $request->cookie('currentApplication')
             : (new ApplicationController())->getLatest($request)['id'];
 
@@ -91,7 +91,7 @@ class ScreenController extends Controller
      */
     public function store(ScreenRequest $request): RedirectResponse
     {
-        $currentApplication = $request->hasCookie('currentApplication')
+        $currentApplication = ($request->hasCookie('currentApplication') && $request->cookie('currentApplication'))
             ? $request->cookie('currentApplication')
             : (new ApplicationController())->getLatest($request)['id'];
 
@@ -110,7 +110,7 @@ class ScreenController extends Controller
         $projectRequest->merge(['company_id' => $request->cookie('currentCompany')]);
         $projects = (new ProjectController())->get($projectRequest);
 
-        $currentProject = $request->hasCookie('currentProject')
+        $currentProject = ($request->hasCookie('currentProject') && $request->cookie('currentProject'))
             ? $request->cookie('currentProject')
             : (new ProjectController())->getLatest($request)['id'];
 
@@ -121,7 +121,7 @@ class ScreenController extends Controller
         ]);
         $applications = (new ApplicationController())->get($applicationRequest);
 
-        $currentApplication = $request->hasCookie('currentApplication')
+        $currentApplication = ($request->hasCookie('currentApplication') && $request->cookie('currentApplication'))
             ? $request->cookie('currentApplication')
             : (new ApplicationController())->getLatest($request)['id'];
 
@@ -148,7 +148,7 @@ class ScreenController extends Controller
         $projectRequest->merge(['company_id' => $request->cookie('currentCompany')]);
         $projects = (new ProjectController())->get($projectRequest);
 
-        $currentProject = $request->hasCookie('currentProject')
+        $currentProject = ($request->hasCookie('currentProject') && $request->cookie('currentProject'))
             ? $request->cookie('currentProject')
             : (new ProjectController())->getLatest($request)['id'];
 
@@ -159,7 +159,7 @@ class ScreenController extends Controller
         ]);
         $applications = (new ApplicationController())->get($applicationRequest);
 
-        $currentApplication = $request->hasCookie('currentApplication')
+        $currentApplication = ($request->hasCookie('currentApplication') && $request->cookie('currentApplication'))
             ? $request->cookie('currentApplication')
             : (new ApplicationController())->getLatest($request)['id'];
 
@@ -182,7 +182,7 @@ class ScreenController extends Controller
      */
     public function update(ScreenRequest $request, string $id): RedirectResponse
     {
-        $currentApplication = $request->hasCookie('currentApplication')
+        $currentApplication = ($request->hasCookie('currentApplication') && $request->cookie('currentApplication'))
             ? $request->cookie('currentApplication')
             : (new ApplicationController())->getLatest($request)['id'];
 
@@ -197,7 +197,7 @@ class ScreenController extends Controller
      */
     public function destroy(string $id, ScreenRequest $request): JsonResponse
     {
-        $currentApplication = $request->hasCookie('currentApplication')
+        $currentApplication = ($request->hasCookie('currentApplication') && $request->cookie('currentApplication'))
             ? $request->cookie('currentApplication')
             : (new ApplicationController())->getLatest($request)['id'];
 
