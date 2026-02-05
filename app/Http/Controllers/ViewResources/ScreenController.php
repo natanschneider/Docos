@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers\ViewResources;
 
-use App\Http\Requests\ApplicationRequest;
-use App\Repositories\TableRepository;
-use App\Http\Controllers\Controller;
-use App\Http\Controllers\ScreenController as Screen;
-use App\Http\Requests\ScreenRequest;
-use App\Http\Controllers\ApplicationController;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\ScreenRequest;
+use App\Http\Requests\ProjectRequest;
+use App\Repositories\TableRepository;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\ApplicationRequest;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\ScreenController as Screen;
 
 class ScreenController extends Controller
 {
@@ -20,10 +22,18 @@ class ScreenController extends Controller
      */
     public function index(ScreenRequest $request): Response
     {
+        $projectRequest = ProjectRequest::createFrom($request);
+        $projectRequest->merge(['company_id' => $request->cookie('currentCompany')]);
+        $projects = (new ProjectController())->get($projectRequest);
+
+        $currentProject = $request->hasCookie('currentProject')
+            ? $request->cookie('currentProject')
+            : (new ProjectController())->getLatest($request)['id'];
+
         $applicationRequest = ApplicationRequest::createFrom($request);
         $applicationRequest->merge([
             'company_id' => $request->cookie('currentCompany'),
-            'project_id' => $request->cookie('currentProject')
+            'project_id' => $currentProject
         ]);
         $applications = (new ApplicationController())->get($applicationRequest);
 
@@ -36,6 +46,7 @@ class ScreenController extends Controller
 
         return Inertia::render('resources/screen/list', [
             'screens' => $screens,
+            'projects' => $projects,
             'applications' => $applications,
         ]);
     }
@@ -45,10 +56,18 @@ class ScreenController extends Controller
      */
     public function create(ScreenRequest $request): Response
     {
+        $projectRequest = ProjectRequest::createFrom($request);
+        $projectRequest->merge(['company_id' => $request->cookie('currentCompany')]);
+        $projects = (new ProjectController())->get($projectRequest);
+
+        $currentProject = $request->hasCookie('currentProject')
+            ? $request->cookie('currentProject')
+            : (new ProjectController())->getLatest($request)['id'];
+
         $applicationRequest = ApplicationRequest::createFrom($request);
         $applicationRequest->merge([
             'company_id' => $request->cookie('currentCompany'),
-            'project_id' => $request->cookie('currentProject')
+            'project_id' => $currentProject
         ]);
         $applications = (new ApplicationController())->get($applicationRequest);
 
@@ -62,6 +81,7 @@ class ScreenController extends Controller
         return Inertia::render('resources/screen/manipulate', [
             'screen' => null,
             'tables' => $tables,
+            'projects' => $projects,
             'applications' => $applications,
         ]);
     }
@@ -86,10 +106,18 @@ class ScreenController extends Controller
      */
     public function show(string $id, ScreenRequest $request): Response
     {
+        $projectRequest = ProjectRequest::createFrom($request);
+        $projectRequest->merge(['company_id' => $request->cookie('currentCompany')]);
+        $projects = (new ProjectController())->get($projectRequest);
+
+        $currentProject = $request->hasCookie('currentProject')
+            ? $request->cookie('currentProject')
+            : (new ProjectController())->getLatest($request)['id'];
+
         $applicationRequest = ApplicationRequest::createFrom($request);
         $applicationRequest->merge([
             'company_id' => $request->cookie('currentCompany'),
-            'project_id' => $request->cookie('currentProject')
+            'project_id' => $currentProject
         ]);
         $applications = (new ApplicationController())->get($applicationRequest);
 
@@ -106,6 +134,7 @@ class ScreenController extends Controller
         return Inertia::render('resources/screen/manipulate', [
             'screen' => $screen,
             'tables' => $tables,
+            'projects' => $projects,
             'applications' => $applications,
         ]);
     }
@@ -115,10 +144,18 @@ class ScreenController extends Controller
      */
     public function edit(string $id, ScreenRequest $request): Response
     {
+        $projectRequest = ProjectRequest::createFrom($request);
+        $projectRequest->merge(['company_id' => $request->cookie('currentCompany')]);
+        $projects = (new ProjectController())->get($projectRequest);
+
+        $currentProject = $request->hasCookie('currentProject')
+            ? $request->cookie('currentProject')
+            : (new ProjectController())->getLatest($request)['id'];
+
         $applicationRequest = ApplicationRequest::createFrom($request);
         $applicationRequest->merge([
             'company_id' => $request->cookie('currentCompany'),
-            'project_id' => $request->cookie('currentProject')
+            'project_id' => $currentProject
         ]);
         $applications = (new ApplicationController())->get($applicationRequest);
 
@@ -135,6 +172,7 @@ class ScreenController extends Controller
         return Inertia::render('resources/screen/manipulate', [
             'screen' => $screen,
             'tables' => $tables,
+            'projects' => $projects,
             'applications' => $applications,
         ]);
     }
