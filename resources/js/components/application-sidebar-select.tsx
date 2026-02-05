@@ -6,7 +6,13 @@ import { applicationModel, projectModel } from '@/types/resources';
 import { router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
-export default function ApplicationSidebarSelect({ projects, applications }: { projects: projectModel[]; applications: applicationModel[] }) {
+export default function ApplicationSidebarSelect({
+    projects,
+    applications
+}: {
+    projects: projectModel[];
+    applications: applicationModel[];
+}) {
     const { currentApplication, currentProject } = usePage<SharedData>().props;
     const [application, setApplication] = useState<string>(currentApplication?.toString() ?? applications[0]?.id?.toString());
     const [project, setProject] = useState<string>(currentProject?.toString() ?? projects[0]?.id?.toString());

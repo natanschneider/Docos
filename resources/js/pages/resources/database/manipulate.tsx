@@ -21,7 +21,13 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function ManipulateDatabase({ database, engines }: { database: databaseModel | null; engines: engineModel[] }) {
+export default function ManipulateDatabase({
+    database,
+    engines
+}: {
+    database: databaseModel | null;
+    engines: engineModel[];
+}) {
     const { currentCompany } = usePage<SharedData>().props;
     const name = useRef<HTMLInputElement>(null);
 
