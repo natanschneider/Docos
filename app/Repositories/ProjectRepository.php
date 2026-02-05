@@ -67,14 +67,20 @@ final class ProjectRepository
 
     public function getLatest(Request|ProjectRequest $request, ?int $id = null): array
     {
-        $project = Project::where('company_id', $request->cookie('currentCompany'));
+        if ($id) {
+            $projectId = Project::where('company_id', $request->cookie('currentCompany'))
+                ->where('id', $id)
+                ->first();
 
-        $projectQuery = $project->where('id', $id)?->first();
-
-        if ($projectQuery) {
-            return $projectQuery->toArray();
+            if ($projectId) {
+                return $projectId->toArray();
+            }
         }
 
-        return $project?->latest()?->first()?->toArray() ?? [ 'id' => null ];
+        $project = Project::where('company_id', $request->cookie('currentCompany'))
+            ->latest()
+            ->first();
+
+        return $project?->toArray() ?? [ 'id' => null ];
     }
 }

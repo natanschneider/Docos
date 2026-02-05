@@ -88,17 +88,26 @@ final class ApplicationRepository
 
     public function getLatest(Request|ApplicationRequest $request, ?int $id = null): array
     {
+        if ($id) {
+            $applicationId = Application::where('project_id', $request->cookie('currentProject'))
+                ->whereHas('project.company', function ($query) use ($request): void {
+                    $query->where('companies.id', $request->cookie('currentCompany'));
+                })
+                ->where('id', $id)
+                ->first();
+
+            if ($applicationId) {
+                return $applicationId->toArray();
+            }
+        }
+
         $application = Application::where('project_id', $request->cookie('currentProject'))
             ->whereHas('project.company', function ($query) use ($request): void {
                 $query->where('companies.id', $request->cookie('currentCompany'));
-            });
+            })
+            ->latest()
+            ->first();
 
-        $applicationQuery = $application->where('id', $id)?->first();
-
-        if ($applicationQuery) {
-            return $applicationQuery->toArray();
-        }
-
-        return $application?->latest()?->first()?->toArray() ?? [ 'id' => null ];
+        return $application?->toArray() ?? [ 'id' => null ];
     }
 }
