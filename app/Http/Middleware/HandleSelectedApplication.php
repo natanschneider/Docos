@@ -20,6 +20,11 @@ class HandleSelectedApplication
         }
 
         $id = $request->hasCookie('currentApplication') ? (int) $request->cookie('currentApplication') : (new ApplicationController())->getLatest($request)['id'];
+
+        if ($id === 0 or $id === '0') {
+            $id = null;
+        }
+
         $request->cookies->set('currentApplication', $id);
 
         return $id;
