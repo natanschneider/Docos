@@ -38,6 +38,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         $currentApplication = (new ApplicationRepository())->getLatest($request);
         $currentApplication = (is_array($currentApplication) && isset($currentApplication['id'])) ? $currentApplication['id'] : null;
 
+        $request->cookies->set('currentProject', $currentProject);
+        $request->cookies->set('currentApplication', $currentApplication);
+
         return Redirect::route('dashboard')
             ->withCookie('currentCompany', $company)
             ->withCookie('currentProject', $currentProject)
@@ -51,6 +54,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         $currentApplication = (new ApplicationRepository())->getLatest($request);
         $currentApplication = (is_array($currentApplication) && isset($currentApplication['id'])) ? $currentApplication['id'] : null;
+
+        $request->cookies->set('currentProject', $currentProject);
+        $request->cookies->set('currentApplication', $currentApplication);
 
         return Redirect::route('application.index')
             ->withCookie('currentProject', $currentProject)
@@ -67,8 +73,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         $currentApplication = (new ApplicationRepository())->getLatest($request, (int) $application);
         $currentApplication = (is_array($currentApplication) && isset($currentApplication['id'])) ? $currentApplication['id'] : null;
 
-        $request->cookies->set('currentProject', $project);
-        $request->cookies->set('currentApplication', $application);
+        $request->cookies->set('currentProject', $currentProject);
+        $request->cookies->set('currentApplication', $currentApplication);
 
         return Redirect::route('screen.index')
             ->withCookie('currentApplication', $currentApplication)
