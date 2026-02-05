@@ -5,7 +5,7 @@ import AppLayout from '@/layouts/app-layout';
 import ResourcesLayout from '@/layouts/resources/layout';
 import * as ScreenRoute from '@/routes/screen';
 import { type BreadcrumbItem } from '@/types';
-import { applicationModel, ScreenNavItems, type screenModel } from '@/types/resources.d';
+import { applicationModel, projectModel, ScreenNavItems, type screenModel } from '@/types/resources.d';
 import { Head } from '@inertiajs/react';
 import { TriangleAlert } from 'lucide-react';
 
@@ -16,7 +16,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function ListScreens({ screens, applications }: { screens: screenModel[]; applications: applicationModel[] }) {
+export default function ListScreens({ screens, projects, applications }: { screens: screenModel[]; projects: projectModel[]; applications: applicationModel[] }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="List of screens" />
@@ -25,7 +25,7 @@ export default function ListScreens({ screens, applications }: { screens: screen
                 title="Screens"
                 description="Manage your screens information"
                 sidebarNavItems={ScreenNavItems}
-                sidebarExtraNavItems={ApplicationSidebarSelect(applications)}
+                sidebarExtraNavItems={ApplicationSidebarSelect({projects, applications})}
             >
                 <div className="border-spacing-x-60 space-y-6">
                     {screens.length === 0 ? (
