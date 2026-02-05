@@ -45,7 +45,10 @@ class ProjectController extends Controller
     {
         $project = (new ProjectRepository())->getLatest($request, $id);
         $id = isset($project['id']) ? (int) $project['id'] : null;
-        cookie()->queue('currentProject', $id, 60);
+
+        if ($id) {
+            cookie()->queue('currentProject', $id, 60);
+        }
 
         return $project;
     }

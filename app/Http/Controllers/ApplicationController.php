@@ -45,7 +45,10 @@ class ApplicationController extends Controller
     {
         $application = (new ApplicationRepository())->getLatest($request, $id);
         $id = isset($application['id']) ? (int) $application['id'] : null;
-        cookie()->queue('currentApplication', $id, 60);
+
+        if ($id) {
+            cookie()->queue('currentApplication', $id, 60);
+        }
 
         return $application;
     }
