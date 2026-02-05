@@ -18,10 +18,10 @@ class ScreenPolicy
      */
     public function view(User $user, ScreenRequest $request): Response
     {
-        if ($request->has('application_id')) {
-            $company = Application::find($request->application_id)->project->company;
+        if ($request->has('application_id') && $request->application_id != 0) {
+            $company = Application::find($request?->application_id)?->project?->company;
 
-            if ($user->companies()->where('companies.id', $company->id)->doesntExist()) {
+            if ($user->companies()->where('companies.id', $company?->id)->doesntExist()) {
                 return Response::deny('Application provided does not belong to user or does not exist');
             }
         }
@@ -30,7 +30,7 @@ class ScreenPolicy
             $request->has('id') &&
             $user->companies()->where(
                 'companies.id',
-                Screen::findOrFail($request->id)->application->project->company_id
+                Screen::findOrFail($request->id)?->application?->project?->company_id
             )->doesntExist()
         ) {
             return Response::deny('Screen provided does not belong to user or does not exist');
