@@ -69,12 +69,12 @@ final class ProjectRepository
     {
         $project = Project::where('company_id', $request->cookie('currentCompany'));
 
-        if ($id !== null) {
-            $project->where('id', $id);
-        } else {
-            $project->latest();
+        $projectQuery = $project->where('id', $id)?->first();
+
+        if ($projectQuery) {
+            return $projectQuery->toArray();
         }
 
-        return $project?->first()?->toArray() ?? [ 'id' => null ];
+        return $project?->latest()?->first()?->toArray() ?? [ 'id' => null ];
     }
 }
