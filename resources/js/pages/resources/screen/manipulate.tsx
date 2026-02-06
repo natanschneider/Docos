@@ -44,11 +44,21 @@ export default function ManipulateScreen({
 
     const tableArr = tables.reduce(
         (acc, tables) => {
-            acc[tables.id] = tables.name;
+            acc[tables.id] = tables;
             return acc;
         },
-        {} as Record<string, string>,
+        {} as Record<string, tableModel>,
     );
+
+    const columnTable = tables.reduce((acc, table) => {
+        const columns = table?.columns;
+        columns?.forEach((column) => {
+            if (column.id) {
+                acc[column.id.toString()] = table.id.toString();
+            }
+        });
+        return acc;
+    }, {} as Record<string, string>);
 
     const addItem = (item: string) => {
         if (!items?.includes(item)) {
