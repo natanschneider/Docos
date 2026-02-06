@@ -25,7 +25,7 @@ export default function ListScreens({ screens, projects, applications }: { scree
                 title="Screens"
                 description="Manage your screens information"
                 sidebarNavItems={ScreenNavItems}
-                sidebarExtraNavItems={ApplicationSidebarSelect({projects, applications})}
+                sidebarExtraNavItems={ApplicationSidebarSelect({location: 'screen', projects, applications})}
             >
                 <div className="border-spacing-x-60 space-y-6">
                     {screens.length === 0 ? (
