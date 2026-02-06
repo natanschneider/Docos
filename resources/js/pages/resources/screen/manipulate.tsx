@@ -68,12 +68,12 @@ export default function ManipulateScreen({
             }
         }
 
-        setSelected('');
+        setSelected(undefined);
     };
 
     const removeItem = (item: string) => {
         setItems(items?.filter((i) => i !== item));
-        setSelected('');
+        setSelected(undefined);
     };
 
     return (
