@@ -187,7 +187,11 @@ export default function ManipulateScreen({
 
                                         <InputError message={errors.tables} />
 
-                                        <input type='hidden' name='columns[]' value={items} />
+                                        <input
+                                            type="hidden"
+                                            name="columns[]"
+                                            value={items}
+                                        />
                                         <CollapsibleContent className='grid gap-2 auto-cols-max grid-flow-col w-full'>
                                             {selectedTables?.map((table) => (
                                                 <Card key={table}>
@@ -233,7 +237,6 @@ export default function ManipulateScreen({
                                                     </CardContent>
                                                 </Card>
                                             ))}
-                                            <input type="hidden" name="columns[]" id='columns[]' value={items} />
                                         </CollapsibleContent>
                                     </Collapsible>
                                 </div>
