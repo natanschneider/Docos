@@ -96,7 +96,7 @@ final class Column extends Model
         parent::boot();
 
         self::creating(function ($model): void {
-            $model->public_key = new Nanoid()->generateId(15);
+            $model->public_key = (new Nanoid())->generateId(15);
         });
     }
 }

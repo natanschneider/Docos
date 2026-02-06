@@ -36,7 +36,10 @@ export default function ManipulateApplication({
     const { currentProject } = usePage<SharedData>().props;
     const [isOpen, setIsOpen] = React.useState(true);
     const name = useRef<HTMLInputElement>(null);
-    const [items, setItems] = React.useState<string[]>(application !== null ? application[0]?.databases.map((db) => db.id.toString()) : []);
+    const [items, setItems] = React.useState<string[]>(application !== null
+        ? application[0]?.databases.map((db) => db.id.toString())
+        : []
+    );
     const [selected, setSelected] = React.useState<string | undefined>(undefined);
 
     const databaseArr = databases.reduce(
@@ -103,7 +106,7 @@ export default function ManipulateApplication({
                                         type="text"
                                         className="mt-1 block w-full"
                                         autoComplete="name"
-                                        defaultValue={application !== null ? application[0]?.name : undefined}
+                                        defaultValue={ application !== null ? application[0]?.name : undefined }
                                         required
                                     />
 
@@ -143,7 +146,7 @@ export default function ManipulateApplication({
                                         <input type="hidden" name="databases[]" value={items} />
                                         <CollapsibleContent className="mt-3 flex flex-col gap-2">
                                             {items.map((item, index) => (
-                                                <div className="flex items-center rounded-md border px-4 py-2 font-mono text-sm" key={index}>
+                                                <div className="flex rounded-md border px-4 py-2 font-mono text-sm items-center" key={index}>
                                                     <p className="grow">{databaseArr[item]}</p>
                                                     <Button
                                                         size="sm"

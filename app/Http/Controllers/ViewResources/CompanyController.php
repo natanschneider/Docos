@@ -91,7 +91,7 @@ class CompanyController extends Controller
         $request->merge(['id' => $id]);
         $response = (new Company)->destroy($request);
 
-        new HandleSelectedCompany()->handle($request);
+        (new HandleSelectedCompany())->handle($request);
 
         return response()->json($response);
     }

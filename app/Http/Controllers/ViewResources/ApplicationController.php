@@ -25,14 +25,14 @@ class ApplicationController extends Controller
     {
         $projectRequest = ProjectRequest::createFrom($request);
         $projectRequest->merge(['company_id' => $request->cookie('currentCompany')]);
-        $projects = new ProjectController()->get($projectRequest);
+        $projects = (new ProjectController())->get($projectRequest);
 
         $currentProject = ($request->hasCookie('currentProject') && $request->cookie('currentProject'))
             ? $request->cookie('currentProject')
-            : new ProjectController()->getLatest($request)['id'];
+            : (new ProjectController())->getLatest($request)['id'];
 
         $request->merge(['project_id' => $currentProject]);
-        $applications = new Application()->get($request);
+        $applications = (new Application())->get($request);
 
         return Inertia::render('resources/application/list', [
             'applications' => $applications,
@@ -48,13 +48,13 @@ class ApplicationController extends Controller
         $databaseRequest = DatabaseRequest::createFrom($request);
         $databaseRequest->merge([
             'company_id' => $request->cookie('currentCompany'),
-            'project_id' => $request->cookie('currentProject'),
+            'project_id' => $request->cookie('currentProject')
         ]);
-        $databases = new DatabaseController()->get($databaseRequest);
+        $databases = (new DatabaseController())->get($databaseRequest);
 
         $projectRequest = ProjectRequest::createFrom($request);
         $projectRequest->merge(['company_id' => $request->cookie('currentCompany')]);
-        $projects = new ProjectController()->get($projectRequest);
+        $projects = (new ProjectController())->get($projectRequest);
 
         return Inertia::render('resources/application/manipulate', [
             'application' => null,
@@ -70,7 +70,7 @@ class ApplicationController extends Controller
     {
         $currentProject = ($request->hasCookie('currentProject') && $request->cookie('currentProject'))
             ? $request->cookie('currentProject')
-            : new ProjectController()->getLatest($request)['id'];
+            : (new ProjectController())->getLatest($request)['id'];
 
         $request->merge(['project_id' => $currentProject]);
         (new Application)->store($request);
@@ -85,18 +85,18 @@ class ApplicationController extends Controller
     {
         $projectRequest = ProjectRequest::createFrom($request);
         $projectRequest->merge(['company_id' => $request->cookie('currentCompany')]);
-        $projects = new ProjectController()->get($projectRequest);
+        $projects = (new ProjectController())->get($projectRequest);
 
         $currentProject = ($request->hasCookie('currentProject') && $request->cookie('currentProject'))
             ? $request->cookie('currentProject')
-            : new ProjectController()->getLatest($request)['id'];
+            : (new ProjectController())->getLatest($request)['id'];
 
         $databaseRequest = DatabaseRequest::createFrom($request);
         $databaseRequest->merge([
             'company_id' => $request->cookie('currentCompany'),
-            'project_id' => $currentProject,
+            'project_id' => $currentProject
         ]);
-        $databases = new DatabaseController()->get($databaseRequest);
+        $databases = (new DatabaseController())->get($databaseRequest);
 
         $request->merge(['id' => $id, 'project_id' => $currentProject]);
         $application = (new Application)->get($request);
@@ -115,18 +115,18 @@ class ApplicationController extends Controller
     {
         $projectRequest = ProjectRequest::createFrom($request);
         $projectRequest->merge(['company_id' => $request->cookie('currentCompany')]);
-        $projects = new ProjectController()->get($projectRequest);
+        $projects = (new ProjectController())->get($projectRequest);
 
         $currentProject = ($request->hasCookie('currentProject') && $request->cookie('currentProject'))
             ? $request->cookie('currentProject')
-            : new ProjectController()->getLatest($request)['id'];
+            : (new ProjectController())->getLatest($request)['id'];
 
         $databaseRequest = DatabaseRequest::createFrom($request);
         $databaseRequest->merge([
             'company_id' => $request->cookie('currentCompany'),
-            'project_id' => $currentProject,
+            'project_id' => $currentProject
         ]);
-        $databases = new DatabaseController()->get($databaseRequest);
+        $databases = (new DatabaseController())->get($databaseRequest);
 
         $request->merge(['id' => $id, 'project_id' => $currentProject]);
         $application = (new Application)->get($request);
@@ -145,7 +145,7 @@ class ApplicationController extends Controller
     {
         $currentProject = ($request->hasCookie('currentProject') && $request->cookie('currentProject'))
             ? $request->cookie('currentProject')
-            : new ProjectController()->getLatest($request)['id'];
+            : (new ProjectController())->getLatest($request)['id'];
 
         $request->merge(['id' => $id, 'project_id' => $currentProject]);
         (new Application)->update($request);
@@ -160,7 +160,7 @@ class ApplicationController extends Controller
     {
         $currentProject = ($request->hasCookie('currentProject') && $request->cookie('currentProject'))
             ? $request->cookie('currentProject')
-            : new ProjectController()->getLatest($request)['id'];
+            : (new ProjectController())->getLatest($request)['id'];
 
         $request->merge(['id' => $id, 'project_id' => $currentProject]);
         $response = (new Application)->destroy($request);

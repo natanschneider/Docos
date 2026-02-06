@@ -28,7 +28,7 @@ final class ScreenFileRepository
 
     public function delete(Screen $screen): array
     {
-        $delete = new FileRepository()->delete('docs', $screen->doc_file);
+        $delete = (new FileRepository())->delete('docs', $screen->doc_file);
 
         $screen->update([
             'doc_file' => null,

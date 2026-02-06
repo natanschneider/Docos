@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\ViewResources\ApplicationController;
-use App\Http\Controllers\ViewResources\CompanyController;
-use App\Http\Controllers\ViewResources\DatabaseController;
-use App\Http\Controllers\ViewResources\ProjectController;
-use App\Http\Controllers\ViewResources\ScreenController;
 use App\Repositories\ApplicationRepository;
-use App\Repositories\ProjectRepository;
-use App\Repositories\ViewsRepository;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
+use App\Repositories\ViewsRepository;
+use Illuminate\Support\Facades\Route;
+use App\Repositories\ProjectRepository;
+use App\Http\Controllers\ViewResources\ScreenController;
+use App\Http\Controllers\ViewResources\CompanyController;
+use App\Http\Controllers\ViewResources\ProjectController;
+use App\Http\Controllers\ViewResources\DatabaseController;
+use App\Http\Controllers\ViewResources\ApplicationController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');

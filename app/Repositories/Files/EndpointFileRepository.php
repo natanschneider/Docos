@@ -28,7 +28,7 @@ final class EndpointFileRepository
 
     public function delete(Endpoint $endpoint): array
     {
-        $delete = new FileRepository()->delete('docs', $endpoint->doc_file);
+        $delete = (new FileRepository())->delete('docs', $endpoint->doc_file);
 
         $endpoint->update([
             'doc_file' => null,

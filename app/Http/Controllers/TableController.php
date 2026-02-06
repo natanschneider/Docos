@@ -16,27 +16,27 @@ class TableController extends Controller
     {
         Gate::authorize('create', [Table::class, $request]);
 
-        return new TableRepository()->create($request);
+        return (new TableRepository())->create($request);
     }
 
     public function get(TableRequest $request): Collection
     {
         Gate::authorize('view', [Table::class, $request]);
 
-        return new TableRepository()->get($request);
+        return (new TableRepository())->get($request);
     }
 
     public function update(TableRequest $request): Collection
     {
         Gate::authorize('update', [Table::findOrFail($request->id), $request]);
 
-        return new TableRepository()->update($request);
+        return (new TableRepository())->update($request);
     }
 
     public function destroy(TableRequest $request): Table|Collection
     {
         Gate::authorize('delete', Table::findOrFail($request->id));
 
-        return new TableRepository()->destroy($request);
+        return (new TableRepository())->destroy($request);
     }
 }

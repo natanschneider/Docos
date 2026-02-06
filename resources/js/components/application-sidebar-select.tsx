@@ -24,7 +24,7 @@ export default function ApplicationSidebarSelect({ projects, applications }: { p
     };
 
     return (
-        <div className="my-4 w-full">
+        <div className='w-full my-4'>
             <div className="justify-start">
                 <Label htmlFor="project">Project</Label>
 
