@@ -38,7 +38,8 @@ export default function ManipulateScreen({
     const { currentApplication } = usePage<SharedData>().props;
     const [isOpen, setIsOpen] = React.useState(true);
     const name = useRef<HTMLInputElement>(null);
-    const [items, setItems] = React.useState<string[]>();
+    const [items, setItems] = React.useState<string[]>(screen !== null ? screen[0]?.columns.map((col) => col.id.toString()) : []);
+    const [selectedTables, setSelectedTables] = React.useState<string[]>(screen !== null ? screen[0]?.columns.map((col) => col.table_id.toString()) : []);
     const [selected, setSelected] = React.useState<string | undefined>(undefined);
 
     const tableArr = tables.reduce(
