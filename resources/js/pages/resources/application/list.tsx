@@ -16,13 +16,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function ListApplications({
-    applications,
-    projects
-}: {
-    applications: applicationModel[];
-    projects: projectModel[];
-}) {
+export default function ListApplications({ applications, projects }: { applications: applicationModel[]; projects: projectModel[] }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="List of applications" />
