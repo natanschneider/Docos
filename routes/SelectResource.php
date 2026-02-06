@@ -41,21 +41,30 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->withCookie('currentApplication', $currentApplication);
     })->name('change-project');
 
-    Route::get('change-application/{project}/{application}', function (string $project, string $application, Request $request) {
-        $request->cookies->set('currentProject', $project);
-        $request->cookies->set('currentApplication', $application);
+    Route::get(
+        'change-application/{location}/{project}/{application}',
+        function (string $location, string $project, string $application, Request $request) {
+            if (! in_array($location, ['screen', 'endpoint'])) {
+                throw new Exception('Invalid location');
+            }
 
-        $currentProject = (new ProjectRepository())->getLatest($request, (int) $project);
-        $currentProject = (is_array($currentProject) && isset($currentProject['id'])) ? $currentProject['id'] : null;
+            $location = $location === 'screen' ? 'screen.index' : ($location === 'endpoint' ? 'endpoint.index' : 'dashboard');
 
-        $currentApplication = (new ApplicationRepository())->getLatest($request, (int) $application);
-        $currentApplication = (is_array($currentApplication) && isset($currentApplication['id'])) ? $currentApplication['id'] : null;
+            $request->cookies->set('currentProject', $project);
+            $request->cookies->set('currentApplication', $application);
 
-        $request->cookies->set('currentProject', $currentProject);
-        $request->cookies->set('currentApplication', $currentApplication);
+            $currentProject = (new ProjectRepository())->getLatest($request, (int) $project);
+            $currentProject = (is_array($currentProject) && isset($currentProject['id'])) ? $currentProject['id'] : null;
 
-        return Redirect::route('screen.index')
-            ->withCookie('currentApplication', $currentApplication)
-            ->withCookie('currentProject', $currentProject);
-    })->name('change-application');
+            $currentApplication = (new ApplicationRepository())->getLatest($request, (int) $application);
+            $currentApplication = (is_array($currentApplication) && isset($currentApplication['id'])) ? $currentApplication['id'] : null;
+
+            $request->cookies->set('currentProject', $currentProject);
+            $request->cookies->set('currentApplication', $currentApplication);
+
+            return Redirect::route($location)
+                ->withCookie('currentApplication', $currentApplication)
+                ->withCookie('currentProject', $currentProject);
+        }
+    )->name('change-application');
 });
