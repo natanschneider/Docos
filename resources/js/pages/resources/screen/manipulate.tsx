@@ -63,6 +63,9 @@ export default function ManipulateScreen({
     const addItem = (item: string) => {
         if (!items?.includes(item)) {
             setItems([...items??[], item]);
+            if (! selectedTables?.includes(columnTable[item])) {
+                setSelectedTables([...selectedTables??[], columnTable[item]]);
+            }
         }
 
         setSelected('');
