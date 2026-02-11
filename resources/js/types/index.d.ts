@@ -22,6 +22,8 @@ export interface SharedData {
     currentCompany: number | null;
     currentProject: number | null;
     currentApplication: number | null;
+    currentDatabase: number | null;
+    currentTable: number | null;
     companies: { id: number; name: string; public_key: string }[];
     [key: string]: unknown;
 }

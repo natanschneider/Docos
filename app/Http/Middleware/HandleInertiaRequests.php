@@ -51,6 +51,8 @@ final class HandleInertiaRequests extends Middleware
             'currentCompany' => (new HandleSelectedCompany())->handle($request),
             'currentProject' => (new HandleSelectedProject())->handle($request),
             'currentApplication' => (new HandleSelectedApplication())->handle($request),
+            'currentDatabase' => (new HandleSelectedDatabase())->handle($request),
+            'currentTable' => (new HandleSelectedTable())->handle($request),
             'companies' => $request->user()?->companies()->get(['companies.id', 'companies.name', 'companies.public_key'])->toArray(),
         ];
     }

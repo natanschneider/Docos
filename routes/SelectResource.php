@@ -3,8 +3,10 @@
 declare(strict_types=1);
 
 use Illuminate\Http\Request;
+use App\Repositories\TableRepository;
 use Illuminate\Support\Facades\Route;
 use App\Repositories\ProjectRepository;
+use App\Repositories\DatabaseRepository;
 use Illuminate\Support\Facades\Redirect;
 use App\Repositories\ApplicationRepository;
 
@@ -67,4 +69,38 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 ->withCookie('currentProject', $currentProject);
         }
     )->name('change-application');
+
+    Route::get('change-database/{database}', function (string $database, Request $request) {
+        $request->cookies->set('currentDatabase', $database);
+        $currentDatabase = (new DatabaseRepository())->getLatest($request, (int) $database);
+        $currentDatabase = (is_array($currentDatabase) && isset($currentDatabase['id'])) ? $currentDatabase['id'] : null;
+
+        $currentTable = (new TableRepository())->getLatest($request);
+        $currentTable = (is_array($currentTable) && isset($currentTable['id'])) ? $currentTable['id'] : null;
+
+        $request->cookies->set('currentDatabase', $currentDatabase);
+        $request->cookies->set('currentTable', $currentTable);
+
+        return Redirect::route('table.index')
+            ->withCookie('currentDatabase', $currentDatabase)
+            ->withCookie('currentTable', $currentTable);
+    })->name('change-database');
+
+    Route::get('change-table/{database}/{table}', function (string $database, string $table, Request $request) {
+        $request->cookies->set('currentDatabase', $database);
+        $request->cookies->set('currentTable', $table);
+
+        $currentDatabase = (new DatabaseRepository())->getLatest($request, (int) $database);
+        $currentDatabase = (is_array($currentDatabase) && isset($currentDatabase['id'])) ? $currentDatabase['id'] : null;
+
+        $currentTable = (new TableRepository())->getLatest($request, (int) $table);
+        $currentTable = (is_array($currentTable) && isset($currentTable['id'])) ? $currentTable['id'] : null;
+
+        $request->cookies->set('currentDatabase', $currentDatabase);
+        $request->cookies->set('currentTable', $currentTable);
+
+        return Redirect::route('table.index')
+            ->withCookie('currentDatabase', $currentDatabase)
+            ->withCookie('currentTable', $currentTable);
+    })->name('change-table');
 });
