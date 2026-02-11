@@ -20,9 +20,10 @@ import project from '@/routes/project';
 import { SharedData } from '@/types';
 import { type NavItem } from '@/types/resources';
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutGrid, Building, Presentation, Database, AppWindowMac, ScreenShare } from 'lucide-react';
+import { LayoutGrid, Building, Presentation, Database, AppWindowMac, ScreenShare, Server } from 'lucide-react';
 import AppLogo from './app-logo';
 import screen from '@/routes/screen';
+import endpoint from '@/routes/endpoint';
 
 const mainNavItems: NavItem[] = [
     {
@@ -54,6 +55,11 @@ const mainNavItems: NavItem[] = [
         title: 'Screen',
         href: screen.index().url,
         icon: ScreenShare
+    },
+    {
+        title: 'Endpoint',
+        href: endpoint.index().url,
+        icon: Server
     }
 ];
 
