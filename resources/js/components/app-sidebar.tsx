@@ -20,10 +20,11 @@ import project from '@/routes/project';
 import { SharedData } from '@/types';
 import { type NavItem } from '@/types/resources';
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutGrid, Building, Presentation, Database, AppWindowMac, ScreenShare, Server } from 'lucide-react';
+import { LayoutGrid, Building, Presentation, Database, AppWindowMac, ScreenShare, Server, Table } from 'lucide-react';
 import AppLogo from './app-logo';
 import screen from '@/routes/screen';
 import endpoint from '@/routes/endpoint';
+import table from '@/routes/table';
 
 const mainNavItems: NavItem[] = [
     {
@@ -69,6 +70,11 @@ const mainNavItems: NavItem[] = [
         href: database.index().url,
         icon: Database,
     },
+    {
+        title: 'Tables',
+        href: table.index().url,
+        icon: Table
+    }
 ];
 
 export function AppSidebar() {
