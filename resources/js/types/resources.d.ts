@@ -2,6 +2,7 @@ import { appearance } from '@/routes';
 import application from '@/routes/application';
 import company from '@/routes/company';
 import database from '@/routes/database';
+import endpoint from '@/routes/endpoint';
 import { edit as editPassword } from '@/routes/password';
 import { edit } from '@/routes/profile';
 import project from '@/routes/project';
@@ -156,6 +157,29 @@ export const ScreenNavItems: NavItem[] = [
     {
         title: 'List',
         href: screen.index().url,
+        icon: null,
+    },
+];
+
+export interface endpointModel {
+    id: number;
+    name: string;
+    application_id: number;
+    created_at: string;
+    updated_at: string;
+    public_key: string;
+    columns: columnModel[];
+};
+
+export const EndpointNavItems: NavItem[] = [
+    {
+        title: 'Create',
+        href: endpoint.create().url,
+        icon: null,
+    },
+    {
+        title: 'List',
+        href: endpoint.index().url,
         icon: null,
     },
 ];
