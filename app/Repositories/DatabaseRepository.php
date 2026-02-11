@@ -7,6 +7,7 @@ namespace App\Repositories;
 use App\Http\Requests\DatabaseRequest;
 use App\Models\Database;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 final class DatabaseRepository
@@ -65,5 +66,24 @@ final class DatabaseRepository
 
             return $database;
         });
+    }
+
+    public function getLatest(Request|DatabaseRequest $request, ?int $id = null): array
+    {
+        if ($id) {
+            $databaseId = Database::where('company_id', $request->cookie('currentCompany'))
+                ->where('id', $id)
+                ->first();
+
+            if ($databaseId) {
+                return $databaseId->toArray();
+            }
+        }
+
+        $database = Database::where('company_id', $request->cookie('currentCompany'))
+            ->latest()
+            ->first();
+
+        return $database?->toArray() ?? [ 'id' => null ];
     }
 }
