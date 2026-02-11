@@ -7,6 +7,7 @@ import { edit as editPassword } from '@/routes/password';
 import { edit } from '@/routes/profile';
 import project from '@/routes/project';
 import screen from '@/routes/screen';
+import table from '@/routes/table';
 import { InertiaLinkProps } from '@inertiajs/react';
 import { LucideIcon } from 'lucide-react';
 import { type ReactNode } from 'react';
@@ -194,6 +195,19 @@ export interface tableModel {
     public_key: string;
     columns: columnModel[] | null;
 };
+
+export const TableNavItems: NavItem[] = [
+    {
+        title: 'Create',
+        href: table.create().url,
+        icon: null,
+    },
+    {
+        title: 'List',
+        href: table.index().url,
+        icon: null,
+    },
+];
 
 export interface columnModel {
     id: number;
