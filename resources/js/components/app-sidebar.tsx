@@ -37,14 +37,13 @@ const mainNavItems: NavItem[] = [
         icon: Building,
     },
     {
+        title: 'separator',
+        href: '#',
+    },
+    {
         title: 'Projects',
         href: project.index().url,
         icon: Presentation,
-    },
-    {
-        title: 'Databases',
-        href: database.index().url,
-        icon: Database,
     },
     {
         title: 'Applications',
@@ -60,7 +59,16 @@ const mainNavItems: NavItem[] = [
         title: 'Endpoint',
         href: endpoint.index().url,
         icon: Server
-    }
+    },
+    {
+        title: 'separator',
+        href: '#',
+    },
+    {
+        title: 'Databases',
+        href: database.index().url,
+        icon: Database,
+    },
 ];
 
 export function AppSidebar() {
