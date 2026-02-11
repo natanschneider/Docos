@@ -99,7 +99,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         $request->cookies->set('currentDatabase', $currentDatabase);
         $request->cookies->set('currentTable', $currentTable);
 
-        return Redirect::route('table.index')
+        return Redirect::route('column.index')
             ->withCookie('currentDatabase', $currentDatabase)
             ->withCookie('currentTable', $currentTable);
     })->name('change-table');
