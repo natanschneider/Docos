@@ -91,4 +91,29 @@ final class TableRepository
 
         return $query->get();
     }
+
+    public function getLatest(Request|TableRequest $request, ?int $id = null): array
+    {
+        if ($id) {
+            $tableId = Table::where('database_id', $request->cookie('currentDatabase'))
+                ->whereHas('database.company', function ($query) use ($request): void {
+                    $query->where('companies.id', $request->cookie('currentCompany'));
+                })
+                ->where('id', $id)
+                ->first();
+
+            if ($tableId) {
+                return $tableId->toArray();
+            }
+        }
+
+        $table = Table::where('database_id', $request->cookie('currentDatabase'))
+            ->whereHas('database.company', function ($query) use ($request): void {
+                $query->where('companies.id', $request->cookie('currentCompany'));
+            })
+            ->latest()
+            ->first();
+
+        return $table?->toArray() ?? [ 'id' => null ];
+    }
 }

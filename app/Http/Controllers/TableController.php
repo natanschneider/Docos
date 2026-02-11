@@ -8,6 +8,7 @@ use App\Http\Requests\TableRequest;
 use App\Models\Table;
 use App\Repositories\TableRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class TableController extends Controller
@@ -38,5 +39,17 @@ class TableController extends Controller
         Gate::authorize('delete', Table::findOrFail($request->id));
 
         return (new TableRepository())->destroy($request);
+    }
+
+    public function getLatest(Request $request, ?int $id = null)
+    {
+        $table = (new TableRepository())->getLatest($request, $id);
+        $id = isset($table['id']) ? (int) $table['id'] : null;
+
+        if ($id) {
+            cookie()->queue('currentTable', $id, 60);
+        }
+
+        return $table;
     }
 }
