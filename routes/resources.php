@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\ViewResources\ColumnController;
 use App\Http\Controllers\ViewResources\EndpointController;
 use App\Http\Controllers\ViewResources\TableController;
 use Illuminate\Support\Facades\Route;
@@ -19,4 +20,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('screen', ScreenController::class);
     Route::resource('endpoint', EndpointController::class);
     Route::resource('table', TableController::class);
+    Route::resource('column', ColumnController::class);
 });
