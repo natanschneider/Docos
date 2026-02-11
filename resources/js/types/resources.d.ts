@@ -1,5 +1,6 @@
 import { appearance } from '@/routes';
 import application from '@/routes/application';
+import column from '@/routes/column';
 import company from '@/routes/company';
 import database from '@/routes/database';
 import endpoint from '@/routes/endpoint';
@@ -219,3 +220,16 @@ export interface columnModel {
     updated_at: string;
     public_key: string;
 };
+
+export const ColumnNavItems: NavItem[] = [
+    {
+        title: 'Create',
+        href: column.create().url,
+        icon: null,
+    },
+    {
+        title: 'List',
+        href: column.index().url,
+        icon: null,
+    },
+];
