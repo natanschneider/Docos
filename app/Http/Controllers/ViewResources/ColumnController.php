@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ViewResources;
 
+use App\Repositories\ColumnRepository;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\JsonResponse;
@@ -70,10 +71,27 @@ class ColumnController extends Controller
         ]);
         $tables = (new TableController())->get($tableRequest);
 
+        $columnRequest = ColumnRequest::createFrom($request);
+        $columnRequest->merge([
+            'company_id' => $request->cookie('currentCompany'),
+            'database_id' => $currentDatabase,
+            'constraint_id' => 1
+        ]);
+
+        $primaryKey = (new ColumnRepository())->getByConstraint($columnRequest);
+
+        $columnRequest->merge([ 'constraint_id' => 2 ]);
+        $foreignKey = (new ColumnRepository())->getByConstraint($columnRequest);
+
+        $types = (new ColumnRepository())->getTypes();
+
         return Inertia::render('resources/column/manipulate', [
             'column' => null,
             'tables' => $tables,
-            'databases' => $databases
+            'databases' => $databases,
+            'primaryKey' => $primaryKey,
+            'foreignKey' => $foreignKey,
+            'types' => $types
         ]);
     }
 
@@ -123,10 +141,27 @@ class ColumnController extends Controller
         ]);
         $column = (new Column())->get($request);
 
+        $columnRequest = ColumnRequest::createFrom($request);
+        $columnRequest->merge([
+            'company_id' => $request->cookie('currentCompany'),
+            'database_id' => $currentDatabase,
+            'constraint_id' => 1
+        ]);
+
+        $primaryKey = (new ColumnRepository())->getByConstraint($columnRequest);
+
+        $columnRequest->merge([ 'constraint_id' => 2 ]);
+        $foreignKey = (new ColumnRepository())->getByConstraint($columnRequest);
+
+        $types = (new ColumnRepository())->getTypes();
+
         return Inertia::render('resources/column/manipulate', [
             'column' => $column,
             'tables' => $tables,
-            'databases' => $databases
+            'databases' => $databases,
+            'primaryKey' => $primaryKey,
+            'foreignKey' => $foreignKey,
+            'types' => $types
         ]);
     }
 
@@ -161,10 +196,27 @@ class ColumnController extends Controller
         ]);
         $column = (new Column())->get($request);
 
+        $columnRequest = ColumnRequest::createFrom($request);
+        $columnRequest->merge([
+            'company_id' => $request->cookie('currentCompany'),
+            'database_id' => $currentDatabase,
+            'constraint_id' => 1
+        ]);
+
+        $primaryKey = (new ColumnRepository())->getByConstraint($columnRequest);
+
+        $columnRequest->merge([ 'constraint_id' => 2 ]);
+        $foreignKey = (new ColumnRepository())->getByConstraint($columnRequest);
+
+        $types = (new ColumnRepository())->getTypes();
+
         return Inertia::render('resources/column/manipulate', [
             'column' => $column,
             'tables' => $tables,
-            'databases' => $databases
+            'databases' => $databases,
+            'primaryKey' => $primaryKey,
+            'foreignKey' => $foreignKey,
+            'types' => $types
         ]);
     }
 
