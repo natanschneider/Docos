@@ -7,6 +7,7 @@ namespace App\Repositories;
 use App\Http\Requests\ColumnRequest;
 use App\Models\Column;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 final class ColumnRepository
@@ -144,5 +145,26 @@ final class ColumnRepository
                 'relatedFks',
             ]);
         });
+    }
+
+    public function getByConstraint(Request $request): Collection
+    {
+        $query = Column::query();
+
+        $query->whereHas('table.database', function ($query) use ($request): void {
+            $query->where('databases.id', $request->database_id);
+        });
+
+        $query->whereHas('table.database.company', function ($query) use ($request): void {
+            $query->where('companies.id', $request->cookie('currentCompany'));
+        });
+
+        if ($request->has('constraint_id')) {
+            $query->whereHas('constraints', function ($query) use ($request): void {
+                $query->where('constraints.id', $request->constraint_id);
+            });
+        }
+
+        return $query->with(['type', 'constraints', 'relatedPks', 'relatedFks', 'table'])->get();
     }
 }
