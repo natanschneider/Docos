@@ -55,6 +55,7 @@ export default function ListColumns({
                                     resource={{
                                         id: column.id,
                                         name: column.name,
+                                        description: column?.type?.name,
                                         edit_url: ColumnRoute.edit(column.id).url,
                                         delete_url: ColumnRoute.destroy(column.id).url,
                                         list_url: ColumnRoute.index().url,
