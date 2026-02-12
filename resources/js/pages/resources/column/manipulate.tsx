@@ -5,6 +5,7 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
 import ResourcesLayout from '@/layouts/resources/layout';
 import column from '@/routes/column';
@@ -87,6 +88,28 @@ export default function ManipulateColumn({
                                     />
 
                                     <InputError message={errors.name} />
+                                </div>
+
+                                <div className="grid gap-2">
+                                    <Label htmlFor="type_id">Type</Label>
+
+                                    <Select name="type_id" required defaultValue={column !== null ? column[0]?.type_id?.toString() : undefined}>
+                                        <SelectTrigger className="w-[180px]">
+                                            <SelectValue placeholder="Select an type" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectGroup>
+                                                <SelectLabel>Types</SelectLabel>
+                                                {types.map((type) => (
+                                                    <SelectItem key={type.id} value={type.id.toString()}>
+                                                        {type.name}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
+
+                                    <InputError message={errors.type_id} />
                                 </div>
 
                                 <div className="flex items-center gap-4">
