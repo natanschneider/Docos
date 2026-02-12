@@ -219,6 +219,11 @@ export interface columnModel {
     created_at: string;
     updated_at: string;
     public_key: string;
+    type: typeModel | null;
+    index: indexModel | null;
+    constraints: constraintsModel[] | null;
+    related_pks: columnModel[] | null;
+    related_fks: columnModel[] | null;
 };
 
 export const ColumnNavItems: NavItem[] = [
@@ -233,3 +238,22 @@ export const ColumnNavItems: NavItem[] = [
         icon: null,
     },
 ];
+
+export interface typeModel {
+    id: number;
+    name: string;
+}
+
+export interface indexModel {
+    id: number;
+    column_id: number;
+}
+
+export interface constraintsModel {
+    id: number;
+    name: string;
+    pivot: {
+        column_id: number;
+        constraint_id: number;
+    }
+}
