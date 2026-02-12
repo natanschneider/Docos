@@ -9,7 +9,7 @@ import AppLayout from '@/layouts/app-layout';
 import ResourcesLayout from '@/layouts/resources/layout';
 import column from '@/routes/column';
 import { type BreadcrumbItem, type SharedData } from '@/types';
-import { columnModel, ColumnNavItems, tableModel, databaseModel } from '@/types/resources.d';
+import { columnModel, ColumnNavItems, tableModel, databaseModel, typeModel } from '@/types/resources.d';
 import { Transition } from '@headlessui/react';
 import { Form, Head, usePage } from '@inertiajs/react';
 import { useRef } from 'react';
@@ -24,11 +24,17 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function ManipulateColumn({
     column,
     tables,
-    databases
+    databases,
+    primaryKey,
+    foreignKey,
+    types
 }: {
     column: columnModel[];
     tables: tableModel[];
     databases: databaseModel[];
+    primaryKey: columnModel[];
+    foreignKey: columnModel[];
+    types: typeModel[];
 }) {
     const { currentTable } = usePage<SharedData>().props;
     const name = useRef<HTMLInputElement>(null);
