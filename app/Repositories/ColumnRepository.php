@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Http\Requests\ColumnRequest;
 use App\Models\Column;
+use App\Models\Descriptions\Type;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -67,6 +68,7 @@ final class ColumnRepository
         });
 
         return $query->with([
+            'type',
             'index',
             'constraints',
             'relatedPks',
@@ -166,5 +168,10 @@ final class ColumnRepository
         }
 
         return $query->with(['type', 'constraints', 'relatedPks', 'relatedFks', 'table'])->get();
+    }
+
+    public function getTypes(): Collection
+    {
+        return Type::get();
     }
 }
