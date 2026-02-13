@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Http\Requests\ColumnRequest;
 use App\Models\Column;
+use App\Models\Descriptions\Constraint;
 use App\Models\Descriptions\Type;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -173,5 +174,10 @@ final class ColumnRepository
     public function getTypes(): Collection
     {
         return Type::get();
+    }
+
+    public function getConstraints(): Collection
+    {
+        return Constraint::get();
     }
 }

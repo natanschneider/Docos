@@ -85,13 +85,16 @@ class ColumnController extends Controller
 
         $types = (new ColumnRepository())->getTypes();
 
+        $constraints = (new ColumnRepository())->getConstraints();
+
         return Inertia::render('resources/column/manipulate', [
             'column' => null,
             'tables' => $tables,
             'databases' => $databases,
             'primaryKey' => $primaryKey,
             'foreignKey' => $foreignKey,
-            'types' => $types
+            'types' => $types,
+            'constraints' => $constraints
         ]);
     }
 
@@ -155,13 +158,16 @@ class ColumnController extends Controller
 
         $types = (new ColumnRepository())->getTypes();
 
+        $constraints = (new ColumnRepository())->getConstraints();
+
         return Inertia::render('resources/column/manipulate', [
             'column' => $column,
             'tables' => $tables,
             'databases' => $databases,
             'primaryKey' => $primaryKey,
             'foreignKey' => $foreignKey,
-            'types' => $types
+            'types' => $types,
+            'constraints' => $constraints
         ]);
     }
 
@@ -210,13 +216,16 @@ class ColumnController extends Controller
 
         $types = (new ColumnRepository())->getTypes();
 
+        $constraints = (new ColumnRepository())->getConstraints();
+
         return Inertia::render('resources/column/manipulate', [
             'column' => $column,
             'tables' => $tables,
             'databases' => $databases,
             'primaryKey' => $primaryKey,
             'foreignKey' => $foreignKey,
-            'types' => $types
+            'types' => $types,
+            'constraints' => $constraints
         ]);
     }
 
