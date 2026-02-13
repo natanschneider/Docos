@@ -15,7 +15,7 @@ import { type BreadcrumbItem, type SharedData } from '@/types';
 import { columnModel, ColumnNavItems, tableModel, databaseModel, typeModel, constraintsModel } from '@/types/resources.d';
 import { Transition } from '@headlessui/react';
 import { Form, Head, usePage } from '@inertiajs/react';
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
