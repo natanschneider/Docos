@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ViewResources;
 
 use App\Repositories\ColumnRepository;
+use App\Repositories\TableRepository;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\JsonResponse;
@@ -35,7 +36,7 @@ class ColumnController extends Controller
             'company_id' => $request->cookie('currentCompany'),
             'database_id' => $currentDatabase
         ]);
-        $tables = (new TableController())->get($tableRequest);
+        $tables = (new TableRepository())->getWithColumns($tableRequest);
 
         $currentTable = ($request->hasCookie('currentTable') && $request->cookie('currentTable'))
             ? $request->cookie('currentTable')
@@ -69,7 +70,7 @@ class ColumnController extends Controller
             'company_id' => $request->cookie('currentCompany'),
             'database_id' => $currentDatabase
         ]);
-        $tables = (new TableController())->get($tableRequest);
+        $tables = (new TableRepository())->getWithColumns($tableRequest);
 
         $columnRequest = ColumnRequest::createFrom($request);
         $columnRequest->merge([
@@ -131,7 +132,7 @@ class ColumnController extends Controller
             'company_id' => $request->cookie('currentCompany'),
             'database_id' => $currentDatabase
         ]);
-        $tables = (new TableController())->get($tableRequest);
+        $tables = (new TableRepository())->getWithColumns($tableRequest);
 
         $currentTable = ($request->hasCookie('currentTable') && $request->cookie('currentTable'))
             ? $request->cookie('currentTable')
@@ -189,7 +190,7 @@ class ColumnController extends Controller
             'company_id' => $request->cookie('currentCompany'),
             'database_id' => $currentDatabase
         ]);
-        $tables = (new TableController())->get($tableRequest);
+        $tables = (new TableRepository())->getWithColumns($tableRequest);
 
         $currentTable = ($request->hasCookie('currentTable') && $request->cookie('currentTable'))
             ? $request->cookie('currentTable')
