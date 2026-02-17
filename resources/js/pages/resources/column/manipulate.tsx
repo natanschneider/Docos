@@ -16,6 +16,7 @@ import { columnModel, ColumnNavItems, tableModel, databaseModel, typeModel, cons
 import { Transition } from '@headlessui/react';
 import { Form, Head, usePage } from '@inertiajs/react';
 import React, { useRef } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -50,6 +51,30 @@ export default function ManipulateColumn({
     );
     const [selectedConstraint, setSelectedConstraint] = React.useState<string | undefined>(undefined);
 
+    const [isPkOpen, setIsPkOpen] = React.useState(true);
+    const [selectedPk, setSelectedPk] = React.useState<string | undefined>(undefined);
+    const [selectedPkArr, setSelectedPkArr] = React.useState<string[] | undefined>(() => {
+        if (!column || !column[0]?.related_pks) return [];
+
+        const uniqueItems = Array.from(new Set(
+            column[0].related_pks
+            .map((col) => col.id.toString())
+        ));
+
+        return uniqueItems;
+    });
+    const [selectedPkTable, setSelectedPkTable] = React.useState<string | undefined>(undefined);
+    const [selectedPkTableArr, setSelectedPkTableArr] = React.useState<string[] | undefined>(() => {
+        if (!column || !column[0]?.related_pks) return [];
+
+        const uniqueItems = Array.from(new Set(
+            column[0].related_pks
+            .map((col) => col.table_id.toString())
+        ));
+
+        return uniqueItems;
+    });
+
     const constraintArr = constraints.reduce(
         (acc, constraint) => {
             acc[constraint.id] = constraint.name;
@@ -58,6 +83,31 @@ export default function ManipulateColumn({
         {} as Record<string, string>,
     );
 
+    const tableArr = tables.reduce(
+        (acc, tables) => {
+            acc[tables.id] = tables;
+            return acc;
+        },
+        {} as Record<string, tableModel>,
+    );
+
+    const columnArr = tables.reduce((acc, table) => {
+        const columns = table?.columns;
+        columns?.forEach((column) => {
+            acc[column?.id?.toString()] = column;
+        });
+        return acc;
+    }, {} as Record<string, columnModel>);
+
+    const tablePkArr = primaryKey.reduce<Record<string, Record<number, columnModel>>>(
+        (acc, pk) => {
+            const tableId = pk.table_id.toString();
+            if (!acc[tableId]) acc[tableId] = {};
+            acc[tableId][pk.id] = pk;
+            return acc;
+        },
+        {},
+    );
 
     const addConstraint = (item: string) => {
         if (!constraint.includes(item)) {
@@ -70,6 +120,27 @@ export default function ManipulateColumn({
     const removeConstraint = (item: string) => {
         setConstraint(constraint.filter((i) => i !== item));
         setSelectedConstraint('');
+    };
+
+    const addPkTable = (item: string) => {
+        if (!selectedPkTableArr?.includes(item)) {
+            setSelectedPkTableArr([...selectedPkTableArr??[], item]);
+        }
+
+        setSelectedPkTable(undefined);
+    };
+
+    const addPk = (item: string) => {
+        if (!selectedPkArr?.includes(item)) {
+            setSelectedPkArr([...selectedPkArr??[], item]);
+        }
+
+        setSelectedPk(undefined);
+    };
+
+    const removePk = (item: string) => {
+        setSelectedPkArr(selectedPkArr?.filter((i) => i !== item));
+        setSelectedPk(undefined);
     };
 
     return (
@@ -174,7 +245,7 @@ export default function ManipulateColumn({
 
                                         <InputError message={errors.constraints} />
 
-                                        <input type="hidden" name="databases[]" value={constraint} />
+                                        <input type="hidden" name="constraints[]" value={constraint} />
                                         <CollapsibleContent className="mt-3 flex flex-col gap-2">
                                             {constraint.map((item, index) => (
                                                 <div className="flex rounded-md border px-4 py-2 font-mono text-sm items-center" key={index}>
@@ -188,6 +259,86 @@ export default function ManipulateColumn({
                                                         Delete
                                                     </Button>
                                                 </div>
+                                            ))}
+                                        </CollapsibleContent>
+                                    </Collapsible>
+                                </div>
+
+                                <div className='w-full'>
+                                    <Collapsible open={isPkOpen} onOpenChange={setIsPkOpen} className='flex w-full flex-col gap-2'>
+                                        <div className='flex items-center justify-between gap-4 px-4'>
+                                            <Label htmlFor='tablePk'>Primary Keys</Label>
+                                            <CollapsibleTrigger asChild>
+                                                <Button variant='ghost' size='icon' className='size-8'>
+                                                    <ChevronsUpDown />
+                                                    <span className='sr-only'>Toggle</span>
+                                                </Button>
+                                            </CollapsibleTrigger>
+                                        </div>
+
+                                        <Select value={selectedPkTable} name='tablePk' onValueChange={(value) => addPkTable(value)}>
+                                            <SelectTrigger className='w-[180px]'>
+                                                <SelectValue placeholder='Select a table' />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectLabel>Tables</SelectLabel>
+                                                    {Object.entries(tablePkArr ?? {}).map((table) => (
+                                                        <SelectItem key={table[0].toString() ?? ''} value={table[0].toString()}>
+                                                            {tableArr[table[0].toString()]?.name}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+
+                                        <InputError message={errors.tablePk} />
+
+                                        <input type="hidden" name="related_columns['pk'][]" value={selectedPkTableArr} />
+                                        <CollapsibleContent className='grid gap-2 auto-cols-max grid-flow-col w-full'>
+                                            {selectedPkTableArr?.map((table) => (
+                                                <Card key={table}>
+                                                    <CardHeader>
+                                                        <CardTitle>{tableArr[table]?.name}</CardTitle>
+                                                        <CardDescription>
+                                                            <Label htmlFor={`${table}_columns_id_pk`}>Columns</Label>
+                                                            <Select value={selectedPk} name={`${table}_columns_id_pk`} onValueChange={(value) => addPk(value)}>
+                                                                <SelectTrigger className='w-[180px]'>
+                                                                    <SelectValue placeholder='Select a column' />
+                                                                </SelectTrigger>
+                                                                <SelectContent>
+                                                                    <SelectGroup>
+                                                                        <SelectLabel>Columns</SelectLabel>
+                                                                        {Object.entries(tablePkArr[table] ?? {}).map((column) => (
+                                                                            <SelectItem key={column[0].toString() ?? ''} value={column[0].toString()}>
+                                                                                {columnArr[column[0].toString()]?.name}
+                                                                            </SelectItem>
+                                                                        ))}
+                                                                    </SelectGroup>
+                                                                </SelectContent>
+                                                            </Select>
+                                                        </CardDescription>
+                                                    </CardHeader>
+                                                    <CardContent>
+                                                        <InputError message={errors[`${table}_columns_id_pk`]} />
+                                                        {selectedPkArr?.map((item) => columnArr[item]?.table_id.toString() === table && selectedPkArr?.includes(item) && (
+                                                                <div
+                                                                    className="flex rounded-md border px-4 py-2 my-2 font-mono text-sm items-center"
+                                                                    key={item}
+                                                                >
+                                                                    <p className="grow">{columnArr[item]?.name}</p>
+                                                                    <Button
+                                                                        size="sm"
+                                                                        variant="outline"
+                                                                        className="min-w-[4rem] text-destructive hover:bg-destructive/10 hover:text-destructive"
+                                                                        onClick={() => removePk(item)}
+                                                                    >
+                                                                        Delete
+                                                                    </Button>
+                                                                </div>
+                                                        ))}
+                                                    </CardContent>
+                                                </Card>
                                             ))}
                                         </CollapsibleContent>
                                     </Collapsible>
