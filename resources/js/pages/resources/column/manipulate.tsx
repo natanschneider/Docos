@@ -75,6 +75,30 @@ export default function ManipulateColumn({
         return uniqueItems;
     });
 
+    const [isFkOpen, setIsFkOpen] = React.useState(true);
+    const [selectedFk, setSelectedFk] = React.useState<string | undefined>(undefined);
+    const [selectedFkArr, setSelectedFkArr] = React.useState<string[] | undefined>(() => {
+        if (!column || !column[0]?.related_fks) return [];
+
+        const uniqueItems = Array.from(new Set(
+            column[0].related_fks
+            .map((col) => col.id.toString())
+        ));
+
+        return uniqueItems;
+    });
+    const [selectedFkTable, setSelectedFkTable] = React.useState<string | undefined>(undefined);
+    const [selectedFkTableArr, setSelectedFkTableArr] = React.useState<string[] | undefined>(() => {
+        if (!column || !column[0]?.related_fks) return [];
+
+        const uniqueItems = Array.from(new Set(
+            column[0].related_fks
+            .map((col) => col.table_id.toString())
+        ));
+
+        return uniqueItems;
+    });
+
     const constraintArr = constraints.reduce(
         (acc, constraint) => {
             acc[constraint.id] = constraint.name;
@@ -104,6 +128,16 @@ export default function ManipulateColumn({
             const tableId = pk.table_id.toString();
             if (!acc[tableId]) acc[tableId] = {};
             acc[tableId][pk.id] = pk;
+            return acc;
+        },
+        {},
+    );
+
+    const tableFkArr = foreignKey.reduce<Record<string, Record<number, columnModel>>>(
+        (acc, fk) => {
+            const tableId = fk.table_id.toString();
+            if (!acc[tableId]) acc[tableId] = {};
+            acc[tableId][fk.id] = fk;
             return acc;
         },
         {},
@@ -141,6 +175,27 @@ export default function ManipulateColumn({
     const removePk = (item: string) => {
         setSelectedPkArr(selectedPkArr?.filter((i) => i !== item));
         setSelectedPk(undefined);
+    };
+
+    const addFkTable = (item: string) => {
+        if (!selectedFkTableArr?.includes(item)) {
+            setSelectedFkTableArr([...selectedFkTableArr??[], item]);
+        }
+
+        setSelectedFkTable(undefined);
+    };
+
+    const addFk = (item: string) => {
+        if (!selectedFkArr?.includes(item)) {
+            setSelectedFkArr([...selectedFkArr??[], item]);
+        }
+
+        setSelectedFk(undefined);
+    };
+
+    const removeFk = (item: string) => {
+        setSelectedFkArr(selectedFkArr?.filter((i) => i !== item));
+        setSelectedFk(undefined);
     };
 
     return (
@@ -330,6 +385,82 @@ export default function ManipulateColumn({
                                                                     variant="outline"
                                                                     className="min-w-[4rem] text-destructive hover:bg-destructive/10 hover:text-destructive"
                                                                     onClick={() => removePk(item)}
+                                                                >
+                                                                    Delete
+                                                                </Button>
+                                                            </div>
+                                                        ))}
+                                                    </CardContent>
+                                                </Card>
+                                            ))}
+                                        </CollapsibleContent>
+                                    </Collapsible>
+
+                                    <Collapsible open={isFkOpen} onOpenChange={setIsFkOpen} className='flex w-full flex-col gap-2'>
+                                        <div className='flex items-center justify-between gap-4 px-4'>
+                                            <Label htmlFor='tableFk'>Foreing Keys</Label>
+                                            <CollapsibleTrigger asChild>
+                                                <Button variant='ghost' size='icon' className='size-8'>
+                                                    <ChevronsUpDown />
+                                                    <span className='sr-only'>Toggle</span>
+                                                </Button>
+                                            </CollapsibleTrigger>
+                                        </div>
+
+                                        <Select value={selectedFkTable} name='tableFk' onValueChange={(value) => addFkTable(value)}>
+                                            <SelectTrigger className='w-[180px]'>
+                                                <SelectValue placeholder='Select a table' />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectLabel>Tables</SelectLabel>
+                                                    {Object.entries(tableFkArr ?? {}).map((table) => (
+                                                        <SelectItem key={table[0].toString() ?? ''} value={table[0].toString()}>
+                                                            {tableArr[table[0].toString()]?.name}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+
+                                        <input type="hidden" id='related_columns' name="related_columns[fk][]" value={selectedFkTableArr} />
+                                        <CollapsibleContent className='grid gap-2 auto-cols-max grid-flow-col w-full'>
+                                            {selectedFkTableArr?.map((table) => (
+                                                <Card key={table}>
+                                                    <CardHeader>
+                                                        <CardTitle>{tableArr[table]?.name}</CardTitle>
+                                                        <CardDescription>
+                                                            <Label htmlFor={`${table}_columns_id_fk`}>Columns</Label>
+                                                            <Select value={selectedFk} name={`${table}_columns_id_fk`} onValueChange={(value) => addFk(value)}>
+                                                                <SelectTrigger className='w-[180px]'>
+                                                                    <SelectValue placeholder='Select a column' />
+                                                                </SelectTrigger>
+                                                                <SelectContent>
+                                                                    <SelectGroup>
+                                                                        <SelectLabel>Columns</SelectLabel>
+                                                                        {Object.entries(tableFkArr[table] ?? {}).map((column) => (
+                                                                            <SelectItem key={column[0].toString() ?? ''} value={column[0].toString()}>
+                                                                                {columnArr[column[0].toString()]?.name}
+                                                                            </SelectItem>
+                                                                        ))}
+                                                                    </SelectGroup>
+                                                                </SelectContent>
+                                                            </Select>
+                                                        </CardDescription>
+                                                    </CardHeader>
+                                                    <CardContent>
+                                                        <InputError message={errors[`${table}_columns_id_fk`]} />
+                                                        {selectedFkArr?.map((item) => columnArr[item]?.table_id.toString() === table && selectedFkArr?.includes(item) && (
+                                                            <div
+                                                                className="flex rounded-md border px-4 py-2 my-2 font-mono text-sm items-center"
+                                                                key={item}
+                                                            >
+                                                                <p className="grow">{columnArr[item]?.name}</p>
+                                                                <Button
+                                                                    size="sm"
+                                                                    variant="outline"
+                                                                    className="min-w-[4rem] text-destructive hover:bg-destructive/10 hover:text-destructive"
+                                                                    onClick={() => removeFk(item)}
                                                                 >
                                                                     Delete
                                                                 </Button>
