@@ -322,20 +322,20 @@ export default function ManipulateColumn({
                                                     <CardContent>
                                                         <InputError message={errors[`${table}_columns_id_pk`]} />
                                                         {selectedPkArr?.map((item) => columnArr[item]?.table_id.toString() === table && selectedPkArr?.includes(item) && (
-                                                                <div
-                                                                    className="flex rounded-md border px-4 py-2 my-2 font-mono text-sm items-center"
-                                                                    key={item}
+                                                            <div
+                                                                className="flex rounded-md border px-4 py-2 my-2 font-mono text-sm items-center"
+                                                                key={item}
+                                                            >
+                                                                <p className="grow">{columnArr[item]?.name}</p>
+                                                                <Button
+                                                                    size="sm"
+                                                                    variant="outline"
+                                                                    className="min-w-[4rem] text-destructive hover:bg-destructive/10 hover:text-destructive"
+                                                                    onClick={() => removePk(item)}
                                                                 >
-                                                                    <p className="grow">{columnArr[item]?.name}</p>
-                                                                    <Button
-                                                                        size="sm"
-                                                                        variant="outline"
-                                                                        className="min-w-[4rem] text-destructive hover:bg-destructive/10 hover:text-destructive"
-                                                                        onClick={() => removePk(item)}
-                                                                    >
-                                                                        Delete
-                                                                    </Button>
-                                                                </div>
+                                                                    Delete
+                                                                </Button>
+                                                            </div>
                                                         ))}
                                                     </CardContent>
                                                 </Card>
