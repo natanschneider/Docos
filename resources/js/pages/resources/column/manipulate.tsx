@@ -243,8 +243,6 @@ export default function ManipulateColumn({
                                             </SelectContent>
                                         </Select>
 
-                                        <InputError message={errors.constraints} />
-
                                         <input type="hidden" name="constraints[]" value={constraint} />
                                         <CollapsibleContent className="mt-3 flex flex-col gap-2">
                                             {constraint.map((item, index) => (
@@ -261,6 +259,8 @@ export default function ManipulateColumn({
                                                 </div>
                                             ))}
                                         </CollapsibleContent>
+
+                                        <InputError message={errors.constraints} />
                                     </Collapsible>
                                 </div>
 
@@ -342,6 +342,8 @@ export default function ManipulateColumn({
                                             ))}
                                         </CollapsibleContent>
                                     </Collapsible>
+
+                                    <InputError message={errors.related_columns} />
                                 </div>
 
                                 <div className="flex items-center gap-4">
