@@ -292,9 +292,7 @@ export default function ManipulateColumn({
                                             </SelectContent>
                                         </Select>
 
-                                        <InputError message={errors.tablePk} />
-
-                                        <input type="hidden" name="related_columns['pk'][]" value={selectedPkTableArr} />
+                                        <input type="hidden" id='related_columns' name="related_columns[pk][]" value={selectedPkTableArr} />
                                         <CollapsibleContent className='grid gap-2 auto-cols-max grid-flow-col w-full'>
                                             {selectedPkTableArr?.map((table) => (
                                                 <Card key={table}>
