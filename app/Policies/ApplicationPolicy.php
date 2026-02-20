@@ -89,22 +89,38 @@ class ApplicationPolicy
             return Response::allow();
         }
 
-        $databases_check = $company->databases()->whereIn('databases.id', $request->databases)->count() === count($request->databases);
+        if ($request->has('databases')) {
+            $databases_check = $company->databases()->whereIn('databases.id', $request->databases)->count() === count($request->databases);
 
-        if (! $databases_check) {
-            return Response::deny('Databases provided do not belong to company provided');
+            if (! $databases_check) {
+                return Response::deny('Databases provided do not belong to company provided');
+            }
         }
 
-        $detach_check = 0;
-        $application->screens()->each(function ($screen) use ($request, $detach_check): void {
-            $detach_check += $screen->columns->databases()->whereIn('databases.id', $request->databases)->count();
-        });
+        if ($request->has('detach_databases')) {
+            $detach_check = 0;
+            $application?->screens?->each(function ($screen) use ($request, &$detach_check) {
+                $screen?->columns?->each(function ($column) use ($request, &$detach_check) {
+                    $detach_check += $column?->table?->database()
+                        ?->whereIn('databases.id', $request?->detach_databases)
+                        ?->count();
+                });
+            });
 
-        $application->endpoints()->each(function ($endpoint) use ($request, $detach_check): void {
-            $detach_check += $endpoint->columns->databases()->whereIn('databases.id', $request->databases)->count();
-        });
+            $application?->endpoints?->each(function ($endpoint) use ($request, &$detach_check) {
+                $endpoint?->columns?->each(function ($column) use ($request, &$detach_check) {
+                    $detach_check += $column?->table?->database()
+                        ?->whereIn('databases.id', $request?->detach_databases)
+                        ?->count();
+                });
+            });
 
-        return $detach_check === 0 ? Response::allow() : Response::deny('You are detaching databases that are in use');
+            if ( is_numeric($detach_check) && $detach_check > 0) {
+                return Response::deny('You are detaching databases that are in use');
+            }
+        }
+
+        return Response::allow();
     }
 
     /**
