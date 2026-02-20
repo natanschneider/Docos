@@ -298,7 +298,9 @@ export default function ManipulateColumn({
                                             </SelectContent>
                                         </Select>
 
-                                        <input type="hidden" name="constraints[]" value={constraint} />
+                                        {constraint && constraint.length > 0 && constraint.map((item, index) => (
+                                            <input key={index} type="hidden" name="constraints[]" value={item} />
+                                        ))}
                                         <CollapsibleContent className="mt-3 flex flex-col gap-2">
                                             {constraint.map((item, index) => (
                                                 <div className="flex rounded-md border px-4 py-2 font-mono text-sm items-center" key={index}>
@@ -347,7 +349,9 @@ export default function ManipulateColumn({
                                             </SelectContent>
                                         </Select>
 
-                                        <input type="hidden" id='related_columns' name="related_columns[pk][]" value={selectedPkTableArr} />
+                                        {selectedPkArr && selectedPkArr.length > 0 && selectedPkArr.map((item, index) => (
+                                            <input key={index} type="hidden" name="related_columns[pk][]" value={item} />
+                                        ))}
                                         <CollapsibleContent className='grid gap-2 auto-cols-max grid-flow-col w-full'>
                                             {selectedPkTableArr?.map((table) => (
                                                 <Card key={table}>
@@ -423,7 +427,9 @@ export default function ManipulateColumn({
                                             </SelectContent>
                                         </Select>
 
-                                        <input type="hidden" id='related_columns' name="related_columns[fk][]" value={selectedFkTableArr} />
+                                        {selectedFkArr && selectedFkArr.length > 0 && selectedFkArr.map((item, index) => (
+                                            <input key={index} type="hidden" name="related_columns[fk][]" value={item} />
+                                        ))}
                                         <CollapsibleContent className='grid gap-2 auto-cols-max grid-flow-col w-full'>
                                             {selectedFkTableArr?.map((table) => (
                                                 <Card key={table}>

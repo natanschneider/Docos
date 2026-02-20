@@ -143,7 +143,9 @@ export default function ManipulateApplication({
 
                                         <InputError message={errors.databases} />
 
-                                        <input type="hidden" name="databases[]" value={items} />
+                                        {items && items.length > 0 && items.map((item, index) => (
+                                            <input key={index} type="hidden" name="databases[]" value={item} />
+                                        ))}
                                         <CollapsibleContent className="mt-3 flex flex-col gap-2">
                                             {items.map((item, index) => (
                                                 <div className="flex rounded-md border px-4 py-2 font-mono text-sm items-center" key={index}>
