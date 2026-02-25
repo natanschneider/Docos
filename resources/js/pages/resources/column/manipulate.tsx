@@ -2,6 +2,7 @@ import ColumnController from '@/actions/App/Http/Controllers/ViewResources/Colum
 import ColumnSidebarSelect from '@/components/column-sidebar-select';
 import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
+import TextEditor from '@/components/text-editor';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -17,6 +18,7 @@ import { Transition } from '@headlessui/react';
 import { Form, Head, usePage } from '@inertiajs/react';
 import React, { useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { MDXEditorMethods } from '@mdxeditor/editor';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -27,6 +29,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function ManipulateColumn({
     column,
+    doc,
     tables,
     databases,
     primaryKey,
@@ -35,6 +38,7 @@ export default function ManipulateColumn({
     constraints
 }: {
     column: columnModel[];
+    doc: string;
     tables: tableModel[];
     databases: databaseModel[];
     primaryKey: columnModel[];
@@ -44,6 +48,7 @@ export default function ManipulateColumn({
 }) {
     const { currentTable } = usePage<SharedData>().props;
     const name = useRef<HTMLInputElement>(null);
+    const editorRef = useRef<MDXEditorMethods>(null);
     const [isConstraintOpen, setIsConstraintOpen] = React.useState(true);
     const [constraint, setConstraint] = React.useState<string[]>(column !== null && column[0]?.constraints
         ? column[0]?.constraints?.map((constraint) => constraint.id.toString())
@@ -226,6 +231,7 @@ export default function ManipulateColumn({
                         resetOnError={['name']}
                         resetOnSuccess={['name']}
                         className="space-y-6"
+                        transform={data => ({...data, markdown: editorRef.current?.getMarkdown()})}
                     >
                         {({ errors, processing, recentlySuccessful }) => (
                             <>
@@ -479,6 +485,10 @@ export default function ManipulateColumn({
                                     </Collapsible>
 
                                     <InputError message={errors.related_columns} />
+                                </div>
+
+                                <div className='w-full'>
+                                    <TextEditor editorRef={editorRef} markdown={doc ?? ''} />
                                 </div>
 
                                 <div className="flex items-center gap-4">
