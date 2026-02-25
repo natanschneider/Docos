@@ -67,7 +67,7 @@ class FileRepository
 
     public function get(string $folder, string $name): string
     {
-        return Storage::disk('s3')->get("$folder/$name");
+        return Storage::disk('s3')->get("$folder/$name") ?? '';
     }
 
     protected function validateFile(UploadedFile $file): void
