@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ViewResources;
 
+use App\Http\Requests\FileRequest;
 use App\Repositories\Files\FileRepository;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -91,7 +92,10 @@ class TableController extends Controller
         $request->merge(['id' => $id, 'database_id' => $currentDatabase]);
         $table = (new Table())->get($request);
 
-        $doc = (new FileRepository())->get('docs', $table[0]->doc_file);
+        $doc = null;
+        if ($table[0]->doc_file) {
+            $doc = (new FileRepository())->get('docs', $table[0]->doc_file);
+        }
 
         return Inertia::render('resources/table/manipulate', [
             'table' => Inertia::always($table[0]),
@@ -116,7 +120,10 @@ class TableController extends Controller
         $request->merge(['id' => $id, 'database_id' => $currentDatabase]);
         $table = (new Table())->get($request);
 
-        $doc = (new FileRepository())->get('docs', $table[0]->doc_file);
+        $doc = null;
+        if ($table[0]->doc_file) {
+            $doc = (new FileRepository())->get('docs', $table[0]->doc_file);
+        }
 
         return Inertia::render('resources/table/manipulate', [
             'table' => $table,
@@ -157,10 +164,8 @@ class TableController extends Controller
         $request->merge(['id' => $id, 'database_id' => $currentDatabase]);
         $response = (new Table())->destroy($request);
 
-        if ($request->has('markdown')) {
-            $fileRequest = (new HandleStringToFile())->handle($request);
-            (new FileController())->storeTable($fileRequest);
-        }
+        $fileRequest = FileRequest::createFrom($request);
+        (new FileController())->deleteTable($fileRequest);
 
         return response()->json($response);
     }
