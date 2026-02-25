@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ViewResources;
 
+use App\Repositories\Files\FileRepository;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\JsonResponse;
@@ -11,6 +12,8 @@ use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\DatabaseRequest;
 use App\Http\Controllers\DatabaseController;
 use App\Http\Controllers\TableController as Table;
+use App\Repositories\Files\HandleStringToFile;
+use App\Http\Controllers\FileController;
 
 class TableController extends Controller
 {
@@ -47,6 +50,7 @@ class TableController extends Controller
 
         return Inertia::render('resources/table/manipulate', [
             'table' => null,
+            'doc' => null,
             'databases' => $databases
         ]);
     }
@@ -62,6 +66,11 @@ class TableController extends Controller
 
         $request->merge(['database_id' => $currentDatabase]);
         (new Table())->store($request);
+
+        if ($request->has('markdown')) {
+            $fileRequest = (new HandleStringToFile())->handle($request);
+            (new FileController())->storeTable($fileRequest);
+        }
 
         return redirect()->route('table.index');
     }
@@ -82,8 +91,11 @@ class TableController extends Controller
         $request->merge(['id' => $id, 'database_id' => $currentDatabase]);
         $table = (new Table())->get($request);
 
+        $doc = (new FileRepository())->get('docs', $table[0]->doc_file);
+
         return Inertia::render('resources/table/manipulate', [
             'table' => Inertia::always($table[0]),
+            'doc' => $doc,
             'databases' => $databases
         ]);
     }
@@ -104,8 +116,11 @@ class TableController extends Controller
         $request->merge(['id' => $id, 'database_id' => $currentDatabase]);
         $table = (new Table())->get($request);
 
+        $doc = (new FileRepository())->get('docs', $table[0]->doc_file);
+
         return Inertia::render('resources/table/manipulate', [
             'table' => $table,
+            'doc' => $doc,
             'databases' => $databases
         ]);
     }
@@ -122,6 +137,11 @@ class TableController extends Controller
         $request->merge(['id' => $id, 'database_id' => $currentDatabase]);
         (new Table())->update($request);
 
+        if ($request->has('markdown')) {
+            $fileRequest = (new HandleStringToFile())->handle($request);
+            (new FileController())->storeTable($fileRequest);
+        }
+
         return redirect()->route('table.index');
     }
 
@@ -136,6 +156,11 @@ class TableController extends Controller
 
         $request->merge(['id' => $id, 'database_id' => $currentDatabase]);
         $response = (new Table())->destroy($request);
+
+        if ($request->has('markdown')) {
+            $fileRequest = (new HandleStringToFile())->handle($request);
+            (new FileController())->storeTable($fileRequest);
+        }
 
         return response()->json($response);
     }
