@@ -16,12 +16,18 @@ class FileRepository
         $name = $this->generateUniqueFilename($file);
         $file->storeAs($folder, $name, 's3');
 
-        return [
+        $ret = [
             'name' => $name,
             'mimetype' => $file->getClientMimeType(),
             'size' => $file->getSize(),
             'originalName' => $file->getClientOriginalName(),
         ];
+
+        if (Storage::disk('local')->exists("temp/{$file->getClientOriginalName()}")) {
+            Storage::disk('local')->delete("temp/{$file->getClientOriginalName()}");
+        }
+
+        return $ret;
     }
 
     public function replace(UploadedFile $file, string $folder, string $name): array
@@ -30,12 +36,18 @@ class FileRepository
         Storage::disk('s3')->delete("$folder/$name");
         $file->storeAs($folder, $name, 's3');
 
-        return [
+        $ret = [
             'name' => $name,
             'mimetype' => $file->getClientMimeType(),
             'size' => $file->getSize(),
             'originalName' => $file->getClientOriginalName(),
         ];
+
+        if (Storage::disk('local')->exists("temp/{$file->getClientOriginalName()}")) {
+            Storage::disk('local')->delete("temp/{$file->getClientOriginalName()}");
+        }
+
+        return $ret;
     }
 
     public function delete(string $folder, string $name): array
