@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ViewResources;
 
 use App\Repositories\ColumnRepository;
+use App\Repositories\Files\FileRepository;
 use App\Repositories\TableRepository;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -15,6 +16,9 @@ use App\Http\Requests\DatabaseRequest;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\DatabaseController;
 use App\Http\Controllers\ColumnController as Column;
+use App\Repositories\Files\HandleStringToFile;
+use App\Http\Controllers\FileController;
+use App\Http\Requests\FileRequest;
 
 class ColumnController extends Controller
 {
@@ -90,6 +94,7 @@ class ColumnController extends Controller
 
         return Inertia::render('resources/column/manipulate', [
             'column' => null,
+            'doc' => null,
             'tables' => $tables,
             'databases' => $databases,
             'primaryKey' => $primaryKey,
@@ -110,6 +115,11 @@ class ColumnController extends Controller
 
         $request->merge(['table_id' => $currentTable]);
         (new Column())->store($request);
+
+        if ($request->has('markdown')) {
+            $fileRequest = (new HandleStringToFile())->handle($request);
+            (new FileController())->storeColumn($fileRequest);
+        }
 
         return redirect()->route('column.index');
     }
@@ -161,8 +171,14 @@ class ColumnController extends Controller
 
         $constraints = (new ColumnRepository())->getConstraints();
 
+        $doc = null;
+        if ($column[0]->doc_file) {
+            $doc = (new FileRepository())->get('docs', $column[0]->doc_file);
+        }
+
         return Inertia::render('resources/column/manipulate', [
             'column' => $column,
+            'doc' => $doc,
             'tables' => $tables,
             'databases' => $databases,
             'primaryKey' => $primaryKey,
@@ -201,6 +217,12 @@ class ColumnController extends Controller
             'database_id' => $currentDatabase,
             'table_id' => $currentTable
         ]);
+
+        if ($request->has('markdown')) {
+            $fileRequest = (new HandleStringToFile())->handle($request);
+            (new FileController())->storeColumn($fileRequest);
+        }
+
         $column = (new Column())->get($request);
 
         $columnRequest = ColumnRequest::createFrom($request);
@@ -219,8 +241,14 @@ class ColumnController extends Controller
 
         $constraints = (new ColumnRepository())->getConstraints();
 
+        $doc = null;
+        if ($column[0]->doc_file) {
+            $doc = (new FileRepository())->get('docs', $column[0]->doc_file);
+        }
+
         return Inertia::render('resources/column/manipulate', [
             'column' => $column,
+            'doc' => $doc,
             'tables' => $tables,
             'databases' => $databases,
             'primaryKey' => $primaryKey,
@@ -242,6 +270,11 @@ class ColumnController extends Controller
         $request->merge(['id' => $id, 'table_id' => $currentTable]);
         (new Column())->update($request);
 
+        if ($request->has('markdown')) {
+            $fileRequest = (new HandleStringToFile())->handle($request);
+            (new FileController())->storeColumn($fileRequest);
+        }
+
         return redirect()->route('column.index');
     }
 
@@ -256,6 +289,9 @@ class ColumnController extends Controller
 
         $request->merge(['id' => $id, 'table_id' => $currentTable]);
         $response = (new Column())->destroy($request);
+
+        $fileRequest = FileRequest::createFrom($request);
+        (new FileController())->deleteColumn($fileRequest);
 
         return response()->json($response);
     }
