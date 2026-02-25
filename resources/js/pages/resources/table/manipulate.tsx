@@ -2,6 +2,7 @@ import TableController from '@/actions/App/Http/Controllers/ViewResources/TableC
 import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
 import DatabaseSidebarSelect from '@/components/database-sidebar-select';
+import TextEditor from '@/components/text-editor';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -13,6 +14,7 @@ import { TableNavItems, tableModel, databaseModel } from '@/types/resources.d';
 import { Transition } from '@headlessui/react';
 import { Form, Head, usePage } from '@inertiajs/react';
 import { useRef } from 'react';
+import { MDXEditorMethods } from '@mdxeditor/editor';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -23,13 +25,16 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function ManipulateTable({
     table,
+    doc,
     databases
 }: {
     table: tableModel[] | null;
+    doc: string;
     databases: databaseModel[];
 }) {
     const { currentDatabase } = usePage<SharedData>().props;
     const name = useRef<HTMLInputElement>(null);
+    const editorRef = useRef<MDXEditorMethods>(null);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -58,6 +63,7 @@ export default function ManipulateTable({
                         resetOnError={['name']}
                         resetOnSuccess={['name']}
                         className="space-y-6"
+                        transform={data => ({...data, markdown: editorRef.current?.getMarkdown()})}
                     >
                         {({ errors, processing, recentlySuccessful }) => (
                             <>
@@ -78,6 +84,10 @@ export default function ManipulateTable({
                                     />
 
                                     <InputError message={errors.name} />
+                                </div>
+
+                                <div>
+                                    <TextEditor editorRef={editorRef} markdown={doc ?? ''} />
                                 </div>
 
                                 <div className="flex items-center gap-4">
