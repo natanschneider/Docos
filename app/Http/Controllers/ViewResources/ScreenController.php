@@ -103,7 +103,7 @@ class ScreenController extends Controller
         $request->merge(['application_id' => $currentApplication]);
         $screen = (new Screen())->store($request);
 
-        if ($request->has('markdown')) {
+        if ($request->has('markdown') && is_string($request->markdown) && strlen($request->markdown) > 0) {
             $request->merge(['id' => $screen->id]);
             $fileRequest = (new HandleStringToFile())->handle($request);
             (new FileController())->storeScreen($fileRequest);
@@ -212,7 +212,7 @@ class ScreenController extends Controller
         $request->merge(['id' => $id, 'application_id' => $currentApplication]);
         (new Screen())->update($request);
 
-        if ($request->has('markdown')) {
+        if ($request->has('markdown') && is_string($request->markdown) && strlen($request->markdown) > 0) {
             $fileRequest = (new HandleStringToFile())->handle($request);
             (new FileController())->storeScreen($fileRequest);
         }

@@ -116,7 +116,7 @@ class ColumnController extends Controller
         $request->merge(['table_id' => $currentTable]);
         $col = (new Column())->store($request);
 
-        if ($request->has('markdown')) {
+        if ($request->has('markdown') && is_string($request->markdown) && strlen($request->markdown) > 0) {
             $request->merge(['id' => $col->id]);
             $fileRequest = (new HandleStringToFile())->handle($request);
             (new FileController())->storeColumn($fileRequest);
@@ -266,7 +266,7 @@ class ColumnController extends Controller
         $request->merge(['id' => $id, 'table_id' => $currentTable]);
         (new Column())->update($request);
 
-        if ($request->has('markdown')) {
+        if ($request->has('markdown') && is_string($request->markdown) && strlen($request->markdown) > 0) {
             $fileRequest = (new HandleStringToFile())->handle($request);
             (new FileController())->storeColumn($fileRequest);
         }

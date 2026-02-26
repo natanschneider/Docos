@@ -68,7 +68,7 @@ class TableController extends Controller
         $request->merge(['database_id' => $currentDatabase]);
         $table = (new Table())->store($request);
 
-        if ($request->has('markdown')) {
+        if ($request->has('markdown') && is_string($request->markdown) && strlen($request->markdown) > 0) {
             $request->merge(['id' => $table->id]);
             $fileRequest = (new HandleStringToFile())->handle($request);
             (new FileController())->storeTable($fileRequest);
@@ -145,7 +145,7 @@ class TableController extends Controller
         $request->merge(['id' => $id, 'database_id' => $currentDatabase]);
         (new Table())->update($request);
 
-        if ($request->has('markdown')) {
+        if ($request->has('markdown') && is_string($request->markdown) && strlen($request->markdown) > 0) {
             $fileRequest = (new HandleStringToFile())->handle($request);
             (new FileController())->storeTable($fileRequest);
         }

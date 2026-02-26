@@ -103,7 +103,7 @@ class EndpointController extends Controller
         $request->merge(['application_id' => $currentApplication]);
         $endpoint = (new Endpoint())->store($request);
 
-        if ($request->has('markdown')) {
+        if ($request->has('markdown') && is_string($request->markdown) && strlen($request->markdown) > 0) {
             $request->merge(['id' => $endpoint->id]);
             $fileRequest = (new HandleStringToFile())->handle($request);
             (new FileController())->storeEndpoint($fileRequest);
@@ -212,7 +212,7 @@ class EndpointController extends Controller
         $request->merge(['id' => $id, 'application_id' => $currentApplication]);
         (new Endpoint())->update($request);
 
-        if ($request->has('markdown')) {
+        if ($request->has('markdown') && is_string($request->markdown) && strlen($request->markdown) > 0) {
             $fileRequest = (new HandleStringToFile())->handle($request);
             (new FileController())->storeEndpoint($fileRequest);
         }
