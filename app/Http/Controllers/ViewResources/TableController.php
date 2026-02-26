@@ -66,9 +66,10 @@ class TableController extends Controller
             : (new DatabaseController())->getLatest($request)['id'];
 
         $request->merge(['database_id' => $currentDatabase]);
-        (new Table())->store($request);
+        $table = (new Table())->store($request);
 
         if ($request->has('markdown')) {
+            $request->merge(['id' => $table->id]);
             $fileRequest = (new HandleStringToFile())->handle($request);
             (new FileController())->storeTable($fileRequest);
         }

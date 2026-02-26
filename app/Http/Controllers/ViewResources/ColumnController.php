@@ -114,9 +114,10 @@ class ColumnController extends Controller
             : (new TableController())->getLatest($request)['id'];
 
         $request->merge(['table_id' => $currentTable]);
-        (new Column())->store($request);
+        $col = (new Column())->store($request);
 
         if ($request->has('markdown')) {
+            $request->merge(['id' => $col->id]);
             $fileRequest = (new HandleStringToFile())->handle($request);
             (new FileController())->storeColumn($fileRequest);
         }
@@ -217,11 +218,6 @@ class ColumnController extends Controller
             'database_id' => $currentDatabase,
             'table_id' => $currentTable
         ]);
-
-        if ($request->has('markdown')) {
-            $fileRequest = (new HandleStringToFile())->handle($request);
-            (new FileController())->storeColumn($fileRequest);
-        }
 
         $column = (new Column())->get($request);
 
