@@ -17,6 +17,8 @@ import { Transition } from '@headlessui/react';
 import { Form, Head, usePage } from '@inertiajs/react';
 import { ChevronsUpDown } from 'lucide-react';
 import React, { useRef } from 'react';
+import { MDXEditorMethods } from '@mdxeditor/editor';
+import TextEditor from '@/components/text-editor';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -27,11 +29,13 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function ManipulateScreen({
     screen,
+    doc,
     tables,
     projects,
     applications,
 }: {
     screen: screenModel[] | null;
+    doc: string;
     tables: tableModel[];
     projects: projectModel[];
     applications: applicationModel[];
@@ -39,6 +43,7 @@ export default function ManipulateScreen({
     const { currentApplication } = usePage<SharedData>().props;
     const [isOpen, setIsOpen] = React.useState(true);
     const name = useRef<HTMLInputElement>(null);
+    const editorRef = useRef<MDXEditorMethods>(null);
     const [items, setItems] = React.useState<string[]>(() => {
         if (!screen || !screen[0]?.columns) return [];
 
@@ -135,6 +140,7 @@ export default function ManipulateScreen({
                         resetOnError={['name']}
                         resetOnSuccess={['name']}
                         className="space-y-6"
+                        transform={data => ({...data, markdown: editorRef.current?.getMarkdown()})}
                     >
                         {({ errors, processing, recentlySuccessful }) => (
                             <>
@@ -237,6 +243,10 @@ export default function ManipulateScreen({
                                             ))}
                                         </CollapsibleContent>
                                     </Collapsible>
+                                </div>
+
+                                <div className="w-full">
+                                    <TextEditor editorRef={editorRef} markdown={doc ?? ''} />
                                 </div>
 
                                 <div className="flex items-center gap-4">
