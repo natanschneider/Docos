@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers\ViewResources;
 
+use App\Http\Controllers\FileController;
+use App\Http\Requests\FileRequest;
+use App\Repositories\Files\FileRepository;
+use App\Repositories\Files\HandleStringToFile;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\JsonResponse;
@@ -80,6 +84,7 @@ class ScreenController extends Controller
 
         return Inertia::render('resources/screen/manipulate', [
             'screen' => null,
+            'doc' => null,
             'tables' => $tables,
             'projects' => $projects,
             'applications' => $applications,
@@ -96,7 +101,13 @@ class ScreenController extends Controller
             : (new ApplicationController())->getLatest($request)['id'];
 
         $request->merge(['application_id' => $currentApplication]);
-        (new Screen())->store($request);
+        $screen = (new Screen())->store($request);
+
+        if ($request->has('markdown')) {
+            $request->merge(['id' => $screen->id]);
+            $fileRequest = (new HandleStringToFile())->handle($request);
+            (new FileController())->storeScreen($fileRequest);
+        }
 
         return redirect()->route('screen.index');
     }
@@ -131,8 +142,14 @@ class ScreenController extends Controller
         $request->merge(['id' => $id, 'application_id' => $currentApplication]);
         $screen = (new Screen())->get($request);
 
+        $doc = null;
+        if ($screen[0]->doc_file) {
+            $doc = (new FileRepository())->get('docs', $screen[0]->doc_file);
+        }
+
         return Inertia::render('resources/screen/manipulate', [
             'screen' => $screen,
+            'doc' => $doc,
             'tables' => $tables,
             'projects' => $projects,
             'applications' => $applications,
@@ -169,8 +186,14 @@ class ScreenController extends Controller
         $request->merge(['id' => $id, 'application_id' => $currentApplication]);
         $screen = (new Screen())->get($request);
 
+        $doc = null;
+        if ($screen[0]->doc_file) {
+            $doc = (new FileRepository())->get('docs', $screen[0]->doc_file);
+        }
+
         return Inertia::render('resources/screen/manipulate', [
             'screen' => $screen,
+            'doc' => $doc,
             'tables' => $tables,
             'projects' => $projects,
             'applications' => $applications,
@@ -189,6 +212,11 @@ class ScreenController extends Controller
         $request->merge(['id' => $id, 'application_id' => $currentApplication]);
         (new Screen())->update($request);
 
+        if ($request->has('markdown')) {
+            $fileRequest = (new HandleStringToFile())->handle($request);
+            (new FileController())->storeScreen($fileRequest);
+        }
+
         return redirect()->route('screen.index');
     }
 
@@ -203,6 +231,9 @@ class ScreenController extends Controller
 
         $request->merge(['id' => $id, 'application_id' => $currentApplication]);
         $response = (new Screen())->destroy($request);
+
+        $fileRequest = FileRequest::createFrom($request);
+        (new FileController())->deleteScreen($fileRequest);
 
         return response()->json($response);
     }
