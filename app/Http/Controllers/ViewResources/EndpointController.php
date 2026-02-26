@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers\ViewResources;
 
+use App\Http\Controllers\FileController;
+use App\Http\Requests\FileRequest;
+use App\Repositories\Files\FileRepository;
+use App\Repositories\Files\HandleStringToFile;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\JsonResponse;
@@ -80,6 +84,7 @@ class EndpointController extends Controller
 
         return Inertia::render('resources/endpoint/manipulate', [
             'endpoint' => null,
+            'doc' => null,
             'tables' => $tables,
             'projects' => $projects,
             'applications' => $applications,
@@ -96,7 +101,13 @@ class EndpointController extends Controller
             : (new ApplicationController())->getLatest($request)['id'];
 
         $request->merge(['application_id' => $currentApplication]);
-        (new Endpoint())->store($request);
+        $endpoint = (new Endpoint())->store($request);
+
+        if ($request->has('markdown')) {
+            $request->merge(['id' => $endpoint->id]);
+            $fileRequest = (new HandleStringToFile())->handle($request);
+            (new FileController())->storeEndpoint($fileRequest);
+        }
 
         return redirect()->route('endpoint.index');
     }
@@ -131,8 +142,14 @@ class EndpointController extends Controller
         $request->merge(['id' => $id, 'application_id' => $currentApplication]);
         $endpoint = (new Endpoint())->get($request);
 
+        $doc = null;
+        if ($endpoint[0]->doc_file) {
+            $doc = (new FileRepository())->get('docs', $endpoint[0]->doc_file);
+        }
+
         return Inertia::render('resources/endpoint/manipulate', [
             'endpoint' => $endpoint,
+            'doc' => $doc,
             'tables' => $tables,
             'projects' => $projects,
             'applications' => $applications,
@@ -169,8 +186,14 @@ class EndpointController extends Controller
         $request->merge(['id' => $id, 'application_id' => $currentApplication]);
         $endpoint = (new Endpoint())->get($request);
 
+        $doc = null;
+        if ($endpoint[0]->doc_file) {
+            $doc = (new FileRepository())->get('docs', $endpoint[0]->doc_file);
+        }
+
         return Inertia::render('resources/endpoint/manipulate', [
             'endpoint' => $endpoint,
+            'doc' => $doc,
             'tables' => $tables,
             'projects' => $projects,
             'applications' => $applications,
@@ -189,6 +212,11 @@ class EndpointController extends Controller
         $request->merge(['id' => $id, 'application_id' => $currentApplication]);
         (new Endpoint())->update($request);
 
+        if ($request->has('markdown')) {
+            $fileRequest = (new HandleStringToFile())->handle($request);
+            (new FileController())->storeEndpoint($fileRequest);
+        }
+
         return redirect()->route('endpoint.index');
     }
 
@@ -203,6 +231,9 @@ class EndpointController extends Controller
 
         $request->merge(['id' => $id, 'application_id' => $currentApplication]);
         $response = (new Endpoint())->destroy($request);
+
+        $fileRequest = FileRequest::createFrom($request);
+        (new FileController())->deleteEndpoint($fileRequest);
 
         return response()->json($response);
     }
