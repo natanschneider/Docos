@@ -42,9 +42,9 @@ class CompanyController extends Controller
      */
     public function store(CompanyRequest $request): RedirectResponse
     {
-        (new Company)->store($request);
+        $company = (new Company)->store($request);
 
-        return back();
+        return redirect()->route('company.edit', $company['id']);
     }
 
     /**

@@ -43,9 +43,9 @@ class ProjectController extends Controller
     public function store(ProjectRequest $request): RedirectResponse
     {
         $request->merge(['company_id' => $request->cookie('currentCompany')]);
-        (new Project)->store($request);
+        $project = (new Project)->store($request);
 
-        return redirect()->route('project.index');
+        return redirect()->route('project.edit', $project['id']);
     }
 
     /**
@@ -82,7 +82,7 @@ class ProjectController extends Controller
         $request->merge(['id' => $id, 'company_id' => $request->cookie('currentCompany')]);
         (new Project)->update($request);
 
-        return redirect()->route('project.index');
+        return redirect()->route('project.edit', $id);
     }
 
     /**

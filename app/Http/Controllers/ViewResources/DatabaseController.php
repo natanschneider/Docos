@@ -45,9 +45,9 @@ class DatabaseController extends Controller
     public function store(DatabaseRequest $request): RedirectResponse
     {
         $request->merge(['company_id' => $request->cookie('currentCompany')]);
-        (new Database)->store($request);
+        $database = (new Database)->store($request);
 
-        return redirect()->route('database.index');
+        return redirect()->route('database.edit', $database['id']);
     }
 
     /**
@@ -85,7 +85,7 @@ class DatabaseController extends Controller
         $request->merge(['id' => $id, 'company_id' => $request->cookie('currentCompany')]);
         (new Database)->update($request);
 
-        return redirect()->route('database.index');
+        return redirect()->route('database.edit', $id);
     }
 
     /**

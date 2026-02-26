@@ -109,7 +109,7 @@ class ScreenController extends Controller
             (new FileController())->storeScreen($fileRequest);
         }
 
-        return redirect()->route('screen.index');
+        return redirect()->route('screen.edit', $screen->id);
     }
 
     /**
@@ -217,7 +217,7 @@ class ScreenController extends Controller
             (new FileController())->storeScreen($fileRequest);
         }
 
-        return redirect()->route('screen.index');
+        return redirect()->route('screen.edit', $id);
     }
 
     /**

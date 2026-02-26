@@ -73,9 +73,9 @@ class ApplicationController extends Controller
             : (new ProjectController())->getLatest($request)['id'];
 
         $request->merge(['project_id' => $currentProject]);
-        (new Application)->store($request);
+        $application = (new Application)->store($request);
 
-        return redirect()->route('application.index');
+        return redirect()->route('application.edit', $application['id']);
     }
 
     /**
@@ -150,7 +150,7 @@ class ApplicationController extends Controller
         $request->merge(['id' => $id, 'project_id' => $currentProject]);
         (new Application)->update($request);
 
-        return redirect()->route('application.index');
+        return redirect()->route('application.edit', $id);
     }
 
     /**

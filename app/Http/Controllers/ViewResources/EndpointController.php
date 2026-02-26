@@ -109,7 +109,7 @@ class EndpointController extends Controller
             (new FileController())->storeEndpoint($fileRequest);
         }
 
-        return redirect()->route('endpoint.index');
+        return redirect()->route('endpoint.edit', $endpoint->id);
     }
 
     /**
@@ -217,7 +217,7 @@ class EndpointController extends Controller
             (new FileController())->storeEndpoint($fileRequest);
         }
 
-        return redirect()->route('endpoint.index');
+        return redirect()->route('endpoint.edit', $id);
     }
 
     /**

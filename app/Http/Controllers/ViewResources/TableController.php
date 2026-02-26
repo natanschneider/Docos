@@ -74,7 +74,7 @@ class TableController extends Controller
             (new FileController())->storeTable($fileRequest);
         }
 
-        return redirect()->route('table.index');
+        return redirect()->route('table.edit', $table->id);
     }
 
     /**
@@ -150,7 +150,7 @@ class TableController extends Controller
             (new FileController())->storeTable($fileRequest);
         }
 
-        return redirect()->route('table.index');
+        return redirect()->route('table.edit', $id);
     }
 
     /**

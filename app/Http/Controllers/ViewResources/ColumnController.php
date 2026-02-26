@@ -122,7 +122,7 @@ class ColumnController extends Controller
             (new FileController())->storeColumn($fileRequest);
         }
 
-        return redirect()->route('column.index');
+        return redirect()->route('column.edit', $col->id);
     }
 
     /**
@@ -271,7 +271,7 @@ class ColumnController extends Controller
             (new FileController())->storeColumn($fileRequest);
         }
 
-        return redirect()->route('column.index');
+        return redirect()->route('column.edit', $id);
     }
 
     /**
