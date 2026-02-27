@@ -153,6 +153,7 @@ export interface screenModel {
     updated_at: string;
     public_key: string;
     columns: columnModel[];
+    application: applicationModel | null;
 };
 
 export const ScreenNavItems: NavItem[] = [
@@ -176,6 +177,7 @@ export interface endpointModel {
     updated_at: string;
     public_key: string;
     columns: columnModel[];
+    application: applicationModel | null;
 };
 
 export const EndpointNavItems: NavItem[] = [

@@ -125,7 +125,7 @@ class EndpointController extends Controller
         $tables = (new TableRepository())->getWithColumns($request);
 
         $request->merge(['id' => $id, 'application_id' => $currentApplication]);
-        $endpoint = (new Endpoint())->get($request);
+        $endpoint = (new Endpoint())->get($request)->load(['application']);
 
         $doc = null;
         if ($endpoint[0]->doc_file) {

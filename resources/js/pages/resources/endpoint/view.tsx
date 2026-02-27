@@ -6,9 +6,12 @@ import ResourcesLayout from "@/layouts/resources/layout";
 import endpoint from "@/routes/endpoint";
 import { BreadcrumbItem } from "@/types";
 import { applicationModel, endpointModel, EndpointNavItems, projectModel, tableModel, columnModel } from "@/types/resources.d";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import { Label } from "@/components/ui/label";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
+import application from "@/routes/application";
+import table from "@/routes/table";
+import column from "@/routes/column";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -48,18 +51,18 @@ export default function ViewEndpoint({
         {} as Record<string, tableModel>,
     );
 
-    const columnArr = tables.reduce((acc, table) => {
-        const columns = table?.columns;
+    const columnArr = tables.reduce((acc, tableItem) => {
+        const columns = tableItem?.columns;
         columns?.forEach((column) => {
             acc[column?.id?.toString()] = column;
         });
         return acc;
     }, {} as Record<string, columnModel>);
 
-    const columnTable = tables.reduce((acc, table) => {
-        const columns = table?.columns;
+    const columnTable = tables.reduce((acc, tableItem) => {
+        const columns = tableItem?.columns;
         columns?.forEach((column) => {
-            acc[column?.id?.toString()] = table?.id?.toString();
+            acc[column?.id?.toString()] = tableItem?.id?.toString();
         });
         return acc;
     }, {} as Record<string, string>);
@@ -73,6 +76,17 @@ export default function ViewEndpoint({
                     <HeadingSmall
                         title="View endpoint"
                     />
+
+                    <div className="space-y-6">
+                        <Link href={application.show(endpoint[0].application_id).url}>
+                            <Item variant='outline'>
+                                <ItemContent>
+                                    <ItemTitle>Application</ItemTitle>
+                                    <ItemDescription>{endpoint[0].application?.name}</ItemDescription>
+                                </ItemContent>
+                            </Item>
+                        </Link>
+                    </div>
 
                     <div className="space-y-6">
                         <Item variant='outline'>
@@ -90,25 +104,28 @@ export default function ViewEndpoint({
                                     <Label>Tables</Label>
                                 </div>
                                 <div className='grid gap-2 auto-cols-max grid-flow-col w-full'>
-                                    {selectedTables?.map((table) => (
-                                        <Card key={table}>
-                                            <CardHeader>
-                                                <CardTitle>{tableArr[table]?.name}</CardTitle>
-                                                <CardDescription>
-                                                    <Label htmlFor={`${table}_columns_id`}>Columns</Label>
-                                                </CardDescription>
-                                            </CardHeader>
-                                            <CardContent>
-                                                {items?.map((item, index) => columnTable[item] === table && (
-                                                    <div
-                                                        className="flex rounded-md border px-4 py-2 my-2 font-mono text-sm items-center"
-                                                        key={index}
-                                                    >
-                                                        <p className="grow">{ columnArr[item]?.name }</p>
-                                                    </div>
-                                                ))}
-                                            </CardContent>
-                                        </Card>
+                                    {selectedTables?.map((tableItem) => (
+                                        <Link href={table.show(tableItem).url}>
+                                            <Card key={tableItem}>
+                                                <CardHeader>
+                                                    <CardTitle>{tableArr[tableItem]?.name}</CardTitle>
+                                                    <CardDescription>
+                                                        <Label htmlFor={`${tableItem}_columns_id`}>Columns</Label>
+                                                    </CardDescription>
+                                                </CardHeader>
+                                                <CardContent>
+                                                    {items?.map((item, index) => columnTable[item] === tableItem && (
+                                                        <Link
+                                                            className="flex rounded-md border px-4 py-2 my-2 font-mono text-sm items-center"
+                                                            key={index}
+                                                            href={column.show(item).url}
+                                                        >
+                                                            <p className="grow">{ columnArr[item]?.name }</p>
+                                                        </Link>
+                                                    ))}
+                                                </CardContent>
+                                            </Card>
+                                        </Link>
                                     ))}
                                 </div>
                             </div>
