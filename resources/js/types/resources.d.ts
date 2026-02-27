@@ -125,6 +125,9 @@ export interface applicationModel {
     updated_at: string;
     public_key: string;
     databases: databaseModel[];
+    screens: screenModel[] | null;
+    endpoints: endpointModel[] | null;
+    project: projectModel | null;
 }
 
 export const ApplicationNavItems: NavItem[] = [

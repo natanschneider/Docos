@@ -99,7 +99,7 @@ class ApplicationController extends Controller
         $databases = (new DatabaseController())->get($databaseRequest);
 
         $request->merge(['id' => $id, 'project_id' => $currentProject]);
-        $application = (new Application)->get($request);
+        $application = (new Application)->get($request)->load(['screens', 'endpoints', 'project']);
 
         return Inertia::render('resources/application/view', [
             'application' => Inertia::always($application[0]),
