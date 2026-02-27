@@ -227,6 +227,10 @@ export interface columnModel {
     constraints: constraintsModel[] | null;
     related_pks: columnModel[] | null;
     related_fks: columnModel[] | null;
+    table: tableModel | null;
+    endpoints: endpointModel[] | null;
+    screens: screenModel[] | null;
+    index: indexModel | null;
 };
 
 export const ColumnNavItems: NavItem[] = [

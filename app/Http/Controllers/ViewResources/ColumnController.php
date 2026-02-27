@@ -154,7 +154,7 @@ class ColumnController extends Controller
             'database_id' => $currentDatabase,
             'table_id' => $currentTable
         ]);
-        $column = (new Column())->get($request);
+        $column = (new Column())->get($request)->load(['table', 'endpoints', 'screens', 'index']) ;
 
         $types = (new ColumnRepository())->getTypes();
 
