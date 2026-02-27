@@ -20,6 +20,8 @@ export interface companyModel {
     created_at: string;
     updated_at: string;
     public_key: string;
+    databases: databaseModel[] | null;
+    projects: projectModel[] | null;
 }
 
 export interface ResourcesLayoutProps {

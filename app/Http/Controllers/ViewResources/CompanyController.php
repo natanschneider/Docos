@@ -53,7 +53,7 @@ class CompanyController extends Controller
     public function show(int $id, CompanyRequest $request): Response
     {
         $request->merge(['id' => $id]);
-        $company = (new Company)->get($request);
+        $company = (new Company)->get($request)->load(['databases', 'projects']);
 
         return Inertia::render('resources/company/view', [
             'company' => $company,
