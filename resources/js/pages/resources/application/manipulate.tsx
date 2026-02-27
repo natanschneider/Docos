@@ -13,7 +13,7 @@ import application from '@/routes/application';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { ApplicationNavItems, databaseModel, projectModel, type applicationModel } from '@/types/resources.d';
 import { Transition } from '@headlessui/react';
-import { Form, Head, usePage } from '@inertiajs/react';
+import { Form, Head, router, usePage } from '@inertiajs/react';
 import { ChevronsUpDown } from 'lucide-react';
 import React, { useRef } from 'react';
 
@@ -90,6 +90,7 @@ export default function ManipulateApplication({
                         }}
                         resetOnError={['name']}
                         resetOnSuccess={['name']}
+                        onSuccess={() => router.flushAll()}
                         className="space-y-6"
                     >
                         {({ errors, processing, recentlySuccessful }) => (

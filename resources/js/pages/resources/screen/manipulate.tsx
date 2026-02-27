@@ -14,7 +14,7 @@ import screen from '@/routes/screen';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { columnModel, projectModel, screenModel, ScreenNavItems, tableModel, type applicationModel } from '@/types/resources.d';
 import { Transition } from '@headlessui/react';
-import { Form, Head, usePage } from '@inertiajs/react';
+import { Form, Head, router, usePage } from '@inertiajs/react';
 import { ChevronsUpDown } from 'lucide-react';
 import React, { useRef } from 'react';
 import { MDXEditorMethods } from '@mdxeditor/editor';
@@ -139,6 +139,7 @@ export default function ManipulateScreen({
                         }}
                         resetOnError={['name']}
                         resetOnSuccess={['name']}
+                        onSuccess={() => router.flushAll()}
                         className="space-y-6"
                         transform={data => ({...data, markdown: editorRef.current?.getMarkdown()})}
                     >

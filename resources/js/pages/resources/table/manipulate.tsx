@@ -12,7 +12,7 @@ import table from '@/routes/table';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { TableNavItems, tableModel, databaseModel } from '@/types/resources.d';
 import { Transition } from '@headlessui/react';
-import { Form, Head, usePage } from '@inertiajs/react';
+import { Form, Head, router, usePage } from '@inertiajs/react';
 import { useRef } from 'react';
 import { MDXEditorMethods } from '@mdxeditor/editor';
 
@@ -62,6 +62,7 @@ export default function ManipulateTable({
                         }}
                         resetOnError={['name']}
                         resetOnSuccess={['name']}
+                        onSuccess={() => router.flushAll()}
                         className="space-y-6"
                         transform={data => ({...data, markdown: editorRef.current?.getMarkdown()})}
                     >

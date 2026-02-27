@@ -15,7 +15,7 @@ import column from '@/routes/column';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { columnModel, ColumnNavItems, tableModel, databaseModel, typeModel, constraintsModel } from '@/types/resources.d';
 import { Transition } from '@headlessui/react';
-import { Form, Head, usePage } from '@inertiajs/react';
+import { Form, Head, router, usePage } from '@inertiajs/react';
 import React, { useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { MDXEditorMethods } from '@mdxeditor/editor';
@@ -230,6 +230,7 @@ export default function ManipulateColumn({
                         }}
                         resetOnError={['name']}
                         resetOnSuccess={['name']}
+                        onSuccess={() => router.flushAll()}
                         className="space-y-6"
                         transform={data => ({...data, markdown: editorRef.current?.getMarkdown()})}
                     >

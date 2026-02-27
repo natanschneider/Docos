@@ -11,7 +11,7 @@ import company from '@/routes/company';
 import { type BreadcrumbItem } from '@/types';
 import { CompanyNavItems, type companyModel } from '@/types/resources.d';
 import { Transition } from '@headlessui/react';
-import { Form, Head } from '@inertiajs/react';
+import { Form, Head, router } from '@inertiajs/react';
 import { useRef } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -47,6 +47,7 @@ export default function ManipulateCompany({ company }: { company: companyModel |
                         }}
                         resetOnError={['name', 'description']}
                         resetOnSuccess
+                        onSuccess={() => router.flushAll()}
                         className="space-y-6"
                     >
                         {({ errors, processing, recentlySuccessful }) => (
