@@ -20,6 +20,7 @@ interface resourceItem {
     id: number;
     name: string;
     description?: string;
+    view_url: string;
     edit_url: string;
     delete_url: string;
     list_url: string;
@@ -85,7 +86,7 @@ export default function ResourceListItem({ resource }: { resource: resourceItem 
         <>
             {isVisible && (
                 <div key={resource.id} className="rounded-lg border border-border bg-card p-4 transition-colors hover:bg-accent/50">
-                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                    <Link href={resource.view_url} className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                         <div className="flex-1 space-y-1">
                             <Label className="text-base font-medium text-foreground">{resource.name}</Label>
                             {resource.description && <p className="text-sm text-muted-foreground">{resource.description}</p>}
@@ -122,7 +123,7 @@ export default function ResourceListItem({ resource }: { resource: resourceItem 
                                 </AlertDialogContent>
                             </AlertDialog>
                         </div>
-                    </div>
+                    </Link>
                 </div>
             )}
             <AutoCloseAlert
