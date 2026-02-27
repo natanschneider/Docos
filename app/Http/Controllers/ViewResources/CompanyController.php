@@ -55,7 +55,7 @@ class CompanyController extends Controller
         $request->merge(['id' => $id]);
         $company = (new Company)->get($request);
 
-        return Inertia::render('resources/company/manipulate', [
+        return Inertia::render('resources/company/view', [
             'company' => $company,
         ]);
     }

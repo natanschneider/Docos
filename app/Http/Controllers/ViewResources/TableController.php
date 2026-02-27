@@ -98,7 +98,7 @@ class TableController extends Controller
             $doc = (new FileRepository())->get('docs', $table[0]->doc_file);
         }
 
-        return Inertia::render('resources/table/manipulate', [
+        return Inertia::render('resources/table/view', [
             'table' => Inertia::always($table[0]),
             'doc' => $doc,
             'databases' => $databases

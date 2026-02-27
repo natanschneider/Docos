@@ -58,7 +58,7 @@ class DatabaseController extends Controller
         $request->merge(['id' => $id, 'company_id' => $request->cookie('currentCompany')]);
         $database = (new Database)->get($request);
 
-        return Inertia::render('resources/database/manipulate', [
+        return Inertia::render('resources/database/view', [
             'database' => $database,
         ]);
     }

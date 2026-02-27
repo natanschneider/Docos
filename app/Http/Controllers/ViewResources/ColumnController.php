@@ -156,18 +156,6 @@ class ColumnController extends Controller
         ]);
         $column = (new Column())->get($request);
 
-        $columnRequest = ColumnRequest::createFrom($request);
-        $columnRequest->merge([
-            'company_id' => $request->cookie('currentCompany'),
-            'database_id' => $currentDatabase,
-            'constraint_id' => 1
-        ]);
-
-        $primaryKey = (new ColumnRepository())->getByConstraint($columnRequest);
-
-        $columnRequest->merge([ 'constraint_id' => 2 ]);
-        $foreignKey = (new ColumnRepository())->getByConstraint($columnRequest);
-
         $types = (new ColumnRepository())->getTypes();
 
         $constraints = (new ColumnRepository())->getConstraints();
@@ -177,13 +165,11 @@ class ColumnController extends Controller
             $doc = (new FileRepository())->get('docs', $column[0]->doc_file);
         }
 
-        return Inertia::render('resources/column/manipulate', [
+        return Inertia::render('resources/column/view', [
             'column' => $column,
             'doc' => $doc,
             'tables' => $tables,
             'databases' => $databases,
-            'primaryKey' => $primaryKey,
-            'foreignKey' => $foreignKey,
             'types' => $types,
             'constraints' => $constraints
         ]);

@@ -56,7 +56,7 @@ class ProjectController extends Controller
         $request->merge(['id' => $id, 'company_id' => $request->cookie('currentCompany')]);
         $project = (new Project)->get($request);
 
-        return Inertia::render('resources/project/manipulate', [
+        return Inertia::render('resources/project/view', [
             'project' => $project,
         ]);
     }

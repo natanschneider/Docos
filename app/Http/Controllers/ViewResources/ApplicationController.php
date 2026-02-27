@@ -101,7 +101,7 @@ class ApplicationController extends Controller
         $request->merge(['id' => $id, 'project_id' => $currentProject]);
         $application = (new Application)->get($request);
 
-        return Inertia::render('resources/application/manipulate', [
+        return Inertia::render('resources/application/view', [
             'application' => Inertia::always($application[0]),
             'projects' => $projects,
             'databases' => $databases,

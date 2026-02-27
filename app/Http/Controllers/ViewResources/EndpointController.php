@@ -117,21 +117,6 @@ class EndpointController extends Controller
      */
     public function show(string $id, EndpointRequest $request): Response
     {
-        $projectRequest = ProjectRequest::createFrom($request);
-        $projectRequest->merge(['company_id' => $request->cookie('currentCompany')]);
-        $projects = (new ProjectController())->get($projectRequest);
-
-        $currentProject = ($request->hasCookie('currentProject') && $request->cookie('currentProject'))
-            ? $request->cookie('currentProject')
-            : (new ProjectController())->getLatest($request)['id'];
-
-        $applicationRequest = ApplicationRequest::createFrom($request);
-        $applicationRequest->merge([
-            'company_id' => $request->cookie('currentCompany'),
-            'project_id' => $currentProject
-        ]);
-        $applications = (new ApplicationController())->get($applicationRequest);
-
         $currentApplication = ($request->hasCookie('currentApplication') && $request->cookie('currentApplication'))
             ? $request->cookie('currentApplication')
             : (new ApplicationController())->getLatest($request)['id'];
@@ -147,12 +132,10 @@ class EndpointController extends Controller
             $doc = (new FileRepository())->get('docs', $endpoint[0]->doc_file);
         }
 
-        return Inertia::render('resources/endpoint/manipulate', [
+        return Inertia::render('resources/endpoint/view', [
             'endpoint' => $endpoint,
             'doc' => $doc,
-            'tables' => $tables,
-            'projects' => $projects,
-            'applications' => $applications,
+            'tables' => $tables
         ]);
     }
 
