@@ -41,6 +41,7 @@ export default function ListProjects({ projects }: { projects: projectModel[] })
                                     resource={{
                                         id: project.id,
                                         name: project.name,
+                                        view_url: ProjectRoute.show(project.id).url,
                                         edit_url: ProjectRoute.edit(project.id).url,
                                         delete_url: ProjectRoute.destroy(project.id).url,
                                         list_url: ProjectRoute.index().url,

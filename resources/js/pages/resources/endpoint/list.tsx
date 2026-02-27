@@ -47,6 +47,7 @@ export default function ListEndpoints({ endpoints, projects, applications }: { e
                                     resource={{
                                         id: endpoint.id,
                                         name: endpoint.name,
+                                        view_url: EndpointRoute.show(endpoint.id).url,
                                         edit_url: EndpointRoute.edit(endpoint.id).url,
                                         delete_url: EndpointRoute.destroy(endpoint.id).url,
                                         list_url: EndpointRoute.index().url,

@@ -47,6 +47,7 @@ export default function ListScreens({ screens, projects, applications }: { scree
                                     resource={{
                                         id: screen.id,
                                         name: screen.name,
+                                        view_url: ScreenRoute.show(screen.id).url,
                                         edit_url: ScreenRoute.edit(screen.id).url,
                                         delete_url: ScreenRoute.destroy(screen.id).url,
                                         list_url: ScreenRoute.index().url,

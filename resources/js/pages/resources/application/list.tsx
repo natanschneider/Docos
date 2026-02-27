@@ -47,6 +47,7 @@ export default function ListApplications({ applications, projects }: { applicati
                                     resource={{
                                         id: application.id,
                                         name: application.name,
+                                        view_url: ApplicationRoute.show(application.id).url,
                                         edit_url: ApplicationRoute.edit(application.id).url,
                                         delete_url: ApplicationRoute.destroy(application.id).url,
                                         list_url: ApplicationRoute.index().url,

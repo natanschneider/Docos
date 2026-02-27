@@ -47,6 +47,7 @@ export default function ListTables({ tables, databases }: { tables: tableModel[]
                                     resource={{
                                         id: table.id,
                                         name: table.name,
+                                        view_url: TableRoute.show(table.id).url,
                                         edit_url: TableRoute.edit(table.id).url,
                                         delete_url: TableRoute.destroy(table.id).url,
                                         list_url: TableRoute.index().url,

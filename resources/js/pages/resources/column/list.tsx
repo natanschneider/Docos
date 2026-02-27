@@ -56,6 +56,7 @@ export default function ListColumns({
                                         id: column.id,
                                         name: column.name,
                                         description: column?.type?.name,
+                                        view_url: ColumnRoute.show(column.id).url,
                                         edit_url: ColumnRoute.edit(column.id).url,
                                         delete_url: ColumnRoute.destroy(column.id).url,
                                         list_url: ColumnRoute.index().url,

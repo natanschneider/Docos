@@ -42,6 +42,7 @@ export default function ListDatabases({ databases }: { databases: databaseModel[
                                         id: database.id,
                                         name: database.name,
                                         description: database.engine.name,
+                                        view_url: DatabaseRoute.show(database.id).url,
                                         edit_url: DatabaseRoute.edit(database.id).url,
                                         delete_url: DatabaseRoute.destroy(database.id).url,
                                         list_url: DatabaseRoute.index().url,
