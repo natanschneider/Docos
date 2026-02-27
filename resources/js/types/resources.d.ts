@@ -202,6 +202,7 @@ export interface tableModel {
     updated_at: string;
     public_key: string;
     columns: columnModel[] | null;
+    database: databaseModel | null;
 };
 
 export const TableNavItems: NavItem[] = [

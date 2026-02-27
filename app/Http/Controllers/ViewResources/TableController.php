@@ -91,7 +91,7 @@ class TableController extends Controller
             : (new DatabaseController())->getLatest($request)['id'];
 
         $request->merge(['id' => $id, 'database_id' => $currentDatabase]);
-        $table = (new Table())->get($request);
+        $table = (new Table())->get($request)->load(['database', 'columns', 'columns.endpoints', 'columns.screens']);
 
         $doc = null;
         if ($table[0]->doc_file) {
