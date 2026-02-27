@@ -125,7 +125,7 @@ class ScreenController extends Controller
         $tables = (new TableRepository())->getWithColumns($request);
 
         $request->merge(['id' => $id, 'application_id' => $currentApplication]);
-        $screen = (new Screen())->get($request);
+        $screen = (new Screen())->get($request)->load(['application']);
 
         $doc = null;
         if ($screen[0]->doc_file) {
