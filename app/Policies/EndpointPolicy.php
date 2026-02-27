@@ -52,7 +52,9 @@ class EndpointPolicy
 
         if ($request->has('columns')) {
             $cl = Column::whereIn('id', $request->columns)
-                ->has('table.database.company', $company->id)
+                ->whereHas('table.database.company', function ($query) use ($company) {
+                    $query->where('id', $company->id);
+                })
                 ->count();
 
             return $cl === count($request->columns)
