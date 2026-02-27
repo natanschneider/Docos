@@ -51,12 +51,14 @@ export default function ViewTable({
                             </Item>
                         </div>
 
-                        <div className="w-full">
-                            <div className="flex items-center my-4">
-                                <Label>Documetation</Label>
+                        {doc && doc.length > 0 && (
+                            <div className="w-full">
+                                <div className="flex items-center my-4">
+                                    <Label>Documetation</Label>
+                                </div>
+                                <MarkdownRenderer source={doc ?? ''} />
                             </div>
-                            <MarkdownRenderer source={doc ?? ''} />
-                        </div>
+                        )}
                     </div>
                 </div>
             </ResourcesLayout>

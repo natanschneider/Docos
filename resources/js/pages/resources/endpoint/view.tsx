@@ -83,43 +83,46 @@ export default function ViewEndpoint({
                         </Item>
                     </div>
 
-                    <div className='w-full'>
-                        <div className="flex w-full flex-col gap-2">
-                            <div className="flex items-center justify-between gap-4 px-4">
-                                <Label>Tables</Label>
-                            </div>
-
-                            <div className='grid gap-2 auto-cols-max grid-flow-col w-full'>
-                                {selectedTables?.map((table) => (
-                                    <Card key={table}>
-                                        <CardHeader>
-                                            <CardTitle>{tableArr[table]?.name}</CardTitle>
-                                            <CardDescription>
-                                                <Label htmlFor={`${table}_columns_id`}>Columns</Label>
-                                            </CardDescription>
-                                        </CardHeader>
-                                        <CardContent>
-                                            {items?.map((item, index) => columnTable[item] === table && (
-                                                <div
-                                                    className="flex rounded-md border px-4 py-2 my-2 font-mono text-sm items-center"
-                                                    key={index}
-                                                >
-                                                    <p className="grow">{ columnArr[item]?.name }</p>
-                                                </div>
-                                            ))}
-                                        </CardContent>
-                                    </Card>
-                                ))}
+                    {items.length > 0 && (
+                        <div className='w-full'>
+                            <div className="flex w-full flex-col gap-2">
+                                <div className="flex items-center justify-between gap-4 px-4">
+                                    <Label>Tables</Label>
+                                </div>
+                                <div className='grid gap-2 auto-cols-max grid-flow-col w-full'>
+                                    {selectedTables?.map((table) => (
+                                        <Card key={table}>
+                                            <CardHeader>
+                                                <CardTitle>{tableArr[table]?.name}</CardTitle>
+                                                <CardDescription>
+                                                    <Label htmlFor={`${table}_columns_id`}>Columns</Label>
+                                                </CardDescription>
+                                            </CardHeader>
+                                            <CardContent>
+                                                {items?.map((item, index) => columnTable[item] === table && (
+                                                    <div
+                                                        className="flex rounded-md border px-4 py-2 my-2 font-mono text-sm items-center"
+                                                        key={index}
+                                                    >
+                                                        <p className="grow">{ columnArr[item]?.name }</p>
+                                                    </div>
+                                                ))}
+                                            </CardContent>
+                                        </Card>
+                                    ))}
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    )}
 
-                    <div className="w-full">
-                        <div className="flex items-center my-4">
-                            <Label>Documetation</Label>
+                    {doc && doc.length > 0 && (
+                        <div className="w-full">
+                            <div className="flex items-center my-4">
+                                <Label>Documetation</Label>
+                            </div>
+                            <MarkdownRenderer source={doc ?? ''} />
                         </div>
-                        <MarkdownRenderer source={doc ?? ''} />
-                    </div>
+                    )}
                 </div>
             </ResourcesLayout>
         </AppLayout>

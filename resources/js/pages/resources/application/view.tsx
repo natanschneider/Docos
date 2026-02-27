@@ -62,19 +62,21 @@ export default function ViewApplication({
                         </Item>
                     </div>
 
-                    <div className="grid gap-2">
-                        <div className="flex w-[350px] flex-col gap-2">
-                            <div className="flex items-center justify-between gap-4 px-4">
-                                <Label htmlFor="database_id">Databases</Label>
-                            </div>
+                    {items.length > 0 && (
+                        <div className="grid gap-2">
+                            <div className="flex w-[350px] flex-col gap-2">
+                                <div className="flex items-center justify-between gap-4 px-4">
+                                    <Label htmlFor="database_id">Databases</Label>
+                                </div>
 
-                            {items.map((item, index) => (
-                                <Link href={ database.show(item) } className="flex rounded-md border px-4 py-2 font-mono text-sm items-center" key={index}>
-                                    <p className="grow">{databaseArr[item]}</p>
-                                </Link>
-                            ))}
+                                {items.map((item, index) => (
+                                    <Link href={ database.show(item) } className="flex rounded-md border px-4 py-2 font-mono text-sm items-center" key={index}>
+                                        <p className="grow">{databaseArr[item]}</p>
+                                    </Link>
+                                ))}
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             </ResourcesLayout>
         </AppLayout>
