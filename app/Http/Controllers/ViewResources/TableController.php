@@ -94,7 +94,7 @@ class TableController extends Controller
         $table = (new Table())->get($request)->load(['database', 'columns', 'columns.endpoints', 'columns.screens']);
 
         $doc = null;
-        if ($table[0]->doc_file) {
+        if (isset($table[0]) && $table[0]->doc_file) {
             $doc = (new FileRepository())->get('docs', $table[0]->doc_file);
         }
 
@@ -122,7 +122,7 @@ class TableController extends Controller
         $table = (new Table())->get($request);
 
         $doc = null;
-        if ($table[0]->doc_file) {
+        if (isset($table[0]) && $table[0]->doc_file) {
             $doc = (new FileRepository())->get('docs', $table[0]->doc_file);
         }
 

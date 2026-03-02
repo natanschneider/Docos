@@ -161,7 +161,7 @@ class ColumnController extends Controller
         $constraints = (new ColumnRepository())->getConstraints();
 
         $doc = null;
-        if ($column[0]->doc_file) {
+        if (isset($column[0]) && $column[0]->doc_file) {
             $doc = (new FileRepository())->get('docs', $column[0]->doc_file);
         }
 
@@ -224,7 +224,7 @@ class ColumnController extends Controller
         $constraints = (new ColumnRepository())->getConstraints();
 
         $doc = null;
-        if ($column[0]->doc_file) {
+        if (isset($column[0]) && $column[0]->doc_file) {
             $doc = (new FileRepository())->get('docs', $column[0]->doc_file);
         }
 

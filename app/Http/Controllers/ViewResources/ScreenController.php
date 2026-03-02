@@ -128,7 +128,7 @@ class ScreenController extends Controller
         $screen = (new Screen())->get($request)->load(['application']);
 
         $doc = null;
-        if ($screen[0]->doc_file) {
+        if (isset($screen[0]) && $screen[0]->doc_file) {
             $doc = (new FileRepository())->get('docs', $screen[0]->doc_file);
         }
 
@@ -170,7 +170,7 @@ class ScreenController extends Controller
         $screen = (new Screen())->get($request);
 
         $doc = null;
-        if ($screen[0]->doc_file) {
+        if (isset($screen[0]) && $screen[0]->doc_file) {
             $doc = (new FileRepository())->get('docs', $screen[0]->doc_file);
         }
 

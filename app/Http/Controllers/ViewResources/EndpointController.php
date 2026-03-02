@@ -128,7 +128,7 @@ class EndpointController extends Controller
         $endpoint = (new Endpoint())->get($request)->load(['application']);
 
         $doc = null;
-        if ($endpoint[0]->doc_file) {
+        if (isset($endpoint[0]) && $endpoint[0]->doc_file) {
             $doc = (new FileRepository())->get('docs', $endpoint[0]->doc_file);
         }
 
@@ -170,7 +170,7 @@ class EndpointController extends Controller
         $endpoint = (new Endpoint())->get($request);
 
         $doc = null;
-        if ($endpoint[0]->doc_file) {
+        if (isset($endpoint[0]) && $endpoint[0]->doc_file) {
             $doc = (new FileRepository())->get('docs', $endpoint[0]->doc_file);
         }
 
