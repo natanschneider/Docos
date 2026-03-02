@@ -6,15 +6,21 @@ import {
     DatabaseSchemaTableRow,
 } from '@/components/database-schema-node';
 import { LabeledHandle } from '@/components/labeled-handle';
-import { tableModel } from '@/types/resources';
+import { constraintsModel, tableModel } from '@/types/resources';
 import { Position, Background, Edge, ReactFlow } from '@xyflow/react';
 import { memo } from 'react';
 import '@xyflow/react/dist/style.css';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuLabel } from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { EyeIcon, MoreHorizontalIcon, PencilIcon } from 'lucide-react';
+import { Label } from './ui/label';
+import column from '@/routes/column';
+import { Link } from '@inertiajs/react';
 
 export type DatabaseSchemaNodeData = {
     data: {
         label: string;
-        schema: { title: string; type: string }[];
+        schema: { title: string; type: string, id: number, contraints: constraintsModel[] | null }[];
     };
 };
 
@@ -29,9 +35,49 @@ export const DatabaseSchema = memo(({ data }: DatabaseSchemaNodeData) => {
                             <LabeledHandle id={entry.title} title={entry.title} type="target" position={Position.Left} />
                         </DatabaseSchemaTableCell>
                         <DatabaseSchemaTableCell className="pr-0 font-thin">
+                            <Label>{entry.type}</Label>
+                        </DatabaseSchemaTableCell>
+                        <DatabaseSchemaTableCell className="text-right">
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" size="icon" className="size-8">
+                                        <MoreHorizontalIcon />
+                                        <span className="sr-only">Open menu</span>
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                    <DropdownMenuGroup>
+                                        <DropdownMenuItem asChild>
+                                            <Link href={column.show(entry.id)} className='flex items-center gap-1'>
+                                                <EyeIcon className='w-4 h-4' />
+                                                Visualize
+                                            </Link>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem asChild>
+                                            <Link href={column.edit(entry.id)} className='flex items-center gap-1'>
+                                                <PencilIcon className='w-4 h-4' />
+                                                Edit
+                                            </Link>
+                                        </DropdownMenuItem>
+                                    </DropdownMenuGroup>
+                                    {entry.contraints && entry.contraints.length > 0 && (
+                                        <>
+                                            <DropdownMenuSeparator />
+                                            <DropdownMenuGroup>
+                                                <DropdownMenuLabel className="font-extralight">Contrainsts</DropdownMenuLabel>
+                                                {entry.contraints.map((constraint) => (
+                                                    <DropdownMenuItem key={constraint.id}>{constraint.name}</DropdownMenuItem>
+                                                ))}
+                                            </DropdownMenuGroup>
+                                        </>
+                                    )}
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </DatabaseSchemaTableCell>
+                        <DatabaseSchemaTableCell className="pr-0 font-thin">
                             <LabeledHandle
                                 id={entry.title}
-                                title={entry.type}
+                                title=''
                                 type="source"
                                 position={Position.Right}
                                 className="p-0"
@@ -63,6 +109,8 @@ export default function Diagram({ tables }: { tables: tableModel[] }) {
                 schema: table?.columns?.map((column) => ({
                     title: column.name,
                     type: column.type?.name,
+                    id: column.id,
+                    contraints: column?.constraints
                 })),
             },
             position: { x: 0, y: 0 },
