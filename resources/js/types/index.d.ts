@@ -1,4 +1,4 @@
-import { type NavItem } from './resources';
+import { type NavItem } from '@/types/resources.d';
 
 export interface Auth {
     user: User;

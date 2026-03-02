@@ -1,6 +1,6 @@
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { markdownComponents } from './markdown-components';
+import { markdownComponents } from '@/components/markdown-components';
 
 interface MarkdownRendererProps {
     source: string;

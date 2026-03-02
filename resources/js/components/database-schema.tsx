@@ -13,7 +13,7 @@ import '@xyflow/react/dist/style.css';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuLabel } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { EyeIcon, MoreHorizontalIcon, PencilIcon } from 'lucide-react';
-import { Label } from './ui/label';
+import { Label } from '@/components/ui/label';
 import column from '@/routes/column';
 import { Link } from '@inertiajs/react';
 

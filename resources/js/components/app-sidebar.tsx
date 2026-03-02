@@ -21,7 +21,7 @@ import { SharedData } from '@/types';
 import { type NavItem } from '@/types/resources';
 import { Link, usePage } from '@inertiajs/react';
 import { LayoutGrid, Building, Presentation, Database, AppWindowMac, ScreenShare, Server, Table, Columns2 } from 'lucide-react';
-import AppLogo from './app-logo';
+import AppLogo from '@/components/app-logo';
 import screen from '@/routes/screen';
 import endpoint from '@/routes/endpoint';
 import table from '@/routes/table';
