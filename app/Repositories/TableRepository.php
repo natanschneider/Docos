@@ -65,7 +65,7 @@ final class TableRepository
         });
     }
 
-    public function getWithColumns(Request $request)
+    public function getWithColumns(Request $request): Collection
     {
         $query = Table::query();
 
