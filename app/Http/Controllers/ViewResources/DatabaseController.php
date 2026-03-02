@@ -7,7 +7,9 @@ namespace App\Http\Controllers\ViewResources;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\DatabaseController as Database;
 use App\Http\Requests\DatabaseRequest;
+use App\Http\Requests\TableRequest;
 use App\Models\Descriptions\Engine;
+use App\Repositories\TableRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -55,11 +57,19 @@ class DatabaseController extends Controller
      */
     public function show(string $id, DatabaseRequest $request): Response
     {
+        $tableRequest = TableRequest::createFrom($request);
+        $tableRequest->merge([
+            'company_id' => $request->cookie('currentCompany'),
+            'database_id' => $id
+        ]);
+        $tables = (new TableRepository())->getWithColumns($tableRequest)->load(['columns.relatedFks', 'columns.relatedPks', 'database', 'columns.type', 'columns.constraints']);
+
         $request->merge(['id' => $id, 'company_id' => $request->cookie('currentCompany')]);
         $database = (new Database)->get($request);
 
         return Inertia::render('resources/database/view', [
             'database' => $database,
+            'tables' => $tables,
         ]);
     }
 
