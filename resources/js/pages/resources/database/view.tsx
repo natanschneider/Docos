@@ -2,10 +2,11 @@ import HeadingSmall from "@/components/heading-small";
 import AppLayout from "@/layouts/app-layout";
 import ResourcesLayout from "@/layouts/resources/layout";
 import database from "@/routes/database";
-import { databaseModel, DatabaseNavItems } from "@/types/resources.d";
+import { databaseModel, DatabaseNavItems, tableModel } from "@/types/resources.d";
 import { type BreadcrumbItem } from "@/types";
 import { Head } from "@inertiajs/react";
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
+import Diagram from "@/components/database-schema";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -14,8 +15,13 @@ const breadcrumbs: BreadcrumbItem[] = [
     }
 ];
 
-export default function ViewDatabase({database}: {database: databaseModel[];}) {
-    console.log(database)
+export default function ViewDatabase({
+    database,
+    tables
+}: {
+    database: databaseModel[];
+    tables: tableModel[];
+}) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="View database" />
@@ -35,9 +41,7 @@ export default function ViewDatabase({database}: {database: databaseModel[];}) {
                                 </ItemContent>
                             </Item>
                         </div>
-                    </div>
 
-                    <div className="space-y-6">
                         <div className="grid gap-2">
                             <Item variant='outline'>
                                 <ItemContent>
@@ -46,6 +50,8 @@ export default function ViewDatabase({database}: {database: databaseModel[];}) {
                                 </ItemContent>
                             </Item>
                         </div>
+
+                        <Diagram tables={tables} />
                     </div>
                 </div>
             </ResourcesLayout>
