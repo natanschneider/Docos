@@ -54,7 +54,7 @@ class ProjectController extends Controller
     public function show(string $id, ProjectRequest $request): Response
     {
         $request->merge(['id' => $id, 'company_id' => $request->cookie('currentCompany')]);
-        $project = (new Project)->get($request);
+        $project = (new Project)->get($request)->load(['applications', 'company']);
 
         return Inertia::render('resources/project/view', [
             'project' => $project,

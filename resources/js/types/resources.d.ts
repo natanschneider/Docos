@@ -76,6 +76,8 @@ export interface projectModel {
     created_at: string;
     updated_at: string;
     public_key: string;
+    applications: applicationModel[] | null;
+    company: companyModel | null;
 }
 
 export const ProjectNavItems: NavItem[] = [
