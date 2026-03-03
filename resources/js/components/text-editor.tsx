@@ -26,6 +26,7 @@ import {
 } from '@mdxeditor/editor';
 import '@mdxeditor/editor/style.css';
 import { ForwardedRef } from 'react';
+import { useAppearance } from '@/hooks/use-appearance';
 
 const defaultSnippetContent = `
 export default function App() {
@@ -81,12 +82,13 @@ export default function TextEditor({
     markdown: string,
     editorRef: ForwardedRef<MDXEditorMethods>|null
 } & MDXEditorProps) {
+    const { appearance } = useAppearance();
     return (
         <MDXEditor
             ref={editorRef}
             markdown={markdown}
             {...props}
-            className="full-demo-mdxeditor"
+            className={`prose max-w-full font-sans ${appearance === 'dark' ? 'dark-theme mdxeditor' : ''}`}
             contentEditableClassName="prose max-w-full font-sans"
             plugins={allPlugins(markdown)}
         />
