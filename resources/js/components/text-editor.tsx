@@ -88,7 +88,7 @@ export default function TextEditor({
             ref={editorRef}
             markdown={markdown}
             {...props}
-            className={`prose max-w-full font-sans ${appearance === 'dark' ? 'dark-theme mdxeditor' : 'mdxeditor'}`}
+            className={`prose max-w-full font-sans ${appearance === 'dark' || appearance === 'system' ? 'dark-theme mdxeditor' : 'mdxeditor'}`}
             contentEditableClassName="prose max-w-full font-sans"
             plugins={allPlugins(markdown)}
         />
