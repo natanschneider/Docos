@@ -106,27 +106,27 @@ export default function ViewScreen({
 
                                 <div className='grid gap-2 auto-cols-max grid-flow-col w-full'>
                                     {selectedTables?.map((tableItem) => (
-                                        <Link href={table.show(tableItem).url}>
-                                            <Card key={tableItem}>
+                                        <Card key={tableItem}>
+                                            <Link href={table.show(tableItem).url}>
                                                 <CardHeader>
                                                     <CardTitle>{tableArr[tableItem]?.name}</CardTitle>
                                                     <CardDescription>
                                                         <Label htmlFor={`${tableItem}_columns_id`}>Columns</Label>
                                                     </CardDescription>
                                                 </CardHeader>
-                                                <CardContent>
-                                                    {items?.map((item, index) => columnTable[item] === tableItem && (
-                                                        <Link
-                                                            className="flex rounded-md border px-4 py-2 my-2 font-mono text-sm items-center"
-                                                            key={index}
-                                                            href={column.show(item).url}
-                                                        >
-                                                            <p className="grow">{ columnArr[item]?.name }</p>
-                                                        </Link>
-                                                    ))}
-                                                </CardContent>
-                                            </Card>
-                                        </Link>
+                                            </Link>
+                                            <CardContent>
+                                                {items?.map((item, index) => columnTable[item] === tableItem && (
+                                                    <Link
+                                                        className="flex rounded-md border px-4 py-2 my-2 font-mono text-sm items-center"
+                                                        key={index}
+                                                        href={column.show(item).url}
+                                                    >
+                                                        <p className="grow">{ columnArr[item]?.name }</p>
+                                                    </Link>
+                                                ))}
+                                            </CardContent>
+                                        </Card>
                                     ))}
                                 </div>
                             </div>

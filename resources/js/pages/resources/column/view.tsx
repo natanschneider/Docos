@@ -145,7 +145,7 @@ export default function ViewColumn({
                                 </div>
                                 <div className="mt-3 flex flex-col gap-2">
                                     {constraint.map((item, index) => (
-                                        <div className="flex rounded-md border px-4 py-2 font-mono text-sm items-center" key={index}>
+                                        <div className="flex rounded-md border px-4 py-2 font-mono text-sm items-center" key={`${index}_${item}`}>
                                             <p className="grow">{constraintArr[item]}</p>
                                         </div>
                                     ))}
@@ -162,27 +162,27 @@ export default function ViewColumn({
                                 </div>
                                 <div className="grid gap-2 auto-cols-max grid-flow-col w-full">
                                     {selectedPkTableArr?.map((tableItem) => (
-                                        <Link href={table.show(tableItem)} key={tableItem}>
-                                            <Card>
+                                        <Card key={tableItem}>
+                                            <Link href={table.show(tableItem)}>
                                                 <CardHeader>
                                                     <CardTitle>{tableArr[tableItem]?.name}</CardTitle>
                                                     <CardDescription>
                                                         <Label htmlFor={`${tableItem}_columns_id_pk`}>Columns</Label>
                                                     </CardDescription>
                                                 </CardHeader>
-                                                <CardContent>
-                                                    {selectedPkArr?.map((item) => columnArr[item]?.table_id.toString() === tableItem && selectedPkArr?.includes(item) && (
-                                                        <Link
-                                                            className="flex rounded-md border px-4 py-2 my-2 font-mono text-sm items-center"
-                                                            key={item}
-                                                            href={colRoute.show(item)}
-                                                        >
-                                                            <p className="grow">{columnArr[item]?.name}</p>
-                                                        </Link>
-                                                    ))}
-                                                </CardContent>
-                                            </Card>
-                                        </Link>
+                                            </Link>
+                                            <CardContent>
+                                                {selectedPkArr?.map((item) => columnArr[item]?.table_id.toString() === tableItem && selectedPkArr?.includes(item) && (
+                                                    <Link
+                                                        className="flex rounded-md border px-4 py-2 my-2 font-mono text-sm items-center"
+                                                        key={item}
+                                                        href={colRoute.show(item)}
+                                                    >
+                                                        <p className="grow">{columnArr[item]?.name}</p>
+                                                    </Link>
+                                                ))}
+                                            </CardContent>
+                                        </Card>
                                     ))}
                                 </div>
                             </div>
@@ -197,27 +197,27 @@ export default function ViewColumn({
                                 </div>
                                 <div className="grid gap-2 auto-cols-max grid-flow-col w-full">
                                     {selectedFkTableArr?.map((tableItem) => (
-                                        <Link href={table.show(tableItem)} key={tableItem}>
-                                            <Card>
+                                        <Card key={tableItem}>
+                                            <Link href={table.show(tableItem)}>
                                                 <CardHeader>
                                                     <CardTitle>{tableArr[tableItem]?.name}</CardTitle>
                                                     <CardDescription>
                                                         <Label htmlFor={`${tableItem}_columns_id_fk`}>Columns</Label>
                                                     </CardDescription>
                                                 </CardHeader>
-                                                <CardContent>
-                                                    {selectedFkArr?.map((item) => columnArr[item]?.table_id.toString() === tableItem && selectedFkArr?.includes(item) && (
-                                                        <Link
-                                                            className="flex rounded-md border px-4 py-2 my-2 font-mono text-sm items-center"
-                                                            key={item}
-                                                            href={colRoute.show(item)}
-                                                        >
-                                                            <p className="grow">{columnArr[item]?.name}</p>
-                                                        </Link>
-                                                    ))}
-                                                </CardContent>
-                                            </Card>
-                                        </Link>
+                                            </Link>
+                                            <CardContent>
+                                                {selectedFkArr?.map((item) => columnArr[item]?.table_id.toString() === tableItem && selectedFkArr?.includes(item) && (
+                                                    <Link
+                                                        className="flex rounded-md border px-4 py-2 my-2 font-mono text-sm items-center"
+                                                        key={item}
+                                                        href={colRoute.show(item)}
+                                                    >
+                                                        <p className="grow">{columnArr[item]?.name}</p>
+                                                    </Link>
+                                                ))}
+                                            </CardContent>
+                                        </Card>
                                     ))}
                                 </div>
                             </div>

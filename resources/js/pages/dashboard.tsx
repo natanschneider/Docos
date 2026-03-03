@@ -52,7 +52,7 @@ export default function Dashboard({ categories }: { categories: Category[] }) {
                     <h2 className="mb-6 text-2xl font-semibold text-foreground">Recently Updated</h2>
                     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
                         {categories.map((category) => (
-                            <Card key={category.id} className="transition-shadow hover:shadow-md">
+                            <Card key={`${category.id}_${category.name}`} className="transition-shadow hover:shadow-md">
                                 <CardHeader className="pb-4">
                                     <CardTitle className="text-xl text-card-foreground">{category.name}</CardTitle>
                                 </CardHeader>
@@ -69,7 +69,7 @@ export default function Dashboard({ categories }: { categories: Category[] }) {
                                         <div className="space-y-3">
                                             {category.items.map((item) => (
                                                 <div
-                                                    key={item.id}
+                                                    key={`${item.id}_${category.name}_${item.name}`}
                                                     className="flex items-start justify-between gap-4 border-b border-border pb-3 last:border-0 last:pb-0"
                                                 >
                                                     <span className="text-sm leading-relaxed font-medium text-foreground">{item.name}</span>

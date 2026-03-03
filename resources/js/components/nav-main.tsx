@@ -10,8 +10,8 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
             <SidebarMenu>
                 {items.map((item) => {
                     return item.title === 'separator' ?
-                        <SidebarSeparator key={item.title} className='my-2' /> :
-                        <SidebarMenuItem key={item.title}>
+                        <SidebarSeparator key={`${item.title}_${Math.random()}`} className='my-2' /> :
+                        <SidebarMenuItem key={`${item.title}_${Math.random()}`}>
                             <SidebarMenuButton
                                 asChild
                                 isActive={page.url.startsWith(typeof item.href === 'string' ? item.href : item.href.url)}
