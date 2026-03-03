@@ -100,7 +100,15 @@ export default function Diagram({ tables }: { tables: tableModel[] }) {
     const defaultNodes = [];
     const defaultEdges: Edge[] = [];
 
+    const cols = 3;
+    let index = 0;
+    let x = 0;
+    let y = 0;
     for (const table of tables) {
+        index++;
+
+        x = (index % cols) * 300;
+        y = Math.floor(index / cols) * 300;
         defaultNodes.push({
             id: table.id.toString(),
             type: 'databaseSchema',
@@ -113,7 +121,7 @@ export default function Diagram({ tables }: { tables: tableModel[] }) {
                     contraints: column?.constraints
                 })),
             },
-            position: { x: 0, y: 0 },
+            position: { x: x, y: y },
         });
 
         if (table?.columns) {
