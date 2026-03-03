@@ -20,6 +20,8 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
+const applicationRoute = application;
+
 export default function ViewApplication({
     application,
     databases,
@@ -54,6 +56,8 @@ export default function ViewApplication({
                 <div className="border-spacing-x-60 space-y-6">
                     <HeadingSmall
                         title='View application'
+                        editUrl={ applicationRoute.edit(application.id).url }
+                        deleteUrl={ applicationRoute.destroy(application.id).url }
                     />
 
                     <div className='grid gap-2'>

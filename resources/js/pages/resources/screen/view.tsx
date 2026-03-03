@@ -20,6 +20,8 @@ const breadcrumbs: BreadcrumbItem[] = [
     }
 ];
 
+const screenRoute = screen;
+
 export default function ViewScreen({
     screen,
     doc,
@@ -75,6 +77,9 @@ export default function ViewScreen({
                 <div className="border-spacing-x-60 space-y-6">
                     <HeadingSmall
                         title="View screen"
+                        editUrl={screenRoute.edit(screen[0]?.id).url}
+                        deleteUrl={screenRoute.destroy(screen[0]?.id).url}
+                        id={screen[0]?.id}
                     />
 
                     <div className="space-y-6">

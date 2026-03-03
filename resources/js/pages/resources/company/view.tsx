@@ -17,6 +17,8 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
+const companyRoute = company;
+
 export default function ViewCompany({company}: {company: companyModel[]}) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -26,6 +28,9 @@ export default function ViewCompany({company}: {company: companyModel[]}) {
                 <div className="border-spacing-x-60 space-y-6">
                     <HeadingSmall
                         title="View company"
+                        editUrl={companyRoute.edit(company[0]?.id).url}
+                        deleteUrl={companyRoute.destroy(company[0]?.id).url}
+                        id={company[0]?.id}
                     />
 
                     <div className="space-y-6">

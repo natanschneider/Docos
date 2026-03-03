@@ -16,6 +16,8 @@ const breadcrumbs: BreadcrumbItem[] = [
     }
 ];
 
+const databaseRoute = database;
+
 export default function ViewDatabase({
     database,
     tables
@@ -31,6 +33,9 @@ export default function ViewDatabase({
                 <div className="border-spacing-x-60 space-y-6">
                     <HeadingSmall
                         title="View database"
+                        editUrl={databaseRoute.edit(database[0]?.id).url}
+                        deleteUrl={databaseRoute.destroy(database[0]?.id).url}
+                        id={database[0]?.id}
                     />
 
                     <div className="space-y-6">

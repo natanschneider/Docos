@@ -20,6 +20,8 @@ const breadcrumbs: BreadcrumbItem[] = [
     }
 ];
 
+const endpointRoute = endpoint;
+
 export default function ViewEndpoint({
     endpoint,
     doc,
@@ -75,6 +77,9 @@ export default function ViewEndpoint({
                 <div className="border-spacing-x-60 space-y-6">
                     <HeadingSmall
                         title="View endpoint"
+                        editUrl={endpointRoute.edit(endpoint[0]?.id).url}
+                        deleteUrl={endpointRoute.destroy(endpoint[0]?.id).url}
+                        id={endpoint[0]?.id}
                     />
 
                     <div className="space-y-6">

@@ -17,6 +17,8 @@ const breadcrumbs: BreadcrumbItem[] = [
     }
 ]
 
+const projectRoute = project;
+
 export default function ViewProject({project}: {project: projectModel[]}) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -26,6 +28,9 @@ export default function ViewProject({project}: {project: projectModel[]}) {
                 <div className="border-spacing-x-60 space-y-6">
                     <HeadingSmall
                         title="View project"
+                        editUrl={projectRoute.edit(project[0]?.id).url}
+                        deleteUrl={projectRoute.destroy(project[0]?.id).url}
+                        id={project[0]?.id}
                     />
 
                     <div className="space-y-6">

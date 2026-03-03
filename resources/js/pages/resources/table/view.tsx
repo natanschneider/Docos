@@ -19,6 +19,8 @@ const breadcrumbs: BreadcrumbItem[] = [
     }
 ]
 
+const tableRoute = table;
+
 export default function ViewTable({
     table,
     doc,
@@ -41,6 +43,9 @@ export default function ViewTable({
                 <div className="border-spacing-x-60 space-y-6">
                     <HeadingSmall
                         title="View table"
+                        editUrl={tableRoute.edit(table.id).url}
+                        deleteUrl={tableRoute.destroy(table.id).url}
+                        id={table.id}
                     />
 
                     <div className="space-y-6">
