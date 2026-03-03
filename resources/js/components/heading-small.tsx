@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import { useState } from "react";
 import { AutoCloseAlert } from "./auto-close-alert";
 import axios from "axios";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog";
 
 export default function HeadingSmall({
     title,
@@ -86,9 +87,27 @@ export default function HeadingSmall({
                                 </Link>
                             )}
                             {deleteUrl && id && (
-                                <Button variant='link' onClick={() => deleteItem(deleteUrl, id)} >
-                                    <TrashIcon className="w-4 h-4" />
-                                </Button>
+                                <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                        <Button variant="link">
+                                            <TrashIcon className="w-4 h-4" />
+                                        </Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                This action cannot be undone. This will permanently delete and remove the data.
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogAction className="text-destructive" onClick={() => deleteItem(deleteUrl, id)}>
+                                                Delete
+                                            </AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
                             )}
                         </div>
                     )}
