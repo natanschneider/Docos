@@ -65,7 +65,7 @@ class DatabaseController extends Controller
         $tables = (new TableRepository())->getWithColumns($tableRequest)->load(['columns.relatedFks', 'columns.relatedPks', 'database', 'columns.type', 'columns.constraints']);
 
         $request->merge(['id' => $id, 'company_id' => $request->cookie('currentCompany')]);
-        $database = (new Database)->get($request);
+        $database = (new Database)->get($request)->load('company');
 
         return Inertia::render('resources/database/view', [
             'database' => $database,
