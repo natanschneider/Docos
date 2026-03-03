@@ -13,6 +13,7 @@ use App\Http\Requests\DatabaseRequest;
 use App\Http\Requests\ProjectRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Cookie;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -84,27 +85,38 @@ class ApplicationController extends Controller
     public function show(string $id, ApplicationRequest $request): Response
     {
         $projectRequest = ProjectRequest::createFrom($request);
-        $projectRequest->merge(['company_id' => $request->cookie('currentCompany')]);
-        $projects = (new ProjectController())->get($projectRequest);
-
-        $currentProject = ($request->hasCookie('currentProject') && $request->cookie('currentProject'))
-            ? $request->cookie('currentProject')
-            : (new ProjectController())->getLatest($request)['id'];
-
         $databaseRequest = DatabaseRequest::createFrom($request);
+
+        $request->merge(['id' => $id]);
+        $application = (new Application)->get($request)->load(['screens', 'endpoints', 'project']);
+
+        $currentCompany = (isset($application[0]) && isset($application[0]?->project) && $application[0]?->project?->company_id)
+            ? $application[0]?->project?->company_id
+            : $request->cookie('currentCompany');
+
+        $currentProject = (isset($application[0]) && $application[0]->project_id)
+            ? $application[0]->project_id
+            : (new ProjectController())->getLatest($projectRequest)['id'];
+
+        Cookie::queue('currentCompany', $currentCompany, 60);
+        Cookie::queue('currentProject', $currentProject, 60);
+
         $databaseRequest->merge([
-            'company_id' => $request->cookie('currentCompany'),
+            'company_id' => $currentCompany,
             'project_id' => $currentProject
         ]);
         $databases = (new DatabaseController())->get($databaseRequest);
 
-        $request->merge(['id' => $id, 'project_id' => $currentProject]);
-        $application = (new Application)->get($request)->load(['screens', 'endpoints', 'project']);
+        $projectRequest->merge(['company_id' => $currentCompany]);
+        $projects = (new ProjectController())->get($projectRequest);
 
         return Inertia::render('resources/application/view', [
             'application' => Inertia::always($application[0]),
             'projects' => $projects,
             'databases' => $databases,
+        ])->with([
+            'currentProject' => $currentProject,
+            'currentCompany' => $currentCompany
         ]);
     }
 
@@ -114,27 +126,38 @@ class ApplicationController extends Controller
     public function edit(string $id, ApplicationRequest $request): Response
     {
         $projectRequest = ProjectRequest::createFrom($request);
-        $projectRequest->merge(['company_id' => $request->cookie('currentCompany')]);
-        $projects = (new ProjectController())->get($projectRequest);
-
-        $currentProject = ($request->hasCookie('currentProject') && $request->cookie('currentProject'))
-            ? $request->cookie('currentProject')
-            : (new ProjectController())->getLatest($request)['id'];
-
         $databaseRequest = DatabaseRequest::createFrom($request);
+
+        $request->merge(['id' => $id]);
+        $application = (new Application)->get($request)->load(['project']);
+
+        $currentCompany = (isset($application[0]) && isset($application[0]?->project) && $application[0]?->project?->company_id)
+            ? $application[0]?->project?->company_id
+            : $request->cookie('currentCompany');
+
+        $currentProject = (isset($application[0]) && $application[0]->project_id)
+            ? $application[0]->project_id
+            : (new ProjectController())->getLatest($projectRequest)['id'];
+
+        Cookie::queue('currentCompany', $currentCompany, 60);
+        Cookie::queue('currentProject', $currentProject, 60);
+
         $databaseRequest->merge([
             'company_id' => $request->cookie('currentCompany'),
             'project_id' => $currentProject
         ]);
         $databases = (new DatabaseController())->get($databaseRequest);
 
-        $request->merge(['id' => $id, 'project_id' => $currentProject]);
-        $application = (new Application)->get($request);
+        $projectRequest->merge(['company_id' => $currentCompany]);
+        $projects = (new ProjectController())->get($projectRequest);
 
         return Inertia::render('resources/application/manipulate', [
             'application' => $application,
             'projects' => $projects,
             'databases' => $databases,
+        ])->with([
+            'currentProject' => $currentProject,
+            'currentCompany' => $currentCompany
         ]);
     }
 

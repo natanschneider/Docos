@@ -10,6 +10,7 @@ use App\Http\Middleware\HandleSelectedCompany;
 use App\Http\Requests\CompanyRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Cookie;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -52,12 +53,14 @@ class CompanyController extends Controller
      */
     public function show(int $id, CompanyRequest $request): Response
     {
+        $request->cookies->set('currentCompany', $id);
+        Cookie::queue('currentCompany', $id, 60);
         $request->merge(['id' => $id]);
         $company = (new Company)->get($request)->load(['databases', 'projects']);
 
         return Inertia::render('resources/company/view', [
             'company' => $company,
-        ]);
+        ])->with('currentCompany', $id);
     }
 
     /**
@@ -65,12 +68,14 @@ class CompanyController extends Controller
      */
     public function edit(int $id, CompanyRequest $request): Response
     {
+        $request->cookies->set('currentCompany', $id);
+        Cookie::queue('currentCompany', $id, 60);
         $request->merge(['id' => $id]);
         $company = (new Company)->get($request);
 
         return Inertia::render('resources/company/manipulate', [
             'company' => Inertia::always($company[0]),
-        ]);
+        ])->with('currentCompany', $id);
     }
 
     /**

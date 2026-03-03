@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ViewResources;
 use App\Repositories\ColumnRepository;
 use App\Repositories\Files\FileRepository;
 use App\Repositories\TableRepository;
+use Illuminate\Support\Facades\Cookie;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\JsonResponse;
@@ -131,33 +132,38 @@ class ColumnController extends Controller
     public function show(string $id, ColumnRequest $request): Response
     {
         $databaseRequest = DatabaseRequest::createFrom($request);
-        $databaseRequest->merge(['company_id' => $request->cookie('currentCompany')]);
-        $databases = (new DatabaseController())->get($databaseRequest);
+        $tableRequest = TableRequest::createFrom($request);
 
-        $currentDatabase = ($request->hasCookie('currentDatabase') && $request->cookie('currentDatabase'))
-            ? $request->cookie('currentDatabase')
+        $request->merge(['id' => $id]);
+        $column = (new Column())->get($request)->load(['table', 'endpoints', 'screens', 'index', 'table.database']);
+
+        $currentCompany = (isset($column[0]) && isset($column[0]?->table) && isset($column[0]?->table?->database) && $column[0]?->table?->database?->company_id)
+            ? $column[0]?->table?->database?->company_id
+            : $request->cookie('currentCompany');
+
+        $currentDatabase = (isset($column[0]) && isset($column[0]?->table) && $column[0]?->table?->database_id)
+            ? $column[0]?->table?->database_id
             : (new DatabaseController())->getLatest($request)['id'];
 
-        $tableRequest = TableRequest::createFrom($request);
+        Cookie::queue('currentDatabase', $currentDatabase, 60);
+        Cookie::queue('currentCompany', $currentCompany, 60);
+
+        $databaseRequest->merge(['company_id' => $currentCompany]);
+        $databases = (new DatabaseController())->get($databaseRequest);
+
         $tableRequest->merge([
             'company_id' => $request->cookie('currentCompany'),
             'database_id' => $currentDatabase
         ]);
         $tables = (new TableRepository())->getWithColumns($tableRequest);
 
-        $currentTable = ($request->hasCookie('currentTable') && $request->cookie('currentTable'))
-            ? $request->cookie('currentTable')
+        $currentTable = (isset($column[0]) && $column[0]?->table_id)
+            ? $column[0]?->table_id
             : (new TableController())->getLatest($request)['id'];
 
-        $request->merge([
-            'id' => $id,
-            'database_id' => $currentDatabase,
-            'table_id' => $currentTable
-        ]);
-        $column = (new Column())->get($request)->load(['table', 'endpoints', 'screens', 'index']) ;
+        Cookie::queue('currentTable', $currentTable, 60);
 
         $types = (new ColumnRepository())->getTypes();
-
         $constraints = (new ColumnRepository())->getConstraints();
 
         $doc = null;
@@ -172,6 +178,10 @@ class ColumnController extends Controller
             'databases' => $databases,
             'types' => $types,
             'constraints' => $constraints
+        ])->with([
+            'currentTable' => $currentTable,
+            'currentDatabase' => $currentDatabase,
+            'currentCompany' => $currentCompany
         ]);
     }
 
@@ -181,31 +191,36 @@ class ColumnController extends Controller
     public function edit(string $id, ColumnRequest $request): Response
     {
         $databaseRequest = DatabaseRequest::createFrom($request);
-        $databaseRequest->merge(['company_id' => $request->cookie('currentCompany')]);
-        $databases = (new DatabaseController())->get($databaseRequest);
+        $tableRequest = TableRequest::createFrom($request);
 
-        $currentDatabase = ($request->hasCookie('currentDatabase') && $request->cookie('currentDatabase'))
-            ? $request->cookie('currentDatabase')
+        $request->merge(['id' => $id]);
+        $column = (new Column())->get($request)->load(['table', 'table.database']);
+
+        $currentCompany = (isset($column[0]) && isset($column[0]?->table) && isset($column[0]?->table?->database) && $column[0]?->table?->database?->company_id)
+            ? $column[0]?->table?->database?->company_id
+            : $request->cookie('currentCompany');
+
+        $currentDatabase = (isset($column[0]) && isset($column[0]?->table) && $column[0]?->table?->database_id)
+            ? $column[0]?->table?->database_id
             : (new DatabaseController())->getLatest($request)['id'];
 
-        $tableRequest = TableRequest::createFrom($request);
+        Cookie::queue('currentDatabase', $currentDatabase, 60);
+        Cookie::queue('currentCompany', $currentCompany, 60);
+
+        $databaseRequest->merge(['company_id' => $currentCompany]);
+        $databases = (new DatabaseController())->get($databaseRequest);
+
         $tableRequest->merge([
             'company_id' => $request->cookie('currentCompany'),
             'database_id' => $currentDatabase
         ]);
         $tables = (new TableRepository())->getWithColumns($tableRequest);
 
-        $currentTable = ($request->hasCookie('currentTable') && $request->cookie('currentTable'))
-            ? $request->cookie('currentTable')
+        $currentTable = (isset($column[0]) && $column[0]?->table_id)
+            ? $column[0]?->table_id
             : (new TableController())->getLatest($request)['id'];
 
-        $request->merge([
-            'id' => $id,
-            'database_id' => $currentDatabase,
-            'table_id' => $currentTable
-        ]);
-
-        $column = (new Column())->get($request);
+        Cookie::queue('currentTable', $currentTable, 60);
 
         $columnRequest = ColumnRequest::createFrom($request);
         $columnRequest->merge([
@@ -220,7 +235,6 @@ class ColumnController extends Controller
         $foreignKey = (new ColumnRepository())->getByConstraint($columnRequest);
 
         $types = (new ColumnRepository())->getTypes();
-
         $constraints = (new ColumnRepository())->getConstraints();
 
         $doc = null;
@@ -237,6 +251,10 @@ class ColumnController extends Controller
             'foreignKey' => $foreignKey,
             'types' => $types,
             'constraints' => $constraints
+        ])->with([
+            'currentTable' => $currentTable,
+            'currentDatabase' => $currentDatabase,
+            'currentCompany' => $currentCompany
         ]);
     }
 

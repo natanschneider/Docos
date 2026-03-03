@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ViewResources;
 
 use App\Http\Requests\FileRequest;
 use App\Repositories\Files\FileRepository;
+use Illuminate\Support\Facades\Cookie;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\JsonResponse;
@@ -83,15 +84,26 @@ class TableController extends Controller
     public function show(string $id, TableRequest $request): Response
     {
         $databaseRequest = DatabaseRequest::createFrom($request);
-        $databaseRequest->merge(['company_id' => $request->cookie('currentCompany')]);
+
+        $request->merge(['id' => $id]);
+        $table = (new Table())->get($request)->load(['database', 'columns', 'columns.endpoints', 'columns.screens']);
+
+        $currentCompany = (isset($table[0]) && isset($table[0]?->database) && $table[0]?->database?->company_id)
+            ? $table[0]?->database?->company_id
+            : $request->cookie('currentCompany');
+
+        Cookie::queue('currentCompany', $currentCompany, 60);
+        $request->cookies->set('currentCompany', $currentCompany);
+
+        $databaseRequest->merge(['company_id' => $currentCompany]);
         $databases = (new DatabaseController())->get($databaseRequest);
 
-        $currentDatabase = ($request->hasCookie('currentDatabase') && $request->cookie('currentDatabase'))
-            ? $request->cookie('currentDatabase')
+        $currentDatabase = (isset($table[0]) && $table[0]->database_id)
+            ? $table[0]->database_id
             : (new DatabaseController())->getLatest($request)['id'];
 
-        $request->merge(['id' => $id, 'database_id' => $currentDatabase]);
-        $table = (new Table())->get($request)->load(['database', 'columns', 'columns.endpoints', 'columns.screens']);
+        Cookie::queue('currentDatabase', $currentDatabase, 60);
+        $request->cookies->set('currentDatabase', $currentDatabase);
 
         $doc = null;
         if (isset($table[0]) && $table[0]->doc_file) {
@@ -102,6 +114,9 @@ class TableController extends Controller
             'table' => Inertia::always($table[0]),
             'doc' => $doc,
             'databases' => $databases
+        ])->with([
+            'currentDatabase' => $currentDatabase,
+            'currentCompany' => $currentCompany
         ]);
     }
 
@@ -111,15 +126,26 @@ class TableController extends Controller
     public function edit(string $id, TableRequest $request): Response
     {
         $databaseRequest = DatabaseRequest::createFrom($request);
-        $databaseRequest->merge(['company_id' => $request->cookie('currentCompany')]);
+
+        $request->merge(['id' => $id]);
+        $table = (new Table())->get($request)->load(['database']);
+
+        $currentCompany = (isset($table[0]) && isset($table[0]?->database) && $table[0]?->database?->company_id)
+            ? $table[0]?->database?->company_id
+            : $request->cookie('currentCompany');
+
+        Cookie::queue('currentCompany', $currentCompany, 60);
+        $request->cookies->set('currentCompany', $currentCompany);
+
+        $databaseRequest->merge(['company_id' => $currentCompany]);
         $databases = (new DatabaseController())->get($databaseRequest);
 
-        $currentDatabase = ($request->hasCookie('currentDatabase') && $request->cookie('currentDatabase'))
-            ? $request->cookie('currentDatabase')
+        $currentDatabase = (isset($table[0]) && $table[0]->database_id)
+            ? $table[0]->database_id
             : (new DatabaseController())->getLatest($request)['id'];
 
-        $request->merge(['id' => $id, 'database_id' => $currentDatabase]);
-        $table = (new Table())->get($request);
+        Cookie::queue('currentDatabase', $currentDatabase, 60);
+        $request->cookies->set('currentDatabase', $currentDatabase);
 
         $doc = null;
         if (isset($table[0]) && $table[0]->doc_file) {
@@ -130,6 +156,9 @@ class TableController extends Controller
             'table' => $table,
             'doc' => $doc,
             'databases' => $databases
+        ])->with([
+            'currentDatabase' => $currentDatabase,
+            'currentCompany' => $currentCompany
         ]);
     }
 

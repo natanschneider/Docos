@@ -12,6 +12,7 @@ use App\Models\Descriptions\Engine;
 use App\Repositories\TableRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Cookie;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -57,19 +58,33 @@ class DatabaseController extends Controller
      */
     public function show(string $id, DatabaseRequest $request): Response
     {
+        $request->cookies->set('currentDatabase', $id);
+        Cookie::queue('currentDatabase', $id, 60);
         $tableRequest = TableRequest::createFrom($request);
+
+        $request->merge(['id' => $id]);
+        $database = (new Database)->get($request)->load('company');
+
+        $currentCompany = (isset($database[0]) && $database[0]->company_id)
+            ? $database[0]->company_id
+            : $request->cookie('currentCompany');
+
+        Cookie::queue('currentCompany', $currentCompany, 60);
+        $request->cookies->set('currentCompany', $currentCompany);
+        $tableRequest->cookies->set('currentCompany', $currentCompany);
+
         $tableRequest->merge([
-            'company_id' => $request->cookie('currentCompany'),
+            'company_id' => $currentCompany,
             'database_id' => $id
         ]);
         $tables = (new TableRepository())->getWithColumns($tableRequest)->load(['columns.relatedFks', 'columns.relatedPks', 'database', 'columns.type', 'columns.constraints']);
 
-        $request->merge(['id' => $id, 'company_id' => $request->cookie('currentCompany')]);
-        $database = (new Database)->get($request)->load('company');
-
         return Inertia::render('resources/database/view', [
             'database' => $database,
             'tables' => $tables,
+        ])->with([
+            'currentDatabase' => $id,
+            'currentCompany' => $currentCompany
         ]);
     }
 
@@ -78,12 +93,24 @@ class DatabaseController extends Controller
      */
     public function edit(string $id, DatabaseRequest $request): Response
     {
-        $request->merge(['id' => $id, 'company_id' => $request->cookie('currentCompany')]);
+        $request->cookies->set('currentDatabase', $id);
+        Cookie::queue('currentDatabase', $id, 60);
+        $request->merge(['id' => $id]);
         $database = (new Database)->get($request);
+
+        $currentCompany = (isset($database[0]) && $database[0]->company_id)
+            ? $database[0]->company_id
+            : $request->cookie('currentCompany');
+
+        Cookie::queue('currentCompany', $currentCompany, 60);
+        $request->cookies->set('currentCompany', $currentCompany);
 
         return Inertia::render('resources/database/manipulate', [
             'database' => Inertia::always($database[0]),
             'engines' => Engine::all(['id', 'name'])->toArray(),
+        ])->with([
+            'currentDatabase' => $id,
+            'currentCompany' => $currentCompany
         ]);
     }
 

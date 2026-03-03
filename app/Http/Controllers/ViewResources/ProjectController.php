@@ -9,6 +9,7 @@ use App\Http\Controllers\ProjectController as Project;
 use App\Http\Requests\ProjectRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Cookie;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -53,12 +54,19 @@ class ProjectController extends Controller
      */
     public function show(string $id, ProjectRequest $request): Response
     {
-        $request->merge(['id' => $id, 'company_id' => $request->cookie('currentCompany')]);
+        $request->merge(['id' => $id]);
         $project = (new Project)->get($request)->load(['applications', 'company']);
+
+        $currentCompany = (isset($project[0]) && $project[0]->company_id)
+            ? $project[0]->company_id
+            : $request->cookie('currentCompany');
+
+        Cookie::queue('currentCompany', $currentCompany, 60);
+        $request->cookies->set('currentCompany', $currentCompany);
 
         return Inertia::render('resources/project/view', [
             'project' => $project,
-        ]);
+        ])->with('currentCompany', $currentCompany);
     }
 
     /**
@@ -66,12 +74,19 @@ class ProjectController extends Controller
      */
     public function edit(string $id, ProjectRequest $request): Response
     {
-        $request->merge(['id' => $id, 'company_id' => $request->cookie('currentCompany')]);
+        $request->merge(['id' => $id]);
         $project = (new Project)->get($request);
+
+        $currentCompany = (isset($project[0]) && $project[0]->company_id)
+            ? $project[0]->company_id
+            : $request->cookie('currentCompany');
+
+        Cookie::queue('currentCompany', $currentCompany, 60);
+        $request->cookies->set('currentCompany', $currentCompany);
 
         return Inertia::render('resources/project/manipulate', [
             'project' => Inertia::always($project[0]),
-        ]);
+        ])->with('currentCompany', $currentCompany);
     }
 
     /**
