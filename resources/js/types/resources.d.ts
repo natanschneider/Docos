@@ -101,6 +101,7 @@ export interface databaseModel {
     created_at: string;
     updated_at: string;
     public_key: string;
+    company: companyModel | null;
 }
 
 export const DatabaseNavItems: NavItem[] = [
