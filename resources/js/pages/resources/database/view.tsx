@@ -4,9 +4,10 @@ import ResourcesLayout from "@/layouts/resources/layout";
 import database from "@/routes/database";
 import { databaseModel, DatabaseNavItems, tableModel } from "@/types/resources.d";
 import { type BreadcrumbItem } from "@/types";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
 import Diagram from "@/components/database-schema";
+import company from "@/routes/company";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -33,6 +34,19 @@ export default function ViewDatabase({
                     />
 
                     <div className="space-y-6">
+                        {database[0]?.company && (
+                            <div className="grid gap-2">
+                                <Link href={company.show(database[0].company.id).url}>
+                                    <Item variant='outline'>
+                                        <ItemContent>
+                                            <ItemTitle>Company</ItemTitle>
+                                            <ItemDescription>{database[0].company.name ?? ''}</ItemDescription>
+                                        </ItemContent>
+                                    </Item>
+                                </Link>
+                            </div>
+                        )}
+
                         <div className="grid gap-2">
                             <Item variant='outline'>
                                 <ItemContent>
