@@ -20,7 +20,12 @@ import { Link } from '@inertiajs/react';
 export type DatabaseSchemaNodeData = {
     data: {
         label: string;
-        schema: { title: string; type: string, id: number, contraints: constraintsModel[] | null }[];
+        schema: {
+            title: string;
+            type: string,
+            id: number,
+            contraints: constraintsModel[] | null
+        }[];
     };
 };
 
