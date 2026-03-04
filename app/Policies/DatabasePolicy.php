@@ -18,7 +18,8 @@ class DatabasePolicy
     {
         if (
             $request->has('company_id') &&
-            $user->companies()->exists() &&
+            $request->company_id != 0 &&
+            $request->company_id != null &&
             $user->companies()->where('companies.id', $request->company_id)->doesntExist()
         ) {
             return Response::deny('Company provided does not belong to user or does not exist');
@@ -26,7 +27,9 @@ class DatabasePolicy
 
         if (
             $request->has('id') &&
-            $user->companies()->where('companies.id', Database::findOrFail($request->id)->company_id)->doesntExist()
+            $request->id != 0 &&
+            $request->id != null &&
+            $user->companies()->where('companies.id', Database::find($request->id)->company_id)->doesntExist()
         ) {
             return Response::deny('Database provided does not belong to user or does not exist');
         }

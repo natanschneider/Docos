@@ -18,8 +18,8 @@ class EndpointPolicy
      */
     public function view(User $user, EndpointRequest $request): Response
     {
-        if ($request->has('application_id')) {
-            $company = Application::find($request->application_id)->project->company;
+        if ($request->has('application_id') && $request->application_id != 0 && $request->application_id != null) {
+            $company = Application::find($request->application_id)?->project?->company;
 
             if ($user->companies()->where('companies.id', $company->id)->doesntExist()) {
                 return Response::deny('Application provided does not belong to user or does not exist');
@@ -28,9 +28,11 @@ class EndpointPolicy
 
         if (
             $request->has('id') &&
+            $request->id != 0 &&
+            $request->id != null &&
             $user->companies()->where(
                 'companies.id',
-                Endpoint::findOrFail($request->id)->application->project->company_id
+                Endpoint::find($request->id)?->application?->project?->company_id
             )->doesntExist()
         ) {
             return Response::deny('Endpoint provided does not belong to user or does not exist');

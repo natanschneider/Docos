@@ -20,10 +20,12 @@ class ColumnPolicy
     {
         if (
             $request->has('table_id') &&
+            $request->table_id != 0 &&
+            $request->table_id != null &&
             $user->companies()
                 ->where(
                     'company_id',
-                    Table::findOrFail($request->table_id)->database->company_id
+                    Table::find($request->table_id)?->database?->company_id
                 )
                 ->doesntExist()
         ) {
@@ -32,10 +34,12 @@ class ColumnPolicy
 
         if (
             $request->has('id') &&
+            $request->id != 0 &&
+            $request->id != null &&
             $user->companies()
                 ->where(
                     'company_id',
-                    Column::findOrFail($request->id)->table->database->company_id
+                    Column::find($request->id)?->table?->database?->company_id
                 )
                 ->doesntExist()
         ) {

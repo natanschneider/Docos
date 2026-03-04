@@ -20,8 +20,10 @@ class ApplicationPolicy
     {
         if (
             $request->has('id') &&
+            $request->id != 0 &&
+            $request->id != null &&
             $user->companies()
-                ->where('companies.id', Application::findOrFail($request->id)->project->company_id)
+                ->where('companies.id', Application::find($request->id)?->project?->company_id)
                 ->doesntExist()
         ) {
             return Response::deny('Application provided does not belong to user or does not exist');
@@ -29,7 +31,9 @@ class ApplicationPolicy
 
         if (
             $request->has('project_id') &&
-            $user->companies()->where('companies.id', Project::findOrFail($request->project_id)->company_id)->doesntExist()
+            $request->project_id != 0 &&
+            $request->project_id != null &&
+            $user->companies()->where('companies.id', Project::find($request->project_id)?->company_id)?->doesntExist()
         ) {
             return Response::deny('Project provided does not belong to user or does not exist');
         }
