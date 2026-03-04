@@ -81,6 +81,6 @@ final class ProjectRepository
             ->latest()
             ->first();
 
-        return $project?->toArray() ?? [ 'id' => null ];
+        return $project?->toArray() ?? ['id' => null];
     }
 }

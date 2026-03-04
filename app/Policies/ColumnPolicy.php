@@ -20,8 +20,8 @@ class ColumnPolicy
     {
         if (
             $request->has('table_id') &&
-            $request->table_id != 0 &&
-            $request->table_id != null &&
+            $request->table_id !== 0 &&
+            $request->table_id !== null &&
             $user->companies()
                 ->where(
                     'company_id',
@@ -34,8 +34,8 @@ class ColumnPolicy
 
         if (
             $request->has('id') &&
-            $request->id != 0 &&
-            $request->id != null &&
+            $request->id !== 0 &&
+            $request->id !== null &&
             $user->companies()
                 ->where(
                     'company_id',

@@ -6,8 +6,8 @@ namespace App\Repositories;
 
 use App\Http\Requests\ApplicationRequest;
 use App\Models\Application;
-use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 final class ApplicationRepository
@@ -108,6 +108,6 @@ final class ApplicationRepository
             ->latest()
             ->first();
 
-        return $application?->toArray() ?? [ 'id' => null ];
+        return $application?->toArray() ?? ['id' => null];
     }
 }

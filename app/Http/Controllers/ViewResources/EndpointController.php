@@ -1,23 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\ViewResources;
 
+use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\EndpointController as Endpoint;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Requests\ApplicationRequest;
+use App\Http\Requests\EndpointRequest;
 use App\Http\Requests\FileRequest;
+use App\Http\Requests\ProjectRequest;
 use App\Repositories\Files\FileRepository;
 use App\Repositories\Files\HandleStringToFile;
-use Inertia\Inertia;
-use Inertia\Response;
+use App\Repositories\TableRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\ProjectRequest;
-use App\Repositories\TableRepository;
-use App\Http\Requests\EndpointRequest;
-use App\Http\Requests\ApplicationRequest;
-use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\ApplicationController;
-use App\Http\Controllers\EndpointController as Endpoint;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class EndpointController extends Controller
 {
@@ -37,7 +39,7 @@ class EndpointController extends Controller
         $applicationRequest = ApplicationRequest::createFrom($request);
         $applicationRequest->merge([
             'company_id' => $request->cookie('currentCompany'),
-            'project_id' => $currentProject
+            'project_id' => $currentProject,
         ]);
         $applications = (new ApplicationController())->get($applicationRequest);
 
@@ -71,7 +73,7 @@ class EndpointController extends Controller
         $applicationRequest = ApplicationRequest::createFrom($request);
         $applicationRequest->merge([
             'company_id' => $request->cookie('currentCompany'),
-            'project_id' => $currentProject
+            'project_id' => $currentProject,
         ]);
         $applications = (new ApplicationController())->get($applicationRequest);
 
@@ -103,7 +105,7 @@ class EndpointController extends Controller
         $request->merge(['application_id' => $currentApplication]);
         $endpoint = (new Endpoint())->store($request);
 
-        if ($request->has('markdown') && is_string($request->markdown) && strlen($request->markdown) > 0) {
+        if ($request->has('markdown') && is_string($request->markdown) && mb_strlen($request->markdown) > 0) {
             $request->merge(['id' => $endpoint->id]);
             $fileRequest = (new HandleStringToFile())->handle($request);
             (new FileController())->storeEndpoint($fileRequest);
@@ -135,7 +137,7 @@ class EndpointController extends Controller
         return Inertia::render('resources/endpoint/view', [
             'endpoint' => $endpoint,
             'doc' => $doc,
-            'tables' => $tables
+            'tables' => $tables,
         ]);
     }
 
@@ -155,7 +157,7 @@ class EndpointController extends Controller
         $applicationRequest = ApplicationRequest::createFrom($request);
         $applicationRequest->merge([
             'company_id' => $request->cookie('currentCompany'),
-            'project_id' => $currentProject
+            'project_id' => $currentProject,
         ]);
         $applications = (new ApplicationController())->get($applicationRequest);
 
@@ -195,7 +197,7 @@ class EndpointController extends Controller
         $request->merge(['id' => $id, 'application_id' => $currentApplication]);
         (new Endpoint())->update($request);
 
-        if ($request->has('markdown') && is_string($request->markdown) && strlen($request->markdown) > 0) {
+        if ($request->has('markdown') && is_string($request->markdown) && mb_strlen($request->markdown) > 0) {
             $fileRequest = (new HandleStringToFile())->handle($request);
             (new FileController())->storeEndpoint($fileRequest);
         }

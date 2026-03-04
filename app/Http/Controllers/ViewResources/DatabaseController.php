@@ -75,7 +75,7 @@ class DatabaseController extends Controller
 
         $tableRequest->merge([
             'company_id' => $currentCompany,
-            'database_id' => $id
+            'database_id' => $id,
         ]);
         $tables = (new TableRepository())->getWithColumns($tableRequest)->load(['columns.relatedFks', 'columns.relatedPks', 'database', 'columns.type', 'columns.constraints']);
 
@@ -84,7 +84,7 @@ class DatabaseController extends Controller
             'tables' => $tables,
         ])->with([
             'currentDatabase' => $id,
-            'currentCompany' => $currentCompany
+            'currentCompany' => $currentCompany,
         ]);
     }
 
@@ -110,7 +110,7 @@ class DatabaseController extends Controller
             'engines' => Engine::all(['id', 'name'])->toArray(),
         ])->with([
             'currentDatabase' => $id,
-            'currentCompany' => $currentCompany
+            'currentCompany' => $currentCompany,
         ]);
     }
 

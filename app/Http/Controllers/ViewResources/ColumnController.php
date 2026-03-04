@@ -1,25 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\ViewResources;
 
+use App\Http\Controllers\ColumnController as Column;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\DatabaseController;
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\TableController;
+use App\Http\Requests\ColumnRequest;
+use App\Http\Requests\DatabaseRequest;
+use App\Http\Requests\FileRequest;
+use App\Http\Requests\TableRequest;
 use App\Repositories\ColumnRepository;
 use App\Repositories\Files\FileRepository;
+use App\Repositories\Files\HandleStringToFile;
 use App\Repositories\TableRepository;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Cookie;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Http\JsonResponse;
-use App\Http\Requests\TableRequest;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\ColumnRequest;
-use Illuminate\Http\RedirectResponse;
-use App\Http\Requests\DatabaseRequest;
-use App\Http\Controllers\TableController;
-use App\Http\Controllers\DatabaseController;
-use App\Http\Controllers\ColumnController as Column;
-use App\Repositories\Files\HandleStringToFile;
-use App\Http\Controllers\FileController;
-use App\Http\Requests\FileRequest;
 
 class ColumnController extends Controller
 {
@@ -39,7 +41,7 @@ class ColumnController extends Controller
         $tableRequest = TableRequest::createFrom($request);
         $tableRequest->merge([
             'company_id' => $request->cookie('currentCompany'),
-            'database_id' => $currentDatabase
+            'database_id' => $currentDatabase,
         ]);
         $tables = (new TableRepository())->getWithColumns($tableRequest);
 
@@ -53,7 +55,7 @@ class ColumnController extends Controller
         return Inertia::render('resources/column/list', [
             'columns' => $columns,
             'tables' => $tables,
-            'databases' => $databases
+            'databases' => $databases,
         ]);
     }
 
@@ -73,7 +75,7 @@ class ColumnController extends Controller
         $tableRequest = TableRequest::createFrom($request);
         $tableRequest->merge([
             'company_id' => $request->cookie('currentCompany'),
-            'database_id' => $currentDatabase
+            'database_id' => $currentDatabase,
         ]);
         $tables = (new TableRepository())->getWithColumns($tableRequest);
 
@@ -81,12 +83,12 @@ class ColumnController extends Controller
         $columnRequest->merge([
             'company_id' => $request->cookie('currentCompany'),
             'database_id' => $currentDatabase,
-            'constraint_id' => 1
+            'constraint_id' => 1,
         ]);
 
         $primaryKey = (new ColumnRepository())->getByConstraint($columnRequest);
 
-        $columnRequest->merge([ 'constraint_id' => 2 ]);
+        $columnRequest->merge(['constraint_id' => 2]);
         $foreignKey = (new ColumnRepository())->getByConstraint($columnRequest);
 
         $types = (new ColumnRepository())->getTypes();
@@ -101,7 +103,7 @@ class ColumnController extends Controller
             'primaryKey' => $primaryKey,
             'foreignKey' => $foreignKey,
             'types' => $types,
-            'constraints' => $constraints
+            'constraints' => $constraints,
         ]);
     }
 
@@ -117,7 +119,7 @@ class ColumnController extends Controller
         $request->merge(['table_id' => $currentTable]);
         $col = (new Column())->store($request);
 
-        if ($request->has('markdown') && is_string($request->markdown) && strlen($request->markdown) > 0) {
+        if ($request->has('markdown') && is_string($request->markdown) && mb_strlen($request->markdown) > 0) {
             $request->merge(['id' => $col->id]);
             $fileRequest = (new HandleStringToFile())->handle($request);
             (new FileController())->storeColumn($fileRequest);
@@ -153,7 +155,7 @@ class ColumnController extends Controller
 
         $tableRequest->merge([
             'company_id' => $request->cookie('currentCompany'),
-            'database_id' => $currentDatabase
+            'database_id' => $currentDatabase,
         ]);
         $tables = (new TableRepository())->getWithColumns($tableRequest);
 
@@ -177,11 +179,11 @@ class ColumnController extends Controller
             'tables' => $tables,
             'databases' => $databases,
             'types' => $types,
-            'constraints' => $constraints
+            'constraints' => $constraints,
         ])->with([
             'currentTable' => $currentTable,
             'currentDatabase' => $currentDatabase,
-            'currentCompany' => $currentCompany
+            'currentCompany' => $currentCompany,
         ]);
     }
 
@@ -212,7 +214,7 @@ class ColumnController extends Controller
 
         $tableRequest->merge([
             'company_id' => $request->cookie('currentCompany'),
-            'database_id' => $currentDatabase
+            'database_id' => $currentDatabase,
         ]);
         $tables = (new TableRepository())->getWithColumns($tableRequest);
 
@@ -226,12 +228,12 @@ class ColumnController extends Controller
         $columnRequest->merge([
             'company_id' => $request->cookie('currentCompany'),
             'database_id' => $currentDatabase,
-            'constraint_id' => 1
+            'constraint_id' => 1,
         ]);
 
         $primaryKey = (new ColumnRepository())->getByConstraint($columnRequest);
 
-        $columnRequest->merge([ 'constraint_id' => 2 ]);
+        $columnRequest->merge(['constraint_id' => 2]);
         $foreignKey = (new ColumnRepository())->getByConstraint($columnRequest);
 
         $types = (new ColumnRepository())->getTypes();
@@ -250,11 +252,11 @@ class ColumnController extends Controller
             'primaryKey' => $primaryKey,
             'foreignKey' => $foreignKey,
             'types' => $types,
-            'constraints' => $constraints
+            'constraints' => $constraints,
         ])->with([
             'currentTable' => $currentTable,
             'currentDatabase' => $currentDatabase,
-            'currentCompany' => $currentCompany
+            'currentCompany' => $currentCompany,
         ]);
     }
 
@@ -270,7 +272,7 @@ class ColumnController extends Controller
         $request->merge(['id' => $id, 'table_id' => $currentTable]);
         (new Column())->update($request);
 
-        if ($request->has('markdown') && is_string($request->markdown) && strlen($request->markdown) > 0) {
+        if ($request->has('markdown') && is_string($request->markdown) && mb_strlen($request->markdown) > 0) {
             $fileRequest = (new HandleStringToFile())->handle($request);
             (new FileController())->storeColumn($fileRequest);
         }

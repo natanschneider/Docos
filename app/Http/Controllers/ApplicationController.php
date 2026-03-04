@@ -8,8 +8,8 @@ use App\Http\Requests\ApplicationRequest;
 use App\Models\Application;
 use App\Repositories\ApplicationRepository;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ApplicationController extends Controller
 {

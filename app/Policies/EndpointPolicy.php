@@ -18,7 +18,7 @@ class EndpointPolicy
      */
     public function view(User $user, EndpointRequest $request): Response
     {
-        if ($request->has('application_id') && $request->application_id != 0 && $request->application_id != null) {
+        if ($request->has('application_id') && $request->application_id !== 0 && $request->application_id !== null) {
             $company = Application::find($request->application_id)?->project?->company;
 
             if ($user->companies()->where('companies.id', $company->id)->doesntExist()) {
@@ -28,8 +28,8 @@ class EndpointPolicy
 
         if (
             $request->has('id') &&
-            $request->id != 0 &&
-            $request->id != null &&
+            $request->id !== 0 &&
+            $request->id !== null &&
             $user->companies()->where(
                 'companies.id',
                 Endpoint::find($request->id)?->application?->project?->company_id

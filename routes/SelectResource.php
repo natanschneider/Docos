@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-use Illuminate\Http\Request;
-use App\Repositories\TableRepository;
-use Illuminate\Support\Facades\Route;
-use App\Repositories\ProjectRepository;
-use App\Repositories\DatabaseRepository;
-use Illuminate\Support\Facades\Redirect;
 use App\Repositories\ApplicationRepository;
+use App\Repositories\DatabaseRepository;
+use App\Repositories\ProjectRepository;
+use App\Repositories\TableRepository;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('change-company/{company}', function (string $company, Request $request) {

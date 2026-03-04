@@ -84,6 +84,6 @@ final class DatabaseRepository
             ->latest()
             ->first();
 
-        return $database?->toArray() ?? [ 'id' => null ];
+        return $database?->toArray() ?? ['id' => null];
     }
 }

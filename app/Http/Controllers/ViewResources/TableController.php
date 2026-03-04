@@ -1,21 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\ViewResources;
 
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\DatabaseController;
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\TableController as Table;
+use App\Http\Requests\DatabaseRequest;
 use App\Http\Requests\FileRequest;
+use App\Http\Requests\TableRequest;
 use App\Repositories\Files\FileRepository;
+use App\Repositories\Files\HandleStringToFile;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Cookie;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Http\JsonResponse;
-use App\Http\Requests\TableRequest;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
-use App\Http\Requests\DatabaseRequest;
-use App\Http\Controllers\DatabaseController;
-use App\Http\Controllers\TableController as Table;
-use App\Repositories\Files\HandleStringToFile;
-use App\Http\Controllers\FileController;
 
 class TableController extends Controller
 {
@@ -37,7 +39,7 @@ class TableController extends Controller
 
         return Inertia::render('resources/table/list', [
             'tables' => $tables,
-            'databases' => $databases
+            'databases' => $databases,
         ]);
     }
 
@@ -53,7 +55,7 @@ class TableController extends Controller
         return Inertia::render('resources/table/manipulate', [
             'table' => null,
             'doc' => null,
-            'databases' => $databases
+            'databases' => $databases,
         ]);
     }
 
@@ -69,7 +71,7 @@ class TableController extends Controller
         $request->merge(['database_id' => $currentDatabase]);
         $table = (new Table())->store($request);
 
-        if ($request->has('markdown') && is_string($request->markdown) && strlen($request->markdown) > 0) {
+        if ($request->has('markdown') && is_string($request->markdown) && mb_strlen($request->markdown) > 0) {
             $request->merge(['id' => $table->id]);
             $fileRequest = (new HandleStringToFile())->handle($request);
             (new FileController())->storeTable($fileRequest);
@@ -113,10 +115,10 @@ class TableController extends Controller
         return Inertia::render('resources/table/view', [
             'table' => Inertia::always($table[0]),
             'doc' => $doc,
-            'databases' => $databases
+            'databases' => $databases,
         ])->with([
             'currentDatabase' => $currentDatabase,
-            'currentCompany' => $currentCompany
+            'currentCompany' => $currentCompany,
         ]);
     }
 
@@ -155,10 +157,10 @@ class TableController extends Controller
         return Inertia::render('resources/table/manipulate', [
             'table' => $table,
             'doc' => $doc,
-            'databases' => $databases
+            'databases' => $databases,
         ])->with([
             'currentDatabase' => $currentDatabase,
-            'currentCompany' => $currentCompany
+            'currentCompany' => $currentCompany,
         ]);
     }
 
@@ -174,7 +176,7 @@ class TableController extends Controller
         $request->merge(['id' => $id, 'database_id' => $currentDatabase]);
         (new Table())->update($request);
 
-        if ($request->has('markdown') && is_string($request->markdown) && strlen($request->markdown) > 0) {
+        if ($request->has('markdown') && is_string($request->markdown) && mb_strlen($request->markdown) > 0) {
             $fileRequest = (new HandleStringToFile())->handle($request);
             (new FileController())->storeTable($fileRequest);
         }

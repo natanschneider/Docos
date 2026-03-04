@@ -18,8 +18,8 @@ class ProjectPolicy
     {
         if (
             $request->has('company_id') &&
-            $request->company_id != 0 &&
-            $request->company_id != null &&
+            $request->company_id !== 0 &&
+            $request->company_id !== null &&
             $user->companies()->where('companies.id', $request->company_id)->doesntExist()
         ) {
             return Response::deny('Company provided does not belong to user or does not exist');
@@ -27,8 +27,8 @@ class ProjectPolicy
 
         if (
             $request->has('id') &&
-            $request->id != 0 &&
-            $request->id != null &&
+            $request->id !== 0 &&
+            $request->id !== null &&
             $user->companies()->where(
                 'companies.id',
                 Project::find($request->id)?->company_id

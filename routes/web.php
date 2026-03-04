@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use Inertia\Inertia;
-use Illuminate\Http\Request;
 use App\Repositories\ViewsRepository;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('welcome');

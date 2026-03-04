@@ -20,8 +20,8 @@ class ApplicationPolicy
     {
         if (
             $request->has('id') &&
-            $request->id != 0 &&
-            $request->id != null &&
+            $request->id !== 0 &&
+            $request->id !== null &&
             $user->companies()
                 ->where('companies.id', Application::find($request->id)?->project?->company_id)
                 ->doesntExist()
@@ -31,8 +31,8 @@ class ApplicationPolicy
 
         if (
             $request->has('project_id') &&
-            $request->project_id != 0 &&
-            $request->project_id != null &&
+            $request->project_id !== 0 &&
+            $request->project_id !== null &&
             $user->companies()->where('companies.id', Project::find($request->project_id)?->company_id)?->doesntExist()
         ) {
             return Response::deny('Project provided does not belong to user or does not exist');
@@ -119,7 +119,7 @@ class ApplicationPolicy
                 });
             });
 
-            if ( is_numeric($detach_check) && $detach_check > 0) {
+            if (is_numeric($detach_check) && $detach_check > 0) {
                 return Response::deny('You are detaching databases that are in use');
             }
         }

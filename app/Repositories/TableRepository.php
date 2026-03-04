@@ -114,6 +114,6 @@ final class TableRepository
             ->latest()
             ->first();
 
-        return $table?->toArray() ?? [ 'id' => null ];
+        return $table?->toArray() ?? ['id' => null];
     }
 }

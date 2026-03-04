@@ -49,7 +49,7 @@ class ApplicationController extends Controller
         $databaseRequest = DatabaseRequest::createFrom($request);
         $databaseRequest->merge([
             'company_id' => $request->cookie('currentCompany'),
-            'project_id' => $request->cookie('currentProject')
+            'project_id' => $request->cookie('currentProject'),
         ]);
         $databases = (new DatabaseController())->get($databaseRequest);
 
@@ -103,7 +103,7 @@ class ApplicationController extends Controller
 
         $databaseRequest->merge([
             'company_id' => $currentCompany,
-            'project_id' => $currentProject
+            'project_id' => $currentProject,
         ]);
         $databases = (new DatabaseController())->get($databaseRequest);
 
@@ -116,7 +116,7 @@ class ApplicationController extends Controller
             'databases' => $databases,
         ])->with([
             'currentProject' => $currentProject,
-            'currentCompany' => $currentCompany
+            'currentCompany' => $currentCompany,
         ]);
     }
 
@@ -144,7 +144,7 @@ class ApplicationController extends Controller
 
         $databaseRequest->merge([
             'company_id' => $request->cookie('currentCompany'),
-            'project_id' => $currentProject
+            'project_id' => $currentProject,
         ]);
         $databases = (new DatabaseController())->get($databaseRequest);
 
@@ -157,7 +157,7 @@ class ApplicationController extends Controller
             'databases' => $databases,
         ])->with([
             'currentProject' => $currentProject,
-            'currentCompany' => $currentCompany
+            'currentCompany' => $currentCompany,
         ]);
     }
 

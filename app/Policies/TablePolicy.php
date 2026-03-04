@@ -19,8 +19,8 @@ class TablePolicy
     {
         if (
             $request->has('database_id') &&
-            $request->database_id != 0 &&
-            $request->database_id != null &&
+            $request->database_id !== 0 &&
+            $request->database_id !== null &&
             $user->companies()
                 ->where(
                     'company_id',
@@ -33,8 +33,8 @@ class TablePolicy
 
         if (
             $request->has('id') &&
-            $request->id != 0 &&
-            $request->id != null &&
+            $request->id !== 0 &&
+            $request->id !== null &&
             $user->companies()
                 ->where(
                     'company_id',
