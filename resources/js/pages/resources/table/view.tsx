@@ -44,8 +44,6 @@ export default function ViewTable({
                     <HeadingSmall
                         title="View table"
                         editUrl={tableRoute.edit(table.id).url}
-                        deleteUrl={tableRoute.destroy(table.id).url}
-                        id={table.id}
                     />
 
                     <div className="space-y-6">

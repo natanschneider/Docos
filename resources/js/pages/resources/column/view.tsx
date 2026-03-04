@@ -105,8 +105,6 @@ export default function ViewColumn({
                     <HeadingSmall
                         title="View column"
                         editUrl={colRoute.edit(column[0]?.id).url}
-                        deleteUrl={colRoute.destroy(column[0]?.id).url}
-                        id={column[0].id}
                     />
 
                     <div className="space-y-6">

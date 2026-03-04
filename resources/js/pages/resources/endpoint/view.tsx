@@ -78,8 +78,6 @@ export default function ViewEndpoint({
                     <HeadingSmall
                         title="View endpoint"
                         editUrl={endpointRoute.edit(endpoint[0]?.id).url}
-                        deleteUrl={endpointRoute.destroy(endpoint[0]?.id).url}
-                        id={endpoint[0]?.id}
                     />
 
                     <div className="space-y-6">

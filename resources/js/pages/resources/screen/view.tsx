@@ -78,8 +78,6 @@ export default function ViewScreen({
                     <HeadingSmall
                         title="View screen"
                         editUrl={screenRoute.edit(screen[0]?.id).url}
-                        deleteUrl={screenRoute.destroy(screen[0]?.id).url}
-                        id={screen[0]?.id}
                     />
 
                     <div className="space-y-6">

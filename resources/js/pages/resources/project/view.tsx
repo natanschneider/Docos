@@ -29,8 +29,6 @@ export default function ViewProject({project}: {project: projectModel[]}) {
                     <HeadingSmall
                         title="View project"
                         editUrl={projectRoute.edit(project[0]?.id).url}
-                        deleteUrl={projectRoute.destroy(project[0]?.id).url}
-                        id={project[0]?.id}
                     />
 
                     <div className="space-y-6">

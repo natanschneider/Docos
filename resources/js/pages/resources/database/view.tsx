@@ -34,8 +34,6 @@ export default function ViewDatabase({
                     <HeadingSmall
                         title="View database"
                         editUrl={databaseRoute.edit(database[0]?.id).url}
-                        deleteUrl={databaseRoute.destroy(database[0]?.id).url}
-                        id={database[0]?.id}
                     />
 
                     <div className="space-y-6">

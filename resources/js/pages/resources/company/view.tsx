@@ -29,8 +29,6 @@ export default function ViewCompany({company}: {company: companyModel[]}) {
                     <HeadingSmall
                         title="View company"
                         editUrl={companyRoute.edit(company[0]?.id).url}
-                        deleteUrl={companyRoute.destroy(company[0]?.id).url}
-                        id={company[0]?.id}
                     />
 
                     <div className="space-y-6">

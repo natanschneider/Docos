@@ -57,7 +57,6 @@ export default function ViewApplication({
                     <HeadingSmall
                         title='View application'
                         editUrl={ applicationRoute.edit(application.id).url }
-                        deleteUrl={ applicationRoute.destroy(application.id).url }
                     />
 
                     <div className='grid gap-2'>
