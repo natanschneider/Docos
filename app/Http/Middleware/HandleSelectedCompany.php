@@ -44,9 +44,13 @@ class HandleSelectedCompany
         return $company;
     }
 
-    private function ensureCompanyBelongsToUser(Request $request): int
+    private function ensureCompanyBelongsToUser(Request $request): int|null
     {
         $company = (int) $request->cookie('currentCompany');
+
+        if ( $request->user()->companies()->doesntExist()) {
+            return null;
+        }
 
         return $request->user()->companies()->where('companies.id', $company)->exists()
             ? $company

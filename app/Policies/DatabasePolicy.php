@@ -18,6 +18,7 @@ class DatabasePolicy
     {
         if (
             $request->has('company_id') &&
+            $user->companies()->exists() &&
             $user->companies()->where('companies.id', $request->company_id)->doesntExist()
         ) {
             return Response::deny('Company provided does not belong to user or does not exist');
