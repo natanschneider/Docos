@@ -15,11 +15,13 @@ import { Button } from '@/components/ui/button';
 import { EyeIcon, MoreHorizontalIcon, PencilIcon } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import column from '@/routes/column';
+import table from '@/routes/table';
 import { Link } from '@inertiajs/react';
 
 export type DatabaseSchemaNodeData = {
     data: {
         label: string;
+        id: number;
         schema: {
             title: string;
             type: string,
@@ -32,7 +34,35 @@ export type DatabaseSchemaNodeData = {
 export const DatabaseSchema = memo(({ data }: DatabaseSchemaNodeData) => {
     return (
         <DatabaseSchemaNode className="p-0">
-            <DatabaseSchemaNodeHeader>{data.label}</DatabaseSchemaNodeHeader>
+            <DatabaseSchemaNodeHeader>
+                <div className='flex items-center w-full h-full'>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon" className="size-8">
+                                <MoreHorizontalIcon />
+                                <span className="sr-only">Open menu</span>
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuGroup>
+                                <DropdownMenuItem asChild>
+                                    <Link href={table.show(data.id)} className='flex items-center gap-1'>
+                                        <EyeIcon className='w-4 h-4' />
+                                        Visualize
+                                    </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem asChild>
+                                    <Link href={table.edit(data.id)} className='flex items-center gap-1'>
+                                        <PencilIcon className='w-4 h-4' />
+                                        Edit
+                                    </Link>
+                                </DropdownMenuItem>
+                            </DropdownMenuGroup>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                    <span className='grow'>{data.label}</span>
+                </div>
+            </DatabaseSchemaNodeHeader>
             <DatabaseSchemaNodeBody>
                 {data.schema.map((entry) => (
                     <DatabaseSchemaTableRow key={entry.title}>
@@ -119,6 +149,7 @@ export default function Diagram({ tables }: { tables: tableModel[] }) {
             type: 'databaseSchema',
             data: {
                 label: table.name,
+                id: table.id,
                 schema: table?.columns?.map((column) => ({
                     title: column.name,
                     type: column.type?.name,
