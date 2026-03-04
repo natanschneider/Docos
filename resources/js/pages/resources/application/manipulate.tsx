@@ -41,6 +41,7 @@ export default function ManipulateApplication({
         : []
     );
     const [selected, setSelected] = React.useState<string | undefined>(undefined);
+    const [detached, setDetached] = React.useState<string[]>([]);
 
     const databaseArr = databases.reduce(
         (acc, database) => {
@@ -54,12 +55,16 @@ export default function ManipulateApplication({
         if (!items.includes(item)) {
             setItems([...items, item]);
         }
+        setDetached(detached.filter((d) => d !== item));
 
         setSelected('');
     };
 
     const removeItem = (item: string) => {
         setItems(items.filter((i) => i !== item));
+        if (!detached.includes(item)) {
+            setDetached([...detached, item]);
+        }
         setSelected('');
     };
 
@@ -144,6 +149,9 @@ export default function ManipulateApplication({
 
                                         {items && items.length > 0 && items.map((item, index) => (
                                             <input key={index} type="hidden" name="databases[]" value={item} />
+                                        ))}
+                                        {detached && detached.length > 0 && detached.map((item, index) => (
+                                            <input key={index} type="hidden" name="detach_databases[]" value={item} />
                                         ))}
                                         <CollapsibleContent className="mt-3 flex flex-col gap-2">
                                             {items.map((item, index) => (

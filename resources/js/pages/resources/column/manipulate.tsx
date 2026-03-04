@@ -104,6 +104,10 @@ export default function ManipulateColumn({
         return uniqueItems;
     });
 
+    const [detachedContraints, setDetachedConstraints] = React.useState<string[]>([]);
+    const [detachedPks, setDetachedPks] = React.useState<string[]>([]);
+    const [detachedFks, setDetachedFks] = React.useState<string[]>([]);
+
     const constraintArr = constraints.reduce(
         (acc, constraint) => {
             acc[constraint.id] = constraint.name;
@@ -152,12 +156,16 @@ export default function ManipulateColumn({
         if (!constraint.includes(item)) {
             setConstraint([...constraint, item]);
         }
+        setDetachedConstraints(detachedContraints.filter((d) => d !== item));
 
         setSelectedConstraint('');
     };
 
     const removeConstraint = (item: string) => {
         setConstraint(constraint.filter((i) => i !== item));
+        if (!detachedContraints.includes(item)) {
+            setDetachedConstraints([...detachedContraints, item]);
+        }
         setSelectedConstraint('');
     };
 
@@ -173,12 +181,16 @@ export default function ManipulateColumn({
         if (!selectedPkArr?.includes(item)) {
             setSelectedPkArr([...selectedPkArr??[], item]);
         }
+        setDetachedPks(detachedPks.filter((d) => d !== item));
 
         setSelectedPk(undefined);
     };
 
     const removePk = (item: string) => {
         setSelectedPkArr(selectedPkArr?.filter((i) => i !== item));
+        if (!detachedPks.includes(item)) {
+            setDetachedPks([...detachedPks, item]);
+        }
         setSelectedPk(undefined);
     };
 
@@ -194,12 +206,16 @@ export default function ManipulateColumn({
         if (!selectedFkArr?.includes(item)) {
             setSelectedFkArr([...selectedFkArr??[], item]);
         }
+        setDetachedFks(detachedFks.filter((d) => d !== item));
 
         setSelectedFk(undefined);
     };
 
     const removeFk = (item: string) => {
         setSelectedFkArr(selectedFkArr?.filter((i) => i !== item));
+        if (!detachedFks.includes(item)) {
+            setDetachedFks([...detachedFks, item]);
+        }
         setSelectedFk(undefined);
     };
 
@@ -306,6 +322,9 @@ export default function ManipulateColumn({
                                         {constraint && constraint.length > 0 && constraint.map((item, index) => (
                                             <input key={index} type="hidden" name="constraints[]" value={item} />
                                         ))}
+                                        {detachedContraints && detachedContraints.length > 0 && detachedContraints.map((item, index) => (
+                                            <input key={index} type="hidden" name="detach_constraints[]" value={item} />
+                                        ))}
                                         <CollapsibleContent className="mt-3 flex flex-col gap-2">
                                             {constraint.map((item, index) => (
                                                 <div className="flex rounded-md border px-4 py-2 font-mono text-sm items-center" key={index}>
@@ -356,6 +375,9 @@ export default function ManipulateColumn({
 
                                         {selectedPkArr && selectedPkArr.length > 0 && selectedPkArr.map((item, index) => (
                                             <input key={index} type="hidden" name="related_columns[pk][]" value={item} />
+                                        ))}
+                                        {detachedPks && detachedPks.length > 0 && detachedPks.map((item, index) => (
+                                            <input key={index} type="hidden" name="detach_related_columns[pk][]" value={item} />
                                         ))}
                                         <CollapsibleContent className='grid gap-2 auto-cols-max grid-flow-col w-full'>
                                             {selectedPkTableArr?.map((table) => (
@@ -434,6 +456,9 @@ export default function ManipulateColumn({
 
                                         {selectedFkArr && selectedFkArr.length > 0 && selectedFkArr.map((item, index) => (
                                             <input key={index} type="hidden" name="related_columns[fk][]" value={item} />
+                                        ))}
+                                        {detachedFks && detachedFks.length > 0 && detachedFks.map((item, index) => (
+                                            <input key={index} type="hidden" name="detach_related_columns[fk][]" value={item} />
                                         ))}
                                         <CollapsibleContent className='grid gap-2 auto-cols-max grid-flow-col w-full'>
                                             {selectedFkTableArr?.map((table) => (

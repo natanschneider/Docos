@@ -44,6 +44,7 @@ export default function ManipulateEndpoint({
     const [isOpen, setIsOpen] = React.useState(true);
     const name = useRef<HTMLInputElement>(null);
     const editorRef = useRef<MDXEditorMethods>(null);
+    const [detached, setDetached] = React.useState<string[]>([]);
     const [items, setItems] = React.useState<string[]>(() => {
         if (!endpoint || !endpoint[0]?.columns) return [];
 
@@ -97,6 +98,7 @@ export default function ManipulateEndpoint({
                 setSelectedTables([...selectedTables??[], columnTable[item]]);
             }
         }
+        setDetached(detached.filter((d) => d !== item));
 
         setSelected(undefined);
     };
@@ -109,6 +111,9 @@ export default function ManipulateEndpoint({
 
     const removeItem = (item: string) => {
         setItems(items?.filter((i) => i !== item));
+        if (!detached.includes(item)) {
+            setDetached([...detached, item]);
+        }
         setSelected(undefined);
     };
 
@@ -194,6 +199,9 @@ export default function ManipulateEndpoint({
 
                                         {items && items.length > 0 && items.map((item, index) => (
                                             <input key={index} type="hidden" name="columns[]" value={item} />
+                                        ))}
+                                        {detached && detached.length > 0 && detached.map((item, index) => (
+                                            <input key={index} type="hidden" name="detach_columns[]" value={item} />
                                         ))}
                                         <CollapsibleContent className='grid gap-2 auto-cols-max grid-flow-col w-full'>
                                             {selectedTables?.map((table) => (
