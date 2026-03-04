@@ -23,7 +23,7 @@ class HandleSelectedTable
 
         $id = ($request->hasCookie('currentTable') && $request->cookie('currentTable')) ? (int) $request->cookie('currentTable') : (new TableController())->getLatest($request)['id'];
 
-        if ($id === 0 or $id === '0') {
+        if ($id === 0 || $id === '0') {
             $id = null;
         }
 

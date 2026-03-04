@@ -41,7 +41,10 @@ class TableController extends Controller
         return (new TableRepository())->destroy($request);
     }
 
-    public function getLatest(Request $request, ?int $id = null)
+    /**
+     * @return mixed[]
+     */
+    public function getLatest(Request $request, ?int $id = null): array
     {
         $table = (new TableRepository())->getLatest($request, $id);
         $id = isset($table['id']) ? (int) $table['id'] : null;

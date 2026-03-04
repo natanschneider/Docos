@@ -38,11 +38,11 @@ class FileRequest extends FormRequest
                     $acceptableExtensions = ['md', 'markdown'];
 
                     if (! in_array($mimeType, $acceptableMimeTypes)) {
-                        $fail("The {$attribute} must be a markdown file. Detected MIME type: {$mimeType}");
+                        $fail(sprintf('The %s must be a markdown file. Detected MIME type: %s', $attribute, $mimeType));
                     }
 
                     if (! in_array(mb_strtolower($extension), $acceptableExtensions)) {
-                        $fail("The {$attribute} must have an extension of .md");
+                        $fail(sprintf('The %s must have an extension of .md', $attribute));
                     }
                 },
                 'max:36700160',

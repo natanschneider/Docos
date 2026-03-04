@@ -28,6 +28,7 @@ class TableController extends Controller
     {
         $databaseRequest = DatabaseRequest::createFrom($request);
         $databaseRequest->merge(['company_id' => $request->cookie('currentCompany')]);
+
         $databases = (new DatabaseController())->get($databaseRequest);
 
         $currentDatabase = ($request->hasCookie('currentDatabase') && $request->cookie('currentDatabase'))
@@ -50,6 +51,7 @@ class TableController extends Controller
     {
         $databaseRequest = DatabaseRequest::createFrom($request);
         $databaseRequest->merge(['company_id' => $request->cookie('currentCompany')]);
+
         $databases = (new DatabaseController())->get($databaseRequest);
 
         return Inertia::render('resources/table/manipulate', [

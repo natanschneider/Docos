@@ -27,12 +27,14 @@ class HandleSelectedCompany
         if (! $request->user()) {
             return null;
         }
+
         if ($request->user()->companies()->doesntExist()) {
             return null;
         }
 
         $companies = Company::query();
         $companies->whereIn('companies.id', $request?->user()?->companies()?->pluck('companies.id'));
+
         $company = $companies->latest()->first(['id'])->toArray();
 
         $company = isset($company['id']) ? (int) $company['id'] : null;

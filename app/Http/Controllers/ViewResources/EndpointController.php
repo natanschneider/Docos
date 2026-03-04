@@ -30,6 +30,7 @@ class EndpointController extends Controller
     {
         $projectRequest = ProjectRequest::createFrom($request);
         $projectRequest->merge(['company_id' => $request->cookie('currentCompany')]);
+
         $projects = (new ProjectController())->get($projectRequest);
 
         $currentProject = ($request->hasCookie('currentProject') && $request->cookie('currentProject'))
@@ -64,6 +65,7 @@ class EndpointController extends Controller
     {
         $projectRequest = ProjectRequest::createFrom($request);
         $projectRequest->merge(['company_id' => $request->cookie('currentCompany')]);
+
         $projects = (new ProjectController())->get($projectRequest);
 
         $currentProject = ($request->hasCookie('currentProject') && $request->cookie('currentProject'))
@@ -148,6 +150,7 @@ class EndpointController extends Controller
     {
         $projectRequest = ProjectRequest::createFrom($request);
         $projectRequest->merge(['company_id' => $request->cookie('currentCompany')]);
+
         $projects = (new ProjectController())->get($projectRequest);
 
         $currentProject = ($request->hasCookie('currentProject') && $request->cookie('currentProject'))

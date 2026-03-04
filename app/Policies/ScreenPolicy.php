@@ -54,7 +54,7 @@ class ScreenPolicy
 
         if ($request->has('columns')) {
             $cl = Column::whereIn('id', $request->columns)
-                ->whereHas('table.database.company', function ($query) use ($company) {
+                ->whereHas('table.database.company', function ($query) use ($company): void {
                     $query->where('id', $company->id);
                 })
                 ->count();
@@ -89,6 +89,7 @@ class ScreenPolicy
             if ($user->companies()->where('companies.id', $company->id)->doesntExist()) {
                 return Response::deny('Application provided does not belong to user or does not exist');
             }
+
             if ($screen->application->project->company_id !== $company->id) {
                 return Response::deny('Application provided does not belong to same company');
             }

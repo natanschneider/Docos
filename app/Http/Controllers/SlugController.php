@@ -19,7 +19,7 @@ class SlugController extends Controller
         $dbTitle = Str::slug($company->name, '-');
 
         if ($title !== $dbTitle) {
-            return redirect()->route('company', ["$dbTitle-$company->public_key"]);
+            return redirect()->route('company', [sprintf('%s-%s', $dbTitle, $company->public_key)]);
         }
 
         return true;
@@ -29,6 +29,6 @@ class SlugController extends Controller
     {
         $parts = array_reverse(explode('-', strrev($slug), 2));
 
-        return array_map('strrev', $parts);
+        return array_map(strrev(...), $parts);
     }
 }

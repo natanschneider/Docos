@@ -15,6 +15,9 @@ use Illuminate\Http\Request;
 
 final class ViewsRepository
 {
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     public function dashboard(Request $request): array
     {
         $companyId = $request->cookie('currentCompany');

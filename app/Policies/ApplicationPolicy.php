@@ -56,6 +56,7 @@ class ApplicationPolicy
         if (! $companyBelongsToUser) {
             return Response::deny('Company provided does not belong to user or does not exist');
         }
+
         if (! $request->has('databases')) {
             return Response::allow();
         }
@@ -103,23 +104,23 @@ class ApplicationPolicy
 
         if ($request->has('detach_databases')) {
             $detach_check = 0;
-            $application?->screens?->each(function ($screen) use ($request, &$detach_check) {
-                $screen?->columns?->each(function ($column) use ($request, &$detach_check) {
+            $application?->screens?->each(function ($screen) use ($request, &$detach_check): void {
+                $screen?->columns?->each(function ($column) use ($request, &$detach_check): void {
                     $detach_check += $column?->table?->database()
                         ?->whereIn('databases.id', $request?->detach_databases)
                         ?->count();
                 });
             });
 
-            $application?->endpoints?->each(function ($endpoint) use ($request, &$detach_check) {
-                $endpoint?->columns?->each(function ($column) use ($request, &$detach_check) {
+            $application?->endpoints?->each(function ($endpoint) use ($request, &$detach_check): void {
+                $endpoint?->columns?->each(function ($column) use ($request, &$detach_check): void {
                     $detach_check += $column?->table?->database()
                         ?->whereIn('databases.id', $request?->detach_databases)
                         ?->count();
                 });
             });
 
-            if (is_numeric($detach_check) && $detach_check > 0) {
+            if ($detach_check > 0) {
                 return Response::deny('You are detaching databases that are in use');
             }
         }

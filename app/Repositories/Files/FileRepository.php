@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories\Files;
 
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
@@ -23,8 +24,8 @@ class FileRepository
             'originalName' => $file->getClientOriginalName(),
         ];
 
-        if (Storage::disk('local')->exists("temp/{$file->getClientOriginalName()}")) {
-            Storage::disk('local')->delete("temp/{$file->getClientOriginalName()}");
+        if (Storage::disk('local')->exists('temp/'.$file->getClientOriginalName())) {
+            Storage::disk('local')->delete('temp/'.$file->getClientOriginalName());
         }
 
         return $ret;
@@ -33,7 +34,7 @@ class FileRepository
     public function replace(UploadedFile $file, string $folder, string $name): array
     {
         $this->validateFile($file);
-        Storage::disk('s3')->delete("$folder/$name");
+        Storage::disk('s3')->delete(sprintf('%s/%s', $folder, $name));
         $file->storeAs($folder, $name, 's3');
 
         $ret = [
@@ -43,8 +44,8 @@ class FileRepository
             'originalName' => $file->getClientOriginalName(),
         ];
 
-        if (Storage::disk('local')->exists("temp/{$file->getClientOriginalName()}")) {
-            Storage::disk('local')->delete("temp/{$file->getClientOriginalName()}");
+        if (Storage::disk('local')->exists('temp/'.$file->getClientOriginalName())) {
+            Storage::disk('local')->delete('temp/'.$file->getClientOriginalName());
         }
 
         return $ret;
@@ -53,21 +54,21 @@ class FileRepository
     public function delete(string $folder, string $name): array
     {
         $disk = Storage::disk('s3');
-        $disk->exists("$folder/$name") ?: throw new Exception('File not found');
+        $disk->exists(sprintf('%s/%s', $folder, $name)) ?: throw new Exception('File not found');
 
         $returnArr = [
             'name' => $name,
-            'size' => $disk->size("$folder/$name"),
+            'size' => $disk->size(sprintf('%s/%s', $folder, $name)),
         ];
 
-        $disk->delete("$folder/$name");
+        $disk->delete(sprintf('%s/%s', $folder, $name));
 
         return $returnArr;
     }
 
     public function get(string $folder, string $name): string
     {
-        return Storage::disk('s3')->get("$folder/$name") ?? '';
+        return Storage::disk('s3')->get(sprintf('%s/%s', $folder, $name)) ?? '';
     }
 
     protected function validateFile(UploadedFile $file): void
@@ -81,6 +82,6 @@ class FileRepository
 
     protected function generateUniqueFilename(UploadedFile $file): string
     {
-        return Hash::make($file->getClientOriginalName().time()).'.'.$file->getClientOriginalExtension();
+        return Hash::make($file->getClientOriginalName().Carbon::now()->getTimestamp()).'.'.$file->getClientOriginalExtension();
     }
 }

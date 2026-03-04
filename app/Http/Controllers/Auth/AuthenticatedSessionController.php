@@ -54,6 +54,8 @@ final class AuthenticatedSessionController extends Controller
 
     /**
      * Create a new personal access token for the user.
+     *
+     * @return array<string, mixed>
      */
     public function createToken(TokenRequest $request): array
     {

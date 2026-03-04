@@ -26,6 +26,7 @@ class ApplicationController extends Controller
     {
         $projectRequest = ProjectRequest::createFrom($request);
         $projectRequest->merge(['company_id' => $request->cookie('currentCompany')]);
+
         $projects = (new ProjectController())->get($projectRequest);
 
         $currentProject = ($request->hasCookie('currentProject') && $request->cookie('currentProject'))
@@ -55,6 +56,7 @@ class ApplicationController extends Controller
 
         $projectRequest = ProjectRequest::createFrom($request);
         $projectRequest->merge(['company_id' => $request->cookie('currentCompany')]);
+
         $projects = (new ProjectController())->get($projectRequest);
 
         return Inertia::render('resources/application/manipulate', [

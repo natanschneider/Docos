@@ -19,6 +19,7 @@ class ColumnValidator
                 ->whereNotIn('constraints.id', $request->detach_constraints)
                 ->get(['constraints.id'])->toArray();
         }
+
         $constraints = is_array($constraints) ? array_column($constraints, 'id') : [];
 
         if ($request->has('constraints')) {
@@ -111,6 +112,7 @@ class ColumnValidator
             if (! ($request->has('constraints') && (array_intersect([2, 9, 10], $constraints) !== []))) {
                 return Response::deny('Relating primary keys requires a foreign key constraint');
             }
+
             $pk_counter = count($request->related_columns['pk']);
 
             $qr_pk_counter = Column::query();
@@ -148,6 +150,7 @@ class ColumnValidator
             if (! ($request->has('constraints') && (array_intersect([1], $constraints) !== []))) {
                 return Response::deny('Relating primary keys requires a foreign key constraint');
             }
+
             $fk_counter = count($request->related_columns['fk']);
 
             $qr_fk_counter = Column::query();
@@ -186,7 +189,7 @@ class ColumnValidator
                 ->pluck('constraints.id')
                 ->toArray();
 
-            if (is_array($constraints) && count($constraints) > 0) {
+            if (is_array($constraints) && $constraints !== []) {
                 $column_qry = Column::query();
                 if (
                     in_array(1, $constraints) &&

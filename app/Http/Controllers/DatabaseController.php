@@ -41,7 +41,10 @@ class DatabaseController extends Controller
         return (new DatabaseRepository())->destroy($request);
     }
 
-    public function getLatest(Request $request, ?int $id = null)
+    /**
+     * @return mixed[]
+     */
+    public function getLatest(Request $request, ?int $id = null): array
     {
         $database = (new DatabaseRepository())->getLatest($request, $id);
         $id = isset($database['id']) ? (int) $database['id'] : null;

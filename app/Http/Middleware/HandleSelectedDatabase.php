@@ -23,7 +23,7 @@ class HandleSelectedDatabase
 
         $id = ($request->hasCookie('currentDatabase') && $request->cookie('currentDatabase')) ? (int) $request->cookie('currentDatabase') : (new DatabaseController())->getLatest($request)['id'];
 
-        if ($id === 0 or $id === '0') {
+        if ($id === 0 || $id === '0') {
             $id = null;
         }
 

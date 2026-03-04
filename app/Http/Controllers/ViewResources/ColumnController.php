@@ -32,6 +32,7 @@ class ColumnController extends Controller
     {
         $databaseRequest = DatabaseRequest::createFrom($request);
         $databaseRequest->merge(['company_id' => $request->cookie('currentCompany')]);
+
         $databases = (new DatabaseController())->get($databaseRequest);
 
         $currentDatabase = ($request->hasCookie('currentDatabase') && $request->cookie('currentDatabase'))
@@ -66,6 +67,7 @@ class ColumnController extends Controller
     {
         $databaseRequest = DatabaseRequest::createFrom($request);
         $databaseRequest->merge(['company_id' => $request->cookie('currentCompany')]);
+
         $databases = (new DatabaseController())->get($databaseRequest);
 
         $currentDatabase = ($request->hasCookie('currentDatabase') && $request->cookie('currentDatabase'))
