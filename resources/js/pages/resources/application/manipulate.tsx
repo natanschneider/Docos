@@ -88,8 +88,6 @@ export default function ManipulateApplication({
                         options={{
                             preserveScroll: true,
                         }}
-                        resetOnError={['name']}
-                        resetOnSuccess={['name']}
                         onSuccess={() => router.flushAll()}
                         className="space-y-6"
                     >

@@ -45,8 +45,6 @@ export default function ManipulateCompany({ company }: { company: companyModel |
                         options={{
                             preserveScroll: true,
                         }}
-                        resetOnError={['name', 'description']}
-                        resetOnSuccess
                         onSuccess={() => router.flushAll()}
                         className="space-y-6"
                     >

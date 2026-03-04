@@ -44,8 +44,6 @@ export default function ManipulateProject({ project }: { project: projectModel |
                         options={{
                             preserveScroll: true,
                         }}
-                        resetOnError={['name']}
-                        resetOnSuccess={['name']}
                         onSuccess={() => router.flushAll()}
                         className="space-y-6"
                     >

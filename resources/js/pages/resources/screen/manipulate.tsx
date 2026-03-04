@@ -137,8 +137,6 @@ export default function ManipulateScreen({
                         options={{
                             preserveScroll: true,
                         }}
-                        resetOnError={['name']}
-                        resetOnSuccess={['name']}
                         onSuccess={() => router.flushAll()}
                         className="space-y-6"
                         transform={data => ({...data, markdown: editorRef.current?.getMarkdown()})}

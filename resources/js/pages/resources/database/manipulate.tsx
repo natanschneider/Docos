@@ -45,8 +45,6 @@ export default function ManipulateDatabase({ database, engines }: { database: da
                         options={{
                             preserveScroll: true,
                         }}
-                        resetOnError={['name']}
-                        resetOnSuccess={['name']}
                         onSuccess={() => router.flushAll()}
                         className="space-y-6"
                     >
