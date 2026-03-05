@@ -179,7 +179,7 @@ export default function Diagram({ tables }: { tables: tableModel[] }) {
     }
 
     return (
-        <div className={isFullscreen ? 'w-screen h-screen absolute bottom-0 left-0 z-50 bg-accent' : 'w-5xl h-160'}>
+        <div className={isFullscreen ? 'w-screen h-screen fixed top-0 left-0 z-50 bg-accent flex flex-col' : 'w-5xl h-160 flex flex-col'}>
             <>
                 <div className="flex items-center justify-between p-6">
                     {isFullscreen ? (
@@ -205,7 +205,6 @@ export default function Diagram({ tables }: { tables: tableModel[] }) {
                     defaultEdges={defaultEdges}
                     nodeTypes={nodeTypes}
                     fitView
-                    className='w-[95%] h-[95%] mx-auto'
                 >
                     <Background />
                 </ReactFlow>
