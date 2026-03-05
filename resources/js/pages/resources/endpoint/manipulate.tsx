@@ -52,7 +52,7 @@ export default function ManipulateEndpoint({
             endpoint[0].columns
             .map((col) => col.id.toString())
         ));
-        console.log(uniqueItems);
+
         return uniqueItems;
     });
     const [selectedTables, setSelectedTables] = React.useState<string[]>(() => {

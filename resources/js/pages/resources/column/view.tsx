@@ -40,7 +40,6 @@ export default function ViewColumn({
     types: typeModel[];
     constraints: constraintsModel[];
 }) {
-    console.log(column);
     const type = types.find((type) => type.id === column[0]?.type_id);
     const constraintArr = constraints.reduce(
         (acc, constraint) => {
