@@ -8,11 +8,11 @@ import {
 import { LabeledHandle } from '@/components/labeled-handle';
 import { constraintsModel, tableModel } from '@/types/resources';
 import { Position, Background, Edge, ReactFlow } from '@xyflow/react';
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import '@xyflow/react/dist/style.css';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuLabel } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { EyeIcon, MoreHorizontalIcon, PencilIcon } from 'lucide-react';
+import { EyeIcon, MaximizeIcon, MinimizeIcon, MoreHorizontalIcon, PencilIcon } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import column from '@/routes/column';
 import table from '@/routes/table';
@@ -134,6 +134,7 @@ const nodeTypes = {
 export default function Diagram({ tables }: { tables: tableModel[] }) {
     const defaultNodes = [];
     const defaultEdges: Edge[] = [];
+    const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
     const cols = 3;
     let index = 0;
@@ -178,15 +179,37 @@ export default function Diagram({ tables }: { tables: tableModel[] }) {
     }
 
     return (
-        <div className='w-5xl h-160'>
-            <ReactFlow
-                defaultNodes={defaultNodes}
-                defaultEdges={defaultEdges}
-                nodeTypes={nodeTypes}
-                fitView
-            >
-                <Background />
-            </ReactFlow>
+        <div className={isFullscreen ? 'w-screen h-screen absolute bottom-0 left-0 z-50 bg-accent' : 'w-5xl h-160'}>
+            <>
+                <div className="flex items-center justify-between p-6">
+                    {isFullscreen ? (
+                        <button
+                            type="button"
+                            onClick={() => setIsFullscreen(false)}
+                        >
+                            <span className="sr-only">Close sidebar</span>
+                            <MinimizeIcon className="h-6 w-6" aria-hidden="true" />
+                        </button>
+                    ) : (
+                        <button
+                            type="button"
+                            onClick={() => setIsFullscreen(true)}
+                        >
+                            <span className="sr-only">Open sidebar</span>
+                            <MaximizeIcon className="h-6 w-6" aria-hidden="true" />
+                        </button>
+                    )}
+                </div>
+                <ReactFlow
+                    defaultNodes={defaultNodes}
+                    defaultEdges={defaultEdges}
+                    nodeTypes={nodeTypes}
+                    fitView
+                    className='w-[95%] h-[95%] mx-auto'
+                >
+                    <Background />
+                </ReactFlow>
+            </>
         </div>
     )
 }
