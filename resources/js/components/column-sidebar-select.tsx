@@ -1,6 +1,6 @@
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { changeTable as changeTab } from '@/routes';
+import { changeTable as changeTab, changeDatabase as changeDB } from '@/routes';
 import { type SharedData } from '@/types';
 import { databaseModel, tableModel } from '@/types/resources';
 import { router, usePage } from '@inertiajs/react';
@@ -20,7 +20,11 @@ export default function ColumnSidebarSelect({
     const changeDatabase = (value: string) => {
         setDatabase(value);
         router.flushAll();
-        router.get(changeTab({ database: value, table: table }));
+        if (table && table !== null && table !== undefined) {
+            router.get(changeTab({ database: value, table: table }));
+        } else {
+            router.get(changeDB(value));
+        }
     };
 
     const changeTable = (value: string) => {

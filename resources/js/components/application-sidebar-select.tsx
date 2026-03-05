@@ -1,6 +1,6 @@
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { changeApplication as changeApp } from '@/routes';
+import { changeApplication as changeApp, changeProject as changeProj } from '@/routes';
 import { type SharedData } from '@/types';
 import { applicationModel, projectModel } from '@/types/resources';
 import { router, usePage } from '@inertiajs/react';
@@ -22,7 +22,11 @@ export default function ApplicationSidebarSelect({
     const changeProject = (value: string) => {
         setProject(value);
         router.flushAll();
-        router.get(changeApp({ location, project: value, application }));
+        if (application && application !== null && application !== undefined) {
+            router.get(changeApp({ location, project: value, application }));
+        } else {
+            router.get(changeProj(value));
+        }
     };
 
     const changeApplication = (value: string) => {
