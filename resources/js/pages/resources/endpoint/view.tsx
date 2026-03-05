@@ -106,7 +106,7 @@ export default function ViewEndpoint({
                                 <div className="flex items-center justify-between gap-4 px-4">
                                     <Label>Tables</Label>
                                 </div>
-                                <div className='grid gap-2 auto-cols-max grid-flow-col w-full'>
+                                <div className='flex flex-wrap gap-2 w-full'>
                                     {selectedTables?.map((tableItem) => (
                                         <Card key={tableItem}>
                                             <Link href={table.show(tableItem).url}>

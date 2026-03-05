@@ -228,7 +228,7 @@ export default function ManipulateEndpoint({
                                         {detached && detached.length > 0 && detached.map((item, index) => (
                                             <input key={index} type="hidden" name="detach_columns[]" value={item} />
                                         ))}
-                                        <CollapsibleContent className='grid gap-2 auto-cols-max grid-flow-col w-full'>
+                                        <CollapsibleContent className='flex flex-wrap gap-2 w-full'>
                                             {selectedTables?.map((table) => (
                                                 <Card key={table}>
                                                     <CardHeader>

@@ -160,7 +160,7 @@ export default function ViewColumn({
                                         <Label>Primary Key</Label>
                                     </div>
                                 </div>
-                                <div className="grid gap-2 auto-cols-max grid-flow-col w-full">
+                                <div className="flex flex-wrap gap-2 w-full">
                                     {selectedPkTableArr?.map((tableItem) => (
                                         <Card key={tableItem}>
                                             <Link href={table.show(tableItem)}>
@@ -195,7 +195,7 @@ export default function ViewColumn({
                                         <Label>Foreign Key</Label>
                                     </div>
                                 </div>
-                                <div className="grid gap-2 auto-cols-max grid-flow-col w-full">
+                                <div className="flex flex-wrap gap-2 w-full">
                                     {selectedFkTableArr?.map((tableItem) => (
                                         <Card key={tableItem}>
                                             <Link href={table.show(tableItem)}>

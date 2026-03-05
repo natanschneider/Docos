@@ -436,7 +436,7 @@ export default function ManipulateColumn({
                                         {detachedPks && detachedPks.length > 0 && detachedPks.map((item, index) => (
                                             <input key={index} type="hidden" name="detach_related_columns[pk][]" value={item} />
                                         ))}
-                                        <CollapsibleContent className='grid gap-2 auto-cols-max grid-flow-col w-full'>
+                                        <CollapsibleContent className='flex flex-wrap gap-2 w-full'>
                                             {selectedPkTableArr?.map((table) => (
                                                 <Card key={table}>
                                                     <CardHeader>
@@ -517,7 +517,7 @@ export default function ManipulateColumn({
                                         {detachedFks && detachedFks.length > 0 && detachedFks.map((item, index) => (
                                             <input key={index} type="hidden" name="detach_related_columns[fk][]" value={item} />
                                         ))}
-                                        <CollapsibleContent className='grid gap-2 auto-cols-max grid-flow-col w-full'>
+                                        <CollapsibleContent className='flex flex-wrap gap-2 w-full'>
                                             {selectedFkTableArr?.map((table) => (
                                                 <Card key={table}>
                                                     <CardHeader>

@@ -107,7 +107,7 @@ export default function ViewScreen({
                                     <Label>Tables</Label>
                                 </div>
 
-                                <div className='grid gap-2 auto-cols-max grid-flow-col w-full'>
+                                <div className='flex flex-wrap gap-2 w-full'>
                                     {selectedTables?.map((tableItem) => (
                                         <Card key={tableItem}>
                                             <Link href={table.show(tableItem).url}>
