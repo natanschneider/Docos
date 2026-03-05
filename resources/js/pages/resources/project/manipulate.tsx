@@ -50,7 +50,9 @@ export default function ManipulateProject({ project }: { project: projectModel |
                         {({ errors, processing, recentlySuccessful }) => (
                             <>
                                 {project !== null ? <input type="hidden" name="id" value={project?.id} /> : null}
+                                <InputError message={errors.id} />
                                 <input type="hidden" name="company_id" value={currentCompany ?? ''} />
+                                <InputError message={errors.company_id} />
                                 <div className="grid gap-2">
                                     <Label htmlFor="name">Name</Label>
 

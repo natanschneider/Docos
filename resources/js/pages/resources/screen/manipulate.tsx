@@ -172,7 +172,9 @@ export default function ManipulateScreen({
                         {({ errors, processing, recentlySuccessful }) => (
                             <>
                                 {screen !== null ? <input type="hidden" name="id" value={screen[0]?.id} /> : null}
+                                <InputError message={errors.id} />
                                 <input type="hidden" name="application_id" value={currentApplication ?? ''} />
+                                <InputError message={errors.application_id} />
                                 <div className="grid gap-2">
                                     <Label htmlFor="name">Name</Label>
 
@@ -271,6 +273,8 @@ export default function ManipulateScreen({
                                                     </CardContent>
                                                 </Card>
                                             ))}
+                                            <InputError message={errors.columns} />
+                                            <InputError message={errors.detach_columns} />
                                         </CollapsibleContent>
                                     </Collapsible>
                                 </div>
@@ -278,6 +282,9 @@ export default function ManipulateScreen({
                                 <div className="w-full">
                                     <TextEditor editorRef={editorRef} markdown={doc ?? ''} />
                                 </div>
+
+                                <InputError message={errors.markdown} />
+                                <InputError message={errors.doc_file} />
 
                                 <div className="flex items-center gap-4">
                                     <Button disabled={processing}>Save screen</Button>

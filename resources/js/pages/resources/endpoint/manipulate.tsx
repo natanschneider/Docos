@@ -172,7 +172,9 @@ export default function ManipulateEndpoint({
                         {({ errors, processing, recentlySuccessful }) => (
                             <>
                                 {endpoint !== null ? <input type="hidden" name="id" value={endpoint[0]?.id} /> : null}
+                                <InputError message={errors.id} />
                                 <input type="hidden" name="application_id" value={currentApplication ?? ''} />
+                                <InputError message={errors.application_id} />
                                 <div className="grid gap-2">
                                     <Label htmlFor="name">Name</Label>
 
@@ -271,6 +273,8 @@ export default function ManipulateEndpoint({
                                                     </CardContent>
                                                 </Card>
                                             ))}
+                                            <InputError message={errors.columns} />
+                                            <InputError message={errors.detach_columns} />
                                         </CollapsibleContent>
                                     </Collapsible>
                                 </div>
@@ -278,6 +282,9 @@ export default function ManipulateEndpoint({
                                 <div className='w-full'>
                                     <TextEditor editorRef={editorRef} markdown={doc ?? ''} />
                                 </div>
+
+                                <InputError message={errors.markdown} />
+                                <InputError message={errors.doc_file} />
 
                                 <div className="flex items-center gap-4">
                                     <Button disabled={processing}>Save endpoint</Button>

@@ -51,6 +51,7 @@ export default function ManipulateCompany({ company }: { company: companyModel |
                         {({ errors, processing, recentlySuccessful }) => (
                             <>
                                 {company !== null ? <input type="hidden" name="id" value={company?.id} /> : null}
+                                <InputError message={errors.id} />
                                 <div className="grid gap-2">
                                     <Label htmlFor="name">Name</Label>
 

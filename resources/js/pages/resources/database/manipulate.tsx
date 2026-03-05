@@ -51,7 +51,9 @@ export default function ManipulateDatabase({ database, engines }: { database: da
                         {({ errors, processing, recentlySuccessful }) => (
                             <>
                                 {database !== null ? <input type="hidden" name="id" value={database?.id} /> : null}
+                                <InputError message={errors.id} />
                                 <input type="hidden" name="company_id" value={currentCompany ?? ''} />
+                                <InputError message={errors.company_id} />
                                 <div className="grid gap-2">
                                     <Label htmlFor="name">Name</Label>
 
@@ -88,7 +90,7 @@ export default function ManipulateDatabase({ database, engines }: { database: da
                                         </SelectContent>
                                     </Select>
 
-                                    <InputError message={errors.engine} />
+                                    <InputError message={errors.engine_id} />
                                 </div>
 
                                 <div className="flex items-center gap-4">

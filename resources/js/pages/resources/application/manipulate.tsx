@@ -99,7 +99,9 @@ export default function ManipulateApplication({
                         {({ errors, processing, recentlySuccessful }) => (
                             <>
                                 {application !== null ? <input type="hidden" name="id" value={application[0]?.id} /> : null}
+                                <InputError message={errors.id} />
                                 <input type="hidden" name="project_id" value={currentProject ?? ''} />
+                                <InputError message={errors.project_id} />
                                 <div className="grid gap-2">
                                     <Label htmlFor="name">Name</Label>
 
@@ -146,6 +148,7 @@ export default function ManipulateApplication({
                                         </Select>
 
                                         <InputError message={errors.databases} />
+                                        <InputError message={errors.detach_databases} />
 
                                         {items && items.length > 0 && items.map((item, index) => (
                                             <input key={index} type="hidden" name="databases[]" value={item} />

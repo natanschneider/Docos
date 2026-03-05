@@ -67,7 +67,9 @@ export default function ManipulateTable({
                         {({ errors, processing, recentlySuccessful }) => (
                             <>
                                 {table !== null ? <input type="hidden" name="id" value={table[0]?.id} /> : null}
+                                <InputError message={errors.id} />
                                 <input type="hidden" name="database_id" value={currentDatabase ?? ''} />
+                                <InputError message={errors.database_id} />
                                 <div className="grid gap-2">
                                     <Label htmlFor="name">Name</Label>
 
@@ -88,6 +90,9 @@ export default function ManipulateTable({
                                 <div>
                                     <TextEditor editorRef={editorRef} markdown={doc ?? ''} />
                                 </div>
+
+                                <InputError message={errors.markdown} />
+                                <InputError message={errors.doc_file} />
 
                                 <div className="flex items-center gap-4">
                                     <Button disabled={processing}>Save table</Button>

@@ -305,7 +305,9 @@ export default function ManipulateColumn({
                         {({ errors, processing, recentlySuccessful }) => (
                             <>
                                 {column !== null ? <input type="hidden" name="id" value={column[0]?.id} /> : null}
+                                <InputError message={errors.id} />
                                 <input type="hidden" name="table_id" value={currentTable ?? ''} />
+                                <InputError message={errors.table_id} />
                                 <div className="grid gap-2">
                                     <Label htmlFor="name">Name</Label>
 
@@ -396,6 +398,7 @@ export default function ManipulateColumn({
                                         </CollapsibleContent>
 
                                         <InputError message={errors.constraints} />
+                                        <InputError message={errors.detach_constraints} />
                                     </Collapsible>
                                 </div>
 
