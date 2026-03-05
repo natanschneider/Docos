@@ -69,7 +69,7 @@ export default function ViewTable({
 
                         {table?.columns && table.columns.length > 0 && (
                             <div className="grid gap-2">
-                                <div className="flex w-[350px] flex-col gap-2">
+                                <div className="flex w-87.5 flex-col gap-2">
                                     <div className="flex items-center justify-between gap-4 px-4">
                                         <Label htmlFor="constraints_id">Columns</Label>
                                     </div>

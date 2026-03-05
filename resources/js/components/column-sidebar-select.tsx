@@ -36,7 +36,7 @@ export default function ColumnSidebarSelect({
 
                 <input type="hidden" name="database" value={database} />
                 <Select onValueChange={(value) => changeDatabase(value)} defaultValue={database}>
-                    <SelectTrigger className="w-[180px]">
+                    <SelectTrigger className="w-45">
                         <SelectValue placeholder="Select a database" />
                     </SelectTrigger>
                     <SelectContent>
@@ -57,7 +57,7 @@ export default function ColumnSidebarSelect({
 
                 <input type="hidden" name="table" value={table} />
                 <Select onValueChange={(value) => changeTable(value)} defaultValue={table}>
-                    <SelectTrigger className="w-[180px]">
+                    <SelectTrigger className="w-45">
                         <SelectValue placeholder="Select an table" />
                     </SelectTrigger>
                     <SelectContent>

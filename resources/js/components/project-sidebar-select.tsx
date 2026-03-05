@@ -22,7 +22,7 @@ export default function ProjectSidebarSelect(projects: projectModel[]) {
 
             <input type="hidden" name="project" value={project} />
             <Select onValueChange={(value) => changeProject(value)} defaultValue={project}>
-                <SelectTrigger className="w-[180px]">
+                <SelectTrigger className="w-45">
                     <SelectValue placeholder="Select a project" />
                 </SelectTrigger>
                 <SelectContent>

@@ -56,7 +56,7 @@ export default function ViewProject({project}: {project: projectModel[]}) {
 
                         {project[0]?.applications && project[0]?.applications.length > 0 && (
                             <div className="grid gap-2">
-                                <div className="flex w-[350px] flex-col gap-2">
+                                <div className="flex w-87.5 flex-col gap-2">
                                     <div className="flex items-center justify-between gap-4 px-4">
                                         <Label>Applications</Label>
                                     </div>

@@ -93,7 +93,7 @@ export default function ResourceListItem({ resource }: { resource: resourceItem 
                         </div>
                     </Link>
                     <div className="flex gap-2">
-                        <Button size="sm" variant="outline" onClick={() => (window.location.href = resource.edit_url)} className="min-w-[4rem]">
+                        <Button size="sm" variant="outline" onClick={() => (window.location.href = resource.edit_url)} className="min-w-16">
                             <Link href={resource.edit_url} prefetch>
                                 Edit
                             </Link>
@@ -103,7 +103,7 @@ export default function ResourceListItem({ resource }: { resource: resourceItem 
                                 <Button
                                     size="sm"
                                     variant="outline"
-                                    className="min-w-[4rem] text-destructive hover:bg-destructive/10 hover:text-destructive"
+                                    className="min-w-16 text-destructive hover:bg-destructive/10 hover:text-destructive"
                                 >
                                     Delete
                                 </Button>

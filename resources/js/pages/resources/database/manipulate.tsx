@@ -73,7 +73,7 @@ export default function ManipulateDatabase({ database, engines }: { database: da
                                     <Label htmlFor="engine">Engine</Label>
 
                                     <Select name="engine_id" required defaultValue={database?.engine_id.toString()}>
-                                        <SelectTrigger className="w-[180px]">
+                                        <SelectTrigger className="w-45">
                                             <SelectValue placeholder="Select an engine" />
                                         </SelectTrigger>
                                         <SelectContent>

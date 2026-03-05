@@ -178,7 +178,7 @@ export default function Diagram({ tables }: { tables: tableModel[] }) {
     }
 
     return (
-        <div className='w-5xl h-[40rem]'>
+        <div className='w-5xl h-160'>
             <ReactFlow
                 defaultNodes={defaultNodes}
                 defaultEdges={defaultEdges}

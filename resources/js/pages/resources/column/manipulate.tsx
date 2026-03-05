@@ -327,7 +327,7 @@ export default function ManipulateColumn({
                                     <Label htmlFor="type_id">Type</Label>
 
                                     <Select name="type_id" required defaultValue={column !== null ? column[0]?.type_id?.toString() : undefined}>
-                                        <SelectTrigger className="w-[180px]">
+                                        <SelectTrigger className="w-45">
                                             <SelectValue placeholder="Select an type" />
                                         </SelectTrigger>
                                         <SelectContent>
@@ -346,7 +346,7 @@ export default function ManipulateColumn({
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Collapsible open={isConstraintOpen} onOpenChange={setIsConstraintOpen} className="flex w-[350px] flex-col gap-2">
+                                    <Collapsible open={isConstraintOpen} onOpenChange={setIsConstraintOpen} className="flex w-87.5 flex-col gap-2">
                                         <div className="flex items-center justify-between gap-4 px-4">
                                             <Label htmlFor="constraints_id">Constraints</Label>
                                             <CollapsibleTrigger asChild>
@@ -358,7 +358,7 @@ export default function ManipulateColumn({
                                         </div>
 
                                         <Select value={selectedConstraint} name="database_id" onValueChange={(value) => addConstraint(value)}>
-                                            <SelectTrigger className="w-[180px]">
+                                            <SelectTrigger className="w-45">
                                                 <SelectValue placeholder="Select an constraint" />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -386,7 +386,7 @@ export default function ManipulateColumn({
                                                     <Button
                                                         size="sm"
                                                         variant="outline"
-                                                        className="min-w-[4rem] text-destructive hover:bg-destructive/10 hover:text-destructive"
+                                                        className="min-w-16 text-destructive hover:bg-destructive/10 hover:text-destructive"
                                                         onClick={() => removeConstraint(item)}
                                                     >
                                                         Delete
@@ -412,7 +412,7 @@ export default function ManipulateColumn({
                                         </div>
 
                                         <Select value={selectedPkTable} name='tablePk' onValueChange={(value) => addPkTable(value)}>
-                                            <SelectTrigger className='w-[180px]'>
+                                            <SelectTrigger className='w-45'>
                                                 <SelectValue placeholder='Select a table' />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -441,7 +441,7 @@ export default function ManipulateColumn({
                                                         <CardDescription>
                                                             <Label htmlFor={`${table}_columns_id_pk`}>Columns</Label>
                                                             <Select value={selectedPk} name={`${table}_columns_id_pk`} onValueChange={(value) => addPk(value)}>
-                                                                <SelectTrigger className='w-[180px]'>
+                                                                <SelectTrigger className='w-45'>
                                                                     <SelectValue placeholder='Select a column' />
                                                                 </SelectTrigger>
                                                                 <SelectContent>
@@ -468,7 +468,7 @@ export default function ManipulateColumn({
                                                                 <Button
                                                                     size="sm"
                                                                     variant="outline"
-                                                                    className="min-w-[4rem] text-destructive hover:bg-destructive/10 hover:text-destructive"
+                                                                    className="min-w-16 text-destructive hover:bg-destructive/10 hover:text-destructive"
                                                                     onClick={() => removePk(item)}
                                                                 >
                                                                     Delete
@@ -493,7 +493,7 @@ export default function ManipulateColumn({
                                         </div>
 
                                         <Select value={selectedFkTable} name='tableFk' onValueChange={(value) => addFkTable(value)}>
-                                            <SelectTrigger className='w-[180px]'>
+                                            <SelectTrigger className='w-45'>
                                                 <SelectValue placeholder='Select a table' />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -522,7 +522,7 @@ export default function ManipulateColumn({
                                                         <CardDescription>
                                                             <Label htmlFor={`${table}_columns_id_fk`}>Columns</Label>
                                                             <Select value={selectedFk} name={`${table}_columns_id_fk`} onValueChange={(value) => addFk(value)}>
-                                                                <SelectTrigger className='w-[180px]'>
+                                                                <SelectTrigger className='w-45'>
                                                                     <SelectValue placeholder='Select a column' />
                                                                 </SelectTrigger>
                                                                 <SelectContent>
@@ -549,7 +549,7 @@ export default function ManipulateColumn({
                                                                 <Button
                                                                     size="sm"
                                                                     variant="outline"
-                                                                    className="min-w-[4rem] text-destructive hover:bg-destructive/10 hover:text-destructive"
+                                                                    className="min-w-16 text-destructive hover:bg-destructive/10 hover:text-destructive"
                                                                     onClick={() => removeFk(item)}
                                                                 >
                                                                     Delete

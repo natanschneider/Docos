@@ -118,7 +118,7 @@ export default function ManipulateApplication({
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Collapsible open={isOpen} onOpenChange={setIsOpen} className="flex w-[350px] flex-col gap-2">
+                                    <Collapsible open={isOpen} onOpenChange={setIsOpen} className="flex w-87.5 flex-col gap-2">
                                         <div className="flex items-center justify-between gap-4 px-4">
                                             <Label htmlFor="database_id">Databases</Label>
                                             <CollapsibleTrigger asChild>
@@ -130,7 +130,7 @@ export default function ManipulateApplication({
                                         </div>
 
                                         <Select value={selected} name="database_id" onValueChange={(value) => addItem(value)}>
-                                            <SelectTrigger className="w-[180px]">
+                                            <SelectTrigger className="w-45">
                                                 <SelectValue placeholder="Select an database" />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -160,7 +160,7 @@ export default function ManipulateApplication({
                                                     <Button
                                                         size="sm"
                                                         variant="outline"
-                                                        className="min-w-[4rem] text-destructive hover:bg-destructive/10 hover:text-destructive"
+                                                        className="min-w-16 text-destructive hover:bg-destructive/10 hover:text-destructive"
                                                         onClick={() => removeItem(item)}
                                                     >
                                                         Delete

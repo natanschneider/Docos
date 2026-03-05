@@ -203,7 +203,7 @@ export default function ManipulateEndpoint({
                                         </div>
 
                                         <Select value={selected} name="tables_id" onValueChange={(value) => addTable(value)}>
-                                            <SelectTrigger className="w-[180px]">
+                                            <SelectTrigger className="w-45">
                                                 <SelectValue placeholder="Select a table" />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -234,7 +234,7 @@ export default function ManipulateEndpoint({
                                                         <CardDescription>
                                                             <Label htmlFor={`${table}_columns_id`}>Columns</Label>
                                                             <Select value={selected} name={`${table}_columns_id`} onValueChange={(value) => addItem(value)}>
-                                                                <SelectTrigger className="w-[180px]">
+                                                                <SelectTrigger className="w-45">
                                                                     <SelectValue placeholder="Select a column" />
                                                                 </SelectTrigger>
                                                                 <SelectContent>
@@ -261,7 +261,7 @@ export default function ManipulateEndpoint({
                                                                 <Button
                                                                     size="sm"
                                                                     variant="outline"
-                                                                    className="min-w-[4rem] text-destructive hover:bg-destructive/10 hover:text-destructive"
+                                                                    className="min-w-16 text-destructive hover:bg-destructive/10 hover:text-destructive"
                                                                     onClick={() => removeItem(item)}
                                                                 >
                                                                     Delete

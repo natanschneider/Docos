@@ -52,7 +52,7 @@ export default function ViewCompany({company}: {company: companyModel[]}) {
 
                         {company[0]?.databases && company[0]?.databases?.length > 0 && (
                             <div className="grid gap-2">
-                                <div className="flex w-[350px] flex-col gap-2">
+                                <div className="flex w-87.5 flex-col gap-2">
                                     <div className="flex items-center justify-between gap-4 px-4">
                                         <Label>Databases</Label>
                                     </div>
@@ -68,7 +68,7 @@ export default function ViewCompany({company}: {company: companyModel[]}) {
 
                         {company[0]?.projects && company[0]?.projects?.length > 0 && (
                             <div className="grid gap-2">
-                                <div className="flex w-[350px] flex-col gap-2">
+                                <div className="flex w-87.5 flex-col gap-2">
                                     <div className="flex items-center justify-between gap-4 px-4">
                                         <Label>Projects</Label>
                                     </div>
