@@ -52,7 +52,7 @@ export function AutoCloseAlert({ isOpen, onClose, title, description, autoCloseD
                     onClick={(e) => e.stopPropagation()}
                 >
                     <div className="flex items-start gap-4">
-                        <div className="flex-shrink-0">{icons[variant]}</div>
+                        <div className="shrink-0">{icons[variant]}</div>
                         <div className="flex-1 space-y-2">
                             <h3 className="text-lg font-semibold">{title}</h3>
                             {description && <p className="text-sm text-muted-foreground">{description}</p>}
