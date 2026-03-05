@@ -52,7 +52,7 @@ export default function ManipulateScreen({
             screen[0].columns
             .map((col) => col.id.toString())
         ));
-        console.log(uniqueItems);
+
         return uniqueItems;
     });
     const [selectedTables, setSelectedTables] = React.useState<string[]>(() => {
@@ -91,6 +91,16 @@ export default function ManipulateScreen({
         return acc;
     }, {} as Record<string, string>);
 
+    const selectedTablesCols: Record<string, number[]> = {};
+    if (screen && screen[0]?.columns) {
+        screen[0]?.columns?.forEach((col) => {
+            if (!selectedTablesCols[col.table_id]) {
+                selectedTablesCols[col.table_id] = [];
+            }
+            selectedTablesCols[col.table_id].push(col.id);
+        })
+    }
+
     const addItem = (item: string) => {
         if (!items?.includes(item)) {
             setItems([...items, item]);
@@ -99,8 +109,12 @@ export default function ManipulateScreen({
             }
         }
         setDetached(detached.filter((d) => d !== item));
-
         setSelected(undefined);
+
+        if (! selectedTablesCols[columnTable[item]]) {
+            selectedTablesCols[columnTable[item]] = [];
+        }
+        selectedTablesCols[columnTable[item]].push(parseInt(item));
     };
 
     const addTable = (item: string) => {
@@ -115,6 +129,15 @@ export default function ManipulateScreen({
             setDetached([...detached, item]);
         }
         setSelected(undefined);
+
+        if (selectedTablesCols[columnTable[item]]) {
+            selectedTablesCols[columnTable[item]] = selectedTablesCols[columnTable[item]].filter((id) => id !== parseInt(item));
+        }
+
+        if (selectedTablesCols[columnTable[item]]?.length === 0) {
+            delete selectedTablesCols[columnTable[item]];
+            setSelectedTables(selectedTables?.filter((t) => t !== columnTable[item]));
+        }
     };
 
     return (
@@ -180,7 +203,7 @@ export default function ManipulateScreen({
                                         </div>
 
                                         <Select value={selected} name="tables_id" onValueChange={(value) => addTable(value)}>
-                                            <SelectTrigger className="w-[180px]">
+                                            <SelectTrigger className="w-45">
                                                 <SelectValue placeholder="Select a table" />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -211,7 +234,7 @@ export default function ManipulateScreen({
                                                         <CardDescription>
                                                             <Label htmlFor={`${table}_columns_id`}>Columns</Label>
                                                             <Select value={selected} name={`${table}_columns_id`} onValueChange={(value) => addItem(value)}>
-                                                                <SelectTrigger className="w-[180px]">
+                                                                <SelectTrigger className="w-45">
                                                                     <SelectValue placeholder="Select a column" />
                                                                 </SelectTrigger>
                                                                 <SelectContent>
@@ -238,7 +261,7 @@ export default function ManipulateScreen({
                                                                 <Button
                                                                     size="sm"
                                                                     variant="outline"
-                                                                    className="min-w-[4rem] text-destructive hover:bg-destructive/10 hover:text-destructive"
+                                                                    className="min-w-16 text-destructive hover:bg-destructive/10 hover:text-destructive"
                                                                     onClick={() => removeItem(item)}
                                                                 >
                                                                     Delete

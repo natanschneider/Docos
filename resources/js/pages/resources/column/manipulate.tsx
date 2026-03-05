@@ -132,6 +132,14 @@ export default function ManipulateColumn({
         return acc;
     }, {} as Record<string, columnModel>);
 
+    const columnTable = tables.reduce((acc, table) => {
+        const columns = table?.columns;
+        columns?.forEach((column) => {
+            acc[column?.id?.toString()] = table?.id?.toString();
+        });
+        return acc;
+    }, {} as Record<string, string>);
+
     const tablePkArr = primaryKey.reduce<Record<string, Record<number, columnModel>>>(
         (acc, pk) => {
             const tableId = pk.table_id.toString();
@@ -151,6 +159,26 @@ export default function ManipulateColumn({
         },
         {},
     );
+
+    const selectedTablesColsFk: Record<string, number[]> = {};
+    if (column && column[0]?.related_fks) {
+        column[0]?.related_fks?.forEach((col) => {
+            if (!selectedTablesColsFk[col.table_id]) {
+                selectedTablesColsFk[col.table_id] = [];
+            }
+            selectedTablesColsFk[col.table_id].push(col.id);
+        })
+    }
+
+    const selectedTablesColsPk: Record<string, number[]> = {};
+    if (column && column[0]?.related_pks) {
+        column[0]?.related_pks?.forEach((col) => {
+            if (!selectedTablesColsPk[col.table_id]) {
+                selectedTablesColsPk[col.table_id] = [];
+            }
+            selectedTablesColsPk[col.table_id].push(col.id);
+        })
+    }
 
     const addConstraint = (item: string) => {
         if (!constraint.includes(item)) {
@@ -182,8 +210,12 @@ export default function ManipulateColumn({
             setSelectedPkArr([...selectedPkArr??[], item]);
         }
         setDetachedPks(detachedPks.filter((d) => d !== item));
-
         setSelectedPk(undefined);
+
+        if (! selectedTablesColsPk[columnTable[item]]) {
+            selectedTablesColsPk[columnTable[item]] = [];
+        }
+        selectedTablesColsPk[columnTable[item]].push(parseInt(item));
     };
 
     const removePk = (item: string) => {
@@ -192,6 +224,15 @@ export default function ManipulateColumn({
             setDetachedPks([...detachedPks, item]);
         }
         setSelectedPk(undefined);
+
+        if (selectedTablesColsPk[columnTable[item]]) {
+            selectedTablesColsPk[columnTable[item]] = selectedTablesColsPk[columnTable[item]].filter((id) => id !== parseInt(item));
+        }
+
+        if (selectedTablesColsPk[columnTable[item]]?.length === 0) {
+            delete selectedTablesColsPk[columnTable[item]];
+            setSelectedPkTableArr(selectedPkTableArr?.filter((t) => t !== columnTable[item]));
+        }
     };
 
     const addFkTable = (item: string) => {
@@ -207,8 +248,12 @@ export default function ManipulateColumn({
             setSelectedFkArr([...selectedFkArr??[], item]);
         }
         setDetachedFks(detachedFks.filter((d) => d !== item));
-
         setSelectedFk(undefined);
+
+        if (! selectedTablesColsFk[columnTable[item]]) {
+            selectedTablesColsFk[columnTable[item]] = [];
+        }
+        selectedTablesColsFk[columnTable[item]].push(parseInt(item));
     };
 
     const removeFk = (item: string) => {
@@ -217,6 +262,15 @@ export default function ManipulateColumn({
             setDetachedFks([...detachedFks, item]);
         }
         setSelectedFk(undefined);
+
+        if (selectedTablesColsFk[columnTable[item]]) {
+            selectedTablesColsFk[columnTable[item]] = selectedTablesColsFk[columnTable[item]].filter((id) => id !== parseInt(item));
+        }
+
+        if (selectedTablesColsFk[columnTable[item]]?.length === 0) {
+            delete selectedTablesColsFk[columnTable[item]];
+            setSelectedFkTableArr(selectedFkTableArr?.filter((t) => t !== columnTable[item]));
+        }
     };
 
     return (

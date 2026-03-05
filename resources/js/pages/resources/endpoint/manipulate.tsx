@@ -91,6 +91,16 @@ export default function ManipulateEndpoint({
         return acc;
     }, {} as Record<string, string>);
 
+    const selectedTablesCols: Record<string, number[]> = {};
+    if (endpoint && endpoint[0]?.columns) {
+        endpoint[0]?.columns?.forEach((col) => {
+            if (!selectedTablesCols[col.table_id]) {
+                selectedTablesCols[col.table_id] = [];
+            }
+            selectedTablesCols[col.table_id].push(col.id);
+        })
+    }
+
     const addItem = (item: string) => {
         if (!items?.includes(item)) {
             setItems([...items, item]);
@@ -99,8 +109,12 @@ export default function ManipulateEndpoint({
             }
         }
         setDetached(detached.filter((d) => d !== item));
-
         setSelected(undefined);
+
+        if (! selectedTablesCols[columnTable[item]]) {
+            selectedTablesCols[columnTable[item]] = [];
+        }
+        selectedTablesCols[columnTable[item]].push(parseInt(item));
     };
 
     const addTable = (item: string) => {
@@ -115,6 +129,15 @@ export default function ManipulateEndpoint({
             setDetached([...detached, item]);
         }
         setSelected(undefined);
+
+        if (selectedTablesCols[columnTable[item]]) {
+            selectedTablesCols[columnTable[item]] = selectedTablesCols[columnTable[item]].filter((id) => id !== parseInt(item));
+        }
+
+        if (selectedTablesCols[columnTable[item]]?.length === 0) {
+            delete selectedTablesCols[columnTable[item]];
+            setSelectedTables(selectedTables?.filter((t) => t !== columnTable[item]));
+        }
     };
 
     return (
