@@ -1,0 +1,15 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    entrypoint: ./start-laravel.sh
+    container_name: laravel_app
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - internal-docker
+
+networks:
+  internal-docker:
+    external: true
