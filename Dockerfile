@@ -27,5 +27,4 @@ RUN npm install && npm run build:ssr
 
 RUN chmod +x start-laravel.sh
 
-CMD ["php-fpm"]
-EXPOSE 9002
+ENTRYPOINT [ "./start-laravel.sh" ]
