@@ -1,0 +1,36 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: docos_app
+    env_file: .env
+    environment:
+      INERTIA_SSR_URL: http://ssr:13714
+    volumes:
+      - storage:/var/www/html/storage
+    healthcheck:
+      test: ["CMD", "php-fpm", "-t"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - internal-docker
+    restart: unless-stopped
+
+  ssr:
+    build:
+      context: .
+      dockerfile: ssr.dockerfile
+    container_name: docos_ssr
+    networks:
+      - internal-docker
+    restart: unless-stopped
+
+volumes:
+  storage:
+
+networks:
+  internal-docker:
+    external: true
