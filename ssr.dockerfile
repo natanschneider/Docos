@@ -33,8 +33,7 @@ RUN mkdir -p storage/logs \
         storage/framework/views \
         bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache \
-    && chmod -R 755 storage bootstrap/cache \
-    && chmod +x start-laravel.sh
+    && chmod -R 755 storage bootstrap/cache
 
 RUN npm run build:ssr
 

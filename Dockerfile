@@ -33,11 +33,16 @@ RUN mkdir -p storage/logs \
         storage/framework/views \
         bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache \
-    && chmod -R 755 storage bootstrap/cache \
-    && chmod +x start-laravel.sh
+    && chmod -R 755 storage bootstrap/cache
 
 RUN npm run build:ssr
 
+RUN php artisan migrate --force \
+    && php artisan storage:link --force 2>/dev/null || true \
+    && php artisan config:cache \
+    && php artisan route:cache \
+    && php artisan view:cache
+
 EXPOSE 9000
 
-ENTRYPOINT ["./start-laravel.sh"]
+CMD ["php-fpm"]
