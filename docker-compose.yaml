@@ -4,6 +4,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: docos_app
+    ports:
+      - "9000:9000"
     env_file: .env
     environment:
       INERTIA_SSR_URL: http://ssr:13714
