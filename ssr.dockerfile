@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && docker-php-ext-install mbstring exif pcntl bcmath gd pdo pdo_pgsql \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app
+WORKDIR /var/www/html
 
 RUN curl -fsSL https://nodejs.org/dist/v24.0.0/node-v24.0.0-linux-x64.tar.xz \
     | tar -xJ -C /usr/local --strip-components=1
@@ -27,13 +27,14 @@ COPY . .
 
 COPY docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
 
-RUN mkdir -p storage/logs \
+RUN mkdir -p \
         storage/framework/cache \
         storage/framework/sessions \
         storage/framework/views \
+        storage/logs \
         bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache \
-    && chmod -R 755 storage bootstrap/cache
+    && chmod -R 775 storage bootstrap/cache
 
 RUN npm run build:ssr
 
