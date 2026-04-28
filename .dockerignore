@@ -1,0 +1,36 @@
+# IDE and Editor
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+.phpstorm.meta.php
+_ide_helper.php
+
+# Dependencies
+node_modules
+vendor
+
+# Laravel-specific
+storage/logs/*
+storage/app/public
+bootstrap/cache/*
+public/storage
+
+# Testing
+.phpunit.result.cache
+phpunit.xml
+phpunit.dox
+
+# Build artifacts
+dist
+build
+*.tar.gz
+*.zip
+
+# OS files
+Thumbs.db
+.DS_Store
