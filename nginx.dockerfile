@@ -1,4 +1,4 @@
-FROM php:8.4-fpm
+FROM php:8.4-fpm AS build
 
 COPY . .
 
@@ -35,6 +35,13 @@ RUN mkdir -p \
 
 RUN npm run build:ssr
 
-EXPOSE 13714
+FROM nginx:1.25.1-alpine
 
-CMD ["node", "bootstrap/ssr/ssr.js"]
+COPY --from=build /var/www/html/public /var/www/html/public
+
+COPY docker/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY docker/nginx/conf.d /etc/nginx/conf.d
+
+EXPOSE 82
+
+CMD ["nginx", "-g", "daemon off;"]

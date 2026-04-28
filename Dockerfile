@@ -1,5 +1,7 @@
 FROM php:8.4-fpm
 
+COPY . .
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl libpng-dev libonig-dev libxml2-dev libpq-dev zip unzip \
     && docker-php-ext-install mbstring exif pcntl bcmath gd pdo pdo_pgsql \
@@ -18,12 +20,7 @@ RUN curl -sS https://getcomposer.org/installer \
 
 COPY composer.json composer.lock ./
 RUN composer install \
-    --optimize-autoloader \
-    --no-dev \
-    --no-scripts \
-    --ignore-platform-reqs
-
-COPY . .
+    --optimize-autoloader
 
 COPY docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
 
