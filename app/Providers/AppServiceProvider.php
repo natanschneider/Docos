@@ -36,7 +36,5 @@ final class AppServiceProvider extends ServiceProvider
         RateLimiter::for('global', function (Request $request) {
             return Limit::perMinute(1000);
         });
-
-        URL::forceScheme('https');
     }
 }
