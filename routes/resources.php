@@ -12,7 +12,7 @@ use App\Http\Controllers\ViewResources\ScreenController;
 use App\Http\Controllers\ViewResources\TableController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::resource('company', CompanyController::class);
     Route::resource('project', ProjectController::class);
     Route::resource('database', DatabaseController::class);

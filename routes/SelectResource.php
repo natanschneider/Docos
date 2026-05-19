@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('change-company/{company}', function (string $company, Request $request) {
         $request->cookies->set('currentCompany', $company);
         $currentProject = (new ProjectRepository())->getLatest($request);

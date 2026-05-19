@@ -11,7 +11,7 @@ Route::get('/', function () {
     return Inertia::render('welcome');
 })->name('home');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', function (Request $request) {
         return Inertia::render('dashboard', [
             'categories' => (new ViewsRepository())->dashboard($request),
