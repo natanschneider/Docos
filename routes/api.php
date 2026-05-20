@@ -12,6 +12,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ScreenController;
 use App\Http\Controllers\TableController;
+use App\Http\Controllers\UserCompanyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -90,5 +91,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('column', 'get');
         Route::put('column', 'update');
         Route::delete('column', 'destroy');
+    });
+
+    Route::controller(UserCompanyController::class)->group(function () {
+        Route::get('user-company', 'get');
+        Route::post('user-company', 'store');
+        Route::delete('user-company', 'destroy');
     });
 });
