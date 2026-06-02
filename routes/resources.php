@@ -10,6 +10,7 @@ use App\Http\Controllers\ViewResources\EndpointController;
 use App\Http\Controllers\ViewResources\ProjectController;
 use App\Http\Controllers\ViewResources\ScreenController;
 use App\Http\Controllers\ViewResources\TableController;
+use App\Http\Controllers\ViewResources\UserCompanyController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function () {
@@ -21,4 +22,5 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('endpoint', EndpointController::class);
     Route::resource('table', TableController::class);
     Route::resource('column', ColumnController::class);
+    Route::resource('users', UserCompanyController::class);
 });
