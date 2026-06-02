@@ -1,49 +1,60 @@
-FROM php:8.4-fpm
+FROM php:8.3-cli AS base
 
+# System packages and PHP extensions
+RUN apt-get update && apt-get install -y \
+    git unzip curl libpng-dev libonig-dev libxml2-dev \
+    libzip-dev libpq-dev libcurl4-openssl-dev libssl-dev \
+    zlib1g-dev libicu-dev g++ libevent-dev procps \
+    && docker-php-ext-install pdo pdo_mysql pdo_pgsql mbstring zip exif pcntl bcmath sockets intl
+
+# Swoole installation
+RUN curl -L -o swoole.tar.gz https://github.com/swoole/swoole-src/archive/refs/tags/v5.1.0.tar.gz \
+    && tar -xf swoole.tar.gz \
+    && cd swoole-src-5.1.0 \
+    && phpize \
+    && ./configure \
+    && make -j$(nproc) \
+    && make install \
+    && docker-php-ext-enable swoole
+
+# Node.js installation
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+    && apt-get install -y nodejs
+
+# Composer installation
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www
+
+# Composer dependencies
+COPY composer.json composer.lock artisan ./
+
+RUN mkdir -p bootstrap/cache storage/app storage/framework/cache/data \
+    storage/framework/sessions storage/framework/views storage/logs
+
+RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist --no-scripts
+
+# NPM dependencies
+COPY package.json package-lock.json ./
+RUN npm ci
+
+# Copy application
 COPY . .
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl libpng-dev libonig-dev libxml2-dev libpq-dev zip unzip \
-    && docker-php-ext-install mbstring exif pcntl bcmath gd pdo pdo_pgsql \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN composer dump-autoload --optimize
 
-WORKDIR /var/www/html
+# Build Vite assets
+RUN npm run build
 
-RUN curl -fsSL https://nodejs.org/dist/v24.0.0/node-v24.0.0-linux-x64.tar.xz \
-    | tar -xJ -C /usr/local --strip-components=1
+# Clear caches
+RUN php artisan config:clear \
+ && php artisan route:clear \
+ && php artisan view:clear
 
-COPY package*.json ./
-RUN npm ci --frozen-lockfile
-
-RUN curl -sS https://getcomposer.org/installer \
-    | php -- --install-dir=/usr/bin --filename=composer
-
-COPY composer.json composer.lock ./
-RUN composer install \
-    --optimize-autoloader
-
-COPY docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
-
-RUN mkdir -p \
-        storage/framework/cache \
-        storage/framework/sessions \
-        storage/framework/views \
-        storage/logs \
-        bootstrap/cache \
-    && chown -R www-data:www-data storage bootstrap/cache \
-    && chmod -R 775 storage bootstrap/cache
-
-RUN npm run build:ssr
-
-RUN php artisan migrate --force \
-    && php artisan storage:link --force 2>/dev/null || true \
-    && php artisan config:cache \
-    && php artisan route:cache \
-    && php artisan view:cache
+# Permissions
+RUN chown -R www-data:www-data /var/www \
+ && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
 EXPOSE 9000
 
-COPY docker/php/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
-CMD ["php-fpm", "-F", "-O"]
+CMD ["sh", "-c", "echo 'APP_KEY:' $APP_KEY && php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan octane:start --server=swoole --host=0.0.0.0 --port=9000"]
