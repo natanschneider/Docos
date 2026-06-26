@@ -23,7 +23,7 @@ import { BreadcrumbItem, SharedData, User } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Form, Head, router, usePage } from '@inertiajs/react';
 import axios from 'axios';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -31,6 +31,21 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: users.index().url,
     },
 ];
+
+const getErrorMessage = (errors: unknown, fallback: string): string => {
+    if (typeof errors === 'string') {
+        return errors;
+    }
+
+    if (errors && typeof errors === 'object') {
+        return Object.values(errors)
+            .flat()
+            .filter((message): message is string => typeof message === 'string')
+            .join(' ');
+    }
+
+    return fallback;
+};
 
 export default function ManipulateUserCompany({ users }: { users: User[] | null }) {
     const { auth, currentCompany } = usePage<SharedData>().props;
@@ -47,6 +62,10 @@ export default function ManipulateUserCompany({ users }: { users: User[] | null 
         subMessage: '',
     });
     const userCount = companyUsers.length;
+
+    useEffect(() => {
+        setCompanyUsers(users ?? []);
+    }, [users]);
 
     const deleteUser = async (user: User) => {
         try {
@@ -78,7 +97,7 @@ export default function ManipulateUserCompany({ users }: { users: User[] | null 
 
             if (axios.isAxiosError(error) && error.response?.data) {
                 msg = error.response.data.message || msg;
-                subMsg = error.response.data.errors || subMsg;
+                subMsg = getErrorMessage(error.response.data.errors, subMsg);
             }
 
             setAlertInfo({
