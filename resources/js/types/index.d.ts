@@ -1,7 +1,7 @@
 import { type NavItem } from '@/types/resources.d';
 
 export interface Auth {
-    user: User;
+    user?: User;
 }
 
 export interface BreadcrumbItem {
@@ -17,7 +17,7 @@ export interface NavGroup {
 export interface SharedData {
     name: string;
     quote: { message: string; author: string };
-    auth: Auth;
+    auth?: Auth;
     sidebarOpen: boolean;
     currentCompany: number | null;
     currentProject: number | null;

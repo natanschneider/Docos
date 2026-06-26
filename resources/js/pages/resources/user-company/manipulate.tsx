@@ -49,6 +49,7 @@ const getErrorMessage = (errors: unknown, fallback: string): string => {
 
 export default function ManipulateUserCompany({ users }: { users: User[] | null }) {
     const { auth, currentCompany } = usePage<SharedData>().props;
+    const currentUser = auth?.user;
     const email = useRef<HTMLInputElement>(null);
     const [companyUsers, setCompanyUsers] = useState(users ?? []);
     const [isOpen, setIsOpen] = useState(false);
@@ -122,7 +123,7 @@ export default function ManipulateUserCompany({ users }: { users: User[] | null 
                             <div className="rounded-lg border border-border bg-card p-4 text-sm text-muted-foreground">No users in this company.</div>
                         ) : (
                             companyUsers.map((user) => {
-                                const isCurrentUser = user.id === auth.user.id;
+                                const isCurrentUser = user.id === currentUser?.id;
 
                                 return (
                                     <div
