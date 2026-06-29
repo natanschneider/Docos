@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\ImportDatabaseController;
 use App\Http\Controllers\ViewResources\ApplicationController;
 use App\Http\Controllers\ViewResources\ColumnController;
 use App\Http\Controllers\ViewResources\CompanyController;
@@ -23,4 +24,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('table', TableController::class);
     Route::resource('column', ColumnController::class);
     Route::resource('users', UserCompanyController::class);
+
+    Route::get('import', [ImportDatabaseController::class, 'index'])->name('import-db');
+    Route::post('import', [ImportDatabaseController::class, 'store'])->name('import-db.store');
 });

@@ -20,13 +20,14 @@ import project from '@/routes/project';
 import { SharedData } from '@/types';
 import { type NavItem } from '@/types/resources';
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutGrid, Building, Presentation, Database, AppWindowMac, ScreenShare, Server, Table, Columns2, User } from 'lucide-react';
+import { LayoutGrid, Building, Presentation, Database, AppWindowMac, ScreenShare, Server, Table, Columns2, User, Import } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import screen from '@/routes/screen';
 import endpoint from '@/routes/endpoint';
 import table from '@/routes/table';
 import column from '@/routes/column';
 import users from '@/routes/users';
+import { importDb } from '@/routes'
 
 const mainNavItems: NavItem[] = [
     {
@@ -76,6 +77,11 @@ const mainNavItems: NavItem[] = [
         title: 'Databases',
         href: database.index().url,
         icon: Database,
+    },
+    {
+        title: 'Import',
+        href: importDb(),
+        icon: Import,
     },
     {
         title: 'Tables',
