@@ -8,6 +8,11 @@ import { type BreadcrumbItem } from '@/types';
 import { ApplicationNavItems, projectModel, type applicationModel } from '@/types/resources.d';
 import { Head } from '@inertiajs/react';
 import { TriangleAlert } from 'lucide-react';
+import { Button } from "@/components/ui/button"
+import { ButtonGroup } from "@/components/ui/button-group"
+import { Field, FieldLabel } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { useMemo, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -17,6 +22,17 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function ListApplications({ applications, projects }: { applications: applicationModel[]; projects: projectModel[] }) {
+    const [query, setQuery] = useState('');
+
+    const filtered = useMemo(() => {
+        const q = query.trim().toLowerCase();
+        if (!q) return applications;
+
+        return applications.filter((application) => {
+            return application.name.toLowerCase().includes(q);
+        })
+    }, [applications, query]);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="List of applications" />
@@ -41,7 +57,20 @@ export default function ListApplications({ applications, projects }: { applicati
                         <>
                             <HeadingSmall title="Applications" description="List of all applications" />
 
-                            {applications.map((application) => (
+                            <Field>
+                                <FieldLabel htmlFor="input-button-group">Search</FieldLabel>
+                                <ButtonGroup>
+                                    <Input
+                                        id="input-button-group"
+                                        placeholder="Type to search..."
+                                        value={query}
+                                        onChange={(e) => setQuery(e.target.value)}
+                                    />
+                                    <Button variant="outline">Search</Button>
+                                </ButtonGroup>
+                            </Field>
+
+                            {filtered.map((application) => (
                                 <ResourceListItem
                                     key={application.id}
                                     resource={{

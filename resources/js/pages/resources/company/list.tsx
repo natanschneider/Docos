@@ -7,6 +7,11 @@ import { type BreadcrumbItem } from '@/types';
 import { CompanyNavItems, type companyModel } from '@/types/resources.d';
 import { Head } from '@inertiajs/react';
 import { TriangleAlert } from 'lucide-react';
+import { Button } from "@/components/ui/button"
+import { ButtonGroup } from "@/components/ui/button-group"
+import { Field, FieldLabel } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { useMemo, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -16,6 +21,17 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function ListCompanies({ companies }: { companies: companyModel[] }) {
+    const [query, setQuery] = useState('');
+
+    const filtered = useMemo(() => {
+        const q = query.trim().toLowerCase();
+        if (!q) return companies;
+
+        return companies.filter((company) => {
+            return company.name.toLowerCase().includes(q);
+        })
+    }, [companies, query]);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="List of companies" />
@@ -35,7 +51,20 @@ export default function ListCompanies({ companies }: { companies: companyModel[]
                         <>
                             <HeadingSmall title="Companies" description="List of all companies" />
 
-                            {companies.map((company) => (
+                            <Field>
+                                <FieldLabel htmlFor="input-button-group">Search</FieldLabel>
+                                <ButtonGroup>
+                                    <Input
+                                        id="input-button-group"
+                                        placeholder="Type to search..."
+                                        value={query}
+                                        onChange={(e) => setQuery(e.target.value)}
+                                    />
+                                    <Button variant="outline">Search</Button>
+                                </ButtonGroup>
+                            </Field>
+
+                            {filtered.map((company) => (
                                 <ResourceListItem
                                     key={company.id}
                                     resource={{

@@ -8,6 +8,11 @@ import { type BreadcrumbItem } from '@/types';
 import { TableNavItems, databaseModel, type tableModel } from '@/types/resources.d';
 import { Head } from '@inertiajs/react';
 import { TriangleAlert } from 'lucide-react';
+import { Button } from "@/components/ui/button"
+import { ButtonGroup } from "@/components/ui/button-group"
+import { Field, FieldLabel } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { useMemo, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -17,6 +22,17 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function ListTables({ tables, databases }: { tables: tableModel[]; databases: databaseModel[]; }) {
+    const [query, setQuery] = useState('');
+
+    const filtered = useMemo(() => {
+        const q = query.trim().toLowerCase();
+        if (!q) return tables;
+
+        return tables.filter((table) => {
+            return table.name.toLowerCase().includes(q);
+        })
+    }, [tables, query]);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="List of tables" />
@@ -41,7 +57,20 @@ export default function ListTables({ tables, databases }: { tables: tableModel[]
                         <>
                             <HeadingSmall title="Tables" description="List of all tables" />
 
-                            {tables.map((table) => (
+                            <Field>
+                                <FieldLabel htmlFor="input-button-group">Search</FieldLabel>
+                                <ButtonGroup>
+                                    <Input
+                                        id="input-button-group"
+                                        placeholder="Type to search..."
+                                        value={query}
+                                        onChange={(e) => setQuery(e.target.value)}
+                                    />
+                                    <Button variant="outline">Search</Button>
+                                </ButtonGroup>
+                            </Field>
+
+                            {filtered.map((table) => (
                                 <ResourceListItem
                                     key={table.id}
                                     resource={{

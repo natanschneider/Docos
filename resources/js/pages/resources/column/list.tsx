@@ -8,6 +8,11 @@ import { type BreadcrumbItem } from '@/types';
 import { columnModel, ColumnNavItems, databaseModel, tableModel } from '@/types/resources.d';
 import { Head } from '@inertiajs/react';
 import { TriangleAlert } from 'lucide-react';
+import { Button } from "@/components/ui/button"
+import { ButtonGroup } from "@/components/ui/button-group"
+import { Field, FieldLabel } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { useMemo, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -25,6 +30,17 @@ export default function ListColumns({
     tables: tableModel[];
     databases: databaseModel[];
 }) {
+    const [query, setQuery] = useState('');
+
+    const filtered = useMemo(() => {
+        const q = query.trim().toLowerCase();
+        if (!q) return columns;
+
+        return columns.filter((column) => {
+            return column.name.toLowerCase().includes(q);
+        })
+    }, [columns, query]);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="List of columns" />
@@ -49,7 +65,20 @@ export default function ListColumns({
                         <>
                             <HeadingSmall title="Columns" description="List of all Columns" />
 
-                            {columns.map((column) => (
+                            <Field>
+                                <FieldLabel htmlFor="input-button-group">Search</FieldLabel>
+                                <ButtonGroup>
+                                    <Input
+                                        id="input-button-group"
+                                        placeholder="Type to search..."
+                                        value={query}
+                                        onChange={(e) => setQuery(e.target.value)}
+                                    />
+                                    <Button variant="outline">Search</Button>
+                                </ButtonGroup>
+                            </Field>
+
+                            {filtered.map((column) => (
                                 <ResourceListItem
                                     key={column.id}
                                     resource={{

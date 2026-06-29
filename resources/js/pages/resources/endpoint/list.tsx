@@ -8,6 +8,11 @@ import { type BreadcrumbItem } from '@/types';
 import { applicationModel, projectModel, EndpointNavItems, type endpointModel } from '@/types/resources.d';
 import { Head } from '@inertiajs/react';
 import { TriangleAlert } from 'lucide-react';
+import { Button } from "@/components/ui/button"
+import { ButtonGroup } from "@/components/ui/button-group"
+import { Field, FieldLabel } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { useMemo, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -17,6 +22,17 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function ListEndpoints({ endpoints, projects, applications }: { endpoints: endpointModel[]; projects: projectModel[]; applications: applicationModel[] }) {
+    const [query, setQuery] = useState('');
+
+    const filtered = useMemo(() => {
+        const q = query.trim().toLowerCase();
+        if (!q) return endpoints;
+
+        return endpoints.filter((endpoint) => {
+            return endpoint.name.toLowerCase().includes(q);
+        })
+    }, [endpoints, query]);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="List of endpoints" />
@@ -41,7 +57,20 @@ export default function ListEndpoints({ endpoints, projects, applications }: { e
                         <>
                             <HeadingSmall title="Endpoints" description="List of all Endpoints" />
 
-                            {endpoints.map((endpoint) => (
+                            <Field>
+                                <FieldLabel htmlFor="input-button-group">Search</FieldLabel>
+                                <ButtonGroup>
+                                    <Input
+                                        id="input-button-group"
+                                        placeholder="Type to search..."
+                                        value={query}
+                                        onChange={(e) => setQuery(e.target.value)}
+                                    />
+                                    <Button variant="outline">Search</Button>
+                                </ButtonGroup>
+                            </Field>
+
+                            {filtered.map((endpoint) => (
                                 <ResourceListItem
                                     key={endpoint.id}
                                     resource={{
