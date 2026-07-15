@@ -23,7 +23,7 @@ import { BreadcrumbItem, SharedData, User } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Form, Head, router, usePage } from '@inertiajs/react';
 import axios from 'axios';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -32,24 +32,8 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-const getErrorMessage = (errors: unknown, fallback: string): string => {
-    if (typeof errors === 'string') {
-        return errors;
-    }
-
-    if (errors && typeof errors === 'object') {
-        return Object.values(errors)
-            .flat()
-            .filter((message): message is string => typeof message === 'string')
-            .join(' ');
-    }
-
-    return fallback;
-};
-
 export default function ManipulateUserCompany({ users }: { users: User[] | null }) {
     const { auth, currentCompany } = usePage<SharedData>().props;
-    const currentUser = auth?.user;
     const email = useRef<HTMLInputElement>(null);
     const [companyUsers, setCompanyUsers] = useState(users ?? []);
     const [isOpen, setIsOpen] = useState(false);
@@ -63,10 +47,6 @@ export default function ManipulateUserCompany({ users }: { users: User[] | null 
         subMessage: '',
     });
     const userCount = companyUsers.length;
-
-    useEffect(() => {
-        setCompanyUsers(users ?? []);
-    }, [users]);
 
     const deleteUser = async (user: User) => {
         try {
@@ -98,7 +78,7 @@ export default function ManipulateUserCompany({ users }: { users: User[] | null 
 
             if (axios.isAxiosError(error) && error.response?.data) {
                 msg = error.response.data.message || msg;
-                subMsg = getErrorMessage(error.response.data.errors, subMsg);
+                subMsg = error.response.data.errors || subMsg;
             }
 
             setAlertInfo({
@@ -123,7 +103,7 @@ export default function ManipulateUserCompany({ users }: { users: User[] | null 
                             <div className="rounded-lg border border-border bg-card p-4 text-sm text-muted-foreground">No users in this company.</div>
                         ) : (
                             companyUsers.map((user) => {
-                                const isCurrentUser = user.id === currentUser?.id;
+                                const isCurrentUser = user.id === auth?.user?.id;
 
                                 return (
                                     <div
